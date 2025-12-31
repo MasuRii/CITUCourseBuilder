@@ -245,7 +245,7 @@ function CourseTable({
                           <span className="status-badge closed">Closed</span>
                         ) : course.availableSlots <= 0 ? (
                           <span className="status-badge warning">
-                            Slots full: {course.availableSlots}/{course.totalSlots}
+                            Slots full: {course.enrolled + course.assessed}/{course.totalSlots}
                           </span>
                         ) : (
                           <span className="status-badge open">
@@ -319,7 +319,7 @@ function CourseTable({
                       <span className="status-badge closed">Closed</span>
                     ) : course.availableSlots <= 0 ? (
                       <span className="status-badge warning">
-                        Slots full: {course.availableSlots}/{course.totalSlots}
+                        Slots full: {course.enrolled + course.assessed}/{course.totalSlots}
                       </span>
                     ) : (
                       <span className="status-badge open">

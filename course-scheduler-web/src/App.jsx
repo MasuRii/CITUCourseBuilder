@@ -986,6 +986,8 @@ function App() {
         if (selectedStatusFilter === 'open' && course.isClosed === true) return false;
         if (selectedStatusFilter === 'closed' && course.isClosed === false) return false;
 
+        if (course.availableSlots <= 0) return false;
+
         if (selectedSectionTypes.length > 0) {
           const courseSectionType = getSectionTypeSuffix(course.section);
           if (!courseSectionType || !selectedSectionTypes.includes(courseSectionType)) return false;
