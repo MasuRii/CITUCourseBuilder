@@ -265,13 +265,13 @@ function CourseTable({
                           }
                           className={`lock-button ${course.isLocked ? "locked" : "unlocked"}`}
                           title={
-                            course.availableSlots <= 0
-                              ? "Cannot lock - no available slots"
-                              : course.isLocked
+                            course.isLocked
                               ? "Unlock Course"
+                              : course.availableSlots <= 0
+                              ? "Cannot lock - no available slots"
                               : "Lock Course"
                           }
-                          disabled={course.availableSlots <= 0}>
+                          disabled={!course.isLocked && course.availableSlots <= 0}>
                           {course.isLocked &&
                             conflictingLockedCourseIds &&
                             conflictingLockedCourseIds.has(course.id) && (
@@ -337,14 +337,14 @@ function CourseTable({
                         })
                       }
                       className={`lock-button ${course.isLocked ? "locked" : "unlocked"}`}
-                      title={
-                        course.availableSlots <= 0
-                          ? "Cannot lock - no slots available"
-                          : course.isLocked
-                          ? "Unlock Course"
-                          : "Lock Course"
-                      }
-                      disabled={course.availableSlots <= 0}>
+                          title={
+                            course.isLocked
+                              ? "Unlock Course"
+                              : course.availableSlots <= 0
+                              ? "Cannot lock - no slots available"
+                              : "Lock Course"
+                          }
+                          disabled={!course.isLocked && course.availableSlots <= 0}>
                       {course.isLocked &&
                         conflictingLockedCourseIds &&
                         conflictingLockedCourseIds.has(course.id) && (

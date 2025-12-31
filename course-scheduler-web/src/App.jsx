@@ -783,6 +783,11 @@ function App() {
 
     if (!courseBeforeToggle) return;
 
+    if (!courseBeforeToggle.isLocked && courseBeforeToggle.availableSlots <= 0) {
+      toast.error('Cannot lock - no available slots');
+      return;
+    }
+
     if (courseBeforeToggle.isLocked) {
       console.log('Unlocking already locked course');
       setAllCourses(prev => prev.map(c =>
