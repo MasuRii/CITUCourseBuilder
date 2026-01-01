@@ -110,11 +110,6 @@ function parseDaySegment(daySegmentStr) {
   for (const char of remainingDayStr) {
     const normalized = normalizeDayCode(char); // normalizeDayCode handles M, T, W, F, S, U
     if (normalized && !days.includes(normalized)) {
-      // Avoid duplicates if TH, S, SU already added
-      // Special check: if 'T' is processed and 'TH' was already added, skip 'T'.
-      if (normalized === "T" && days.includes("TH")) continue;
-      // Special check: if 'S' is processed and 'SU' was already added, skip 'S' (SAT becomes S, SUN becomes SU)
-      if (normalized === "S" && days.includes("SU")) continue;
       days.push(normalized);
     }
   }
@@ -194,6 +189,35 @@ function parseSchedulePart(schedulePartStr) {
   const rawParts = schedulePartStr.split("|").map((part) => part.trim());
 
   if (rawParts.length < 2) {
+    // Attempt to parse as space-separated format (fallback for new data variations)
+    // Regex matches: Days Time Range Room [Type]
+    // Example: "F 9:00AM-10:30AM RTL313 LEC" or multiple concatenated "F ... T ..."
+    const fallbackRegex = /([A-Z]+(?:\/[A-Z]+)*)\s+(\d{1,2}:\d{2}[AP]M-\d{1,2}:\d{2}[AP]M)\s+(\S+)(?:\s+(\S+))?/gi;
+    const matches = [...schedulePartStr.matchAll(fallbackRegex)];
+
+    if (matches.length > 0) {
+      const slots = [];
+      for (const match of matches) {
+        const dayStr = match[1];
+        const timeRangeStr = match[2];
+        const room = match[3];
+        // const type = match[4]; // Type (LEC/LAB) is currently unused in TimeSlot but could be added
+
+        const parsedDays = parseDaySegment(dayStr);
+        const parsedTime = parseSingleTimeRange(timeRangeStr);
+
+        if (parsedDays.length > 0 && parsedTime) {
+           slots.push({
+             days: parsedDays,
+             startTime: parsedTime.startTime,
+             endTime: parsedTime.endTime,
+             room: room
+           });
+        }
+      }
+      if (slots.length > 0) return slots;
+    }
+
     console.warn(
       `Could not parse schedule part: ${schedulePartStr} - Expected at least 2 parts (Days | Times).`
     );
@@ -201,6 +225,8 @@ function parseSchedulePart(schedulePartStr) {
   }
 
   const daysComponent = rawParts[0]; // e.g., "F/SAT" or "MWF"
+
+
   const timesComponent = rawParts[1]; // e.g., "10:30AM-11:30AM/7:00PM-9:00PM" or "9:00AM-10:00AM"
 
   // Get room component if available (could be "Room#FIELD" or "Room#online/ACAD309")
