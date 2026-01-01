@@ -1,3 +1,4 @@
+
 /**
  * @typedef {object} Course
  * @property {string | number} id - Unique identifier from '#' column
@@ -19,6 +20,7 @@
  * Parses raw tab-separated course data into an array of Course objects.
  * Handles data where course info might be on a single line (12 columns)
  * or split across two lines (7 columns followed by 5 or 6 columns).
+ * Also handles space-separated single-line data (Variation 2).
  * @param {string} rawText - The raw string data pasted by the user.
  * @returns {Course[]} An array of parsed course objects.
  */
@@ -27,6 +29,18 @@ export const parseRawCourseData = (rawText) => {
         return [];
     }
 
+    // Try standard tab-separated parsing first
+    let courses = parseTabSeparated(rawText);
+
+    // If no courses found, try space-separated parsing
+    if (courses.length === 0) {
+        courses = parseSpaceSeparated(rawText);
+    }
+
+    return courses;
+};
+
+const parseTabSeparated = (rawText) => {
     const lines = rawText.trim().split('\n');
     const courses = [];
     const expectedColumnsSingleLine = 12;
@@ -63,7 +77,7 @@ export const parseRawCourseData = (rawText) => {
                                 // First 6 columns from line 1 (excluding schedule)
                                 const firstPart = columns1.slice(0, 6);
 
-                                // Modified columns from line 2 (using columns2[1] as room)
+                                // Extract stats from second line columns
                                 const secondPart = [
                                     combinedSchedule, // Combined schedule string
                                     columns2[1],     // Room
@@ -85,46 +99,26 @@ export const parseRawCourseData = (rawText) => {
                             }
                             i++;
                         } else {
-                            console.warn(`Skipping line ${i}: Found 7 columns, but the next line did not have the expected columns format. Line 1 content: "${line1}", Line 2 content: "${line2}"`);
+                            // Only warn if this logic was the primary intent, but since we have fallback, be quieter?
                             continue;
                         }
                     } else {
-                        console.warn(`Skipping line ${i}: Found 7 columns, but the next line was missing or empty. Line 1 content: "${line1}"`);
                         continue;
                     }
                 } else {
-                    console.warn(`Skipping line ${i}: Found 7 columns, but it was the last line in the input. Line 1 content: "${line1}"`);
                     continue;
                 }
             }
             else {
-                console.warn(`Skipping line ${i}: Expected ${expectedColumnsSingleLine} or ${expectedColumnsPart1} columns, but found ${columns1.length}. Line content: "${line1}"`);
+                // Not matching expected columns
                 continue;
             }
 
             if (courseDataColumns.length >= expectedColumnsSingleLine) {
-                const course = {
-                    id: courseDataColumns[0].trim() || `generated-${Date.now()}-${i}`,
-                    offeringDept: courseDataColumns[1].trim(),
-                    subject: courseDataColumns[2].trim(),
-                    subjectTitle: courseDataColumns[3].trim(),
-                    creditedUnits: parseInt(courseDataColumns[4].trim(), 10) || 0,
-                    section: courseDataColumns[5].trim(),
-                    schedule: courseDataColumns[6].trim(),
-                    room: courseDataColumns[7].trim(),
-                    totalSlots: parseInt(courseDataColumns[8].trim(), 10) || 0,
-                    enrolled: parseInt(courseDataColumns[9].trim(), 10) || 0,
-                    assessed: parseInt(courseDataColumns[10].trim(), 10) || 0,
-                    isClosed: courseDataColumns[11]?.trim().toLowerCase() === 'yes',
-                    isLocked: false,
-                };
-
-                if (!course.subject || !course.schedule) {
-                    console.warn(`Skipping entry starting around line ${i}: Missing essential data (Subject or Schedule). Combined data: "${courseDataColumns.join('\t')}"`);
-                    continue;
+                const course = createCourseObject(courseDataColumns);
+                if (isValidCourse(course)) {
+                    courses.push(course);
                 }
-
-                courses.push(course);
             }
 
         } catch (error) {
@@ -133,4 +127,82 @@ export const parseRawCourseData = (rawText) => {
     }
 
     return courses;
+};
+
+const parseSpaceSeparated = (rawText) => {
+    const courses = [];
+    // Regex explanation:
+    // 1. ID (digits)
+    // 2. Dept (word)
+    // 3. Subject (word)
+    // 4. Title (anything until units)
+    // 5. Units (digits)
+    // 6. Section (word with chars/hyphens)
+    // 7. Schedule (anything until room)
+    // 8. Room (non-whitespace)
+    // 9. Slots (digits)
+    // 10. Enrolled (digits)
+    // 11. Assessed (digits)
+    // 12. Closed (Yes/No)
+    
+    // We replace newlines with spaces to handle multi-line paste that lost tabs but kept newlines or lost them
+    const cleanText = rawText.replace(/\n/g, ' ');
+    
+    const regex = /(?<id>\d+)\s+(?<dept>\w+)\s+(?<subject>\S+)\s+(?<title>.+?)\s+(?<units>\d+)\s+(?<section>[A-Z0-9][\w/-]+)\s+(?<schedule>.+?)\s+(?<room>\S+)\s+(?<slots>\d+)\s+(?<enrolled>\d+)\s+(?<assessed>\d+)\s+(?<closed>Yes|No)/g;
+
+    const matches = cleanText.matchAll(regex);
+
+    for (const match of matches) {
+        const groups = match.groups;
+        
+        const course = {
+            id: groups.id,
+            offeringDept: groups.dept,
+            subject: groups.subject,
+            subjectTitle: groups.title.trim(),
+            creditedUnits: parseInt(groups.units, 10) || 0,
+            section: groups.section,
+            schedule: groups.schedule.trim(),
+            room: groups.room,
+            totalSlots: parseInt(groups.slots, 10) || 0,
+            enrolled: parseInt(groups.enrolled, 10) || 0,
+            assessed: parseInt(groups.assessed, 10) || 0,
+            isClosed: groups.closed.toLowerCase() === 'yes',
+            isLocked: false,
+            availableSlots: 0 // Calculated below
+        };
+
+        course.availableSlots = course.totalSlots - (course.enrolled + course.assessed);
+        
+        if (isValidCourse(course)) {
+            courses.push(course);
+        }
+    }
+
+    return courses;
+};
+
+const createCourseObject = (columns) => {
+    const course = {
+        id: columns[0].trim(),
+        offeringDept: columns[1].trim(),
+        subject: columns[2].trim(),
+        subjectTitle: columns[3].trim(),
+        creditedUnits: parseInt(columns[4].trim(), 10) || 0,
+        section: columns[5].trim(),
+        schedule: columns[6].trim(),
+        room: columns[7].trim(),
+        totalSlots: parseInt(columns[8].trim(), 10) || 0,
+        enrolled: parseInt(columns[9].trim(), 10) || 0,
+        assessed: parseInt(columns[10].trim(), 10) || 0,
+        isClosed: columns[11]?.trim().toLowerCase() === 'yes',
+        isLocked: false,
+        availableSlots: 0
+    };
+    course.availableSlots = course.totalSlots - (course.enrolled + course.assessed);
+    return course;
+};
+
+const isValidCourse = (course) => {
+    return course.subject && course.schedule;
 };

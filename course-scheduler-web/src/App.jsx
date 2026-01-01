@@ -783,6 +783,11 @@ function App() {
 
     if (!courseBeforeToggle) return;
 
+    if (!courseBeforeToggle.isLocked && courseBeforeToggle.availableSlots <= 0) {
+      toast.error('Cannot lock - no available slots');
+      return;
+    }
+
     if (courseBeforeToggle.isLocked) {
       console.log('Unlocking already locked course');
       setAllCourses(prev => prev.map(c =>
@@ -985,6 +990,8 @@ function App() {
       const filteredCourses = unlockedCourses.filter(course => {
         if (selectedStatusFilter === 'open' && course.isClosed === true) return false;
         if (selectedStatusFilter === 'closed' && course.isClosed === false) return false;
+
+        if (course.availableSlots <= 0) return false;
 
         if (selectedSectionTypes.length > 0) {
           const courseSectionType = getSectionTypeSuffix(course.section);
