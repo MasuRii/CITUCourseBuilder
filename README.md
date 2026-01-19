@@ -57,8 +57,10 @@ The CITU Course Builder is a completed, stable web application designed to assis
 ## Key Features
 
 *   **📚 Smart Data Import:**
-    *   Paste tab-separated course data (e.g., from AIMS).
-    *   Intelligent parser handles common schedule formats, including multi-line AIMS entries.
+    *   Paste data from both modern **WITS** and legacy **AIMS** platforms.
+    *   Intelligent parser handles HTML tables, compact text formats, multi-line entries, and complex hybrid schedules with comma-separated days/times.
+    *   Seamless toggle between **WITS (New)** and **AIMS (Legacy)** import modes.
+
 *   **📊 Dynamic Course Management:**
     *   View courses in a sortable, filterable table.
     *   Group by subject, department, or view all.
@@ -103,7 +105,9 @@ This project leverages a modern frontend stack:
 
 *   [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
 *   [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling.
+*   [Bun](https://bun.sh/) - Fast all-in-one JavaScript runtime, package manager, and test runner.
 *   [Material-UI (MUI)](https://mui.com/) - React UI framework for faster and easier web development.
+
 *   [React Toastify](https://fkhadra.github.io/react-toastify/) - For notifications.
 *   [React Datepicker](https://reactdatepicker.com/) - For time selection.
 *   [html-to-image](https://github.com/bubkoo/html-to-image) - For capturing HTML to image (PNG export).
@@ -119,15 +123,15 @@ To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
 
-Ensure you have Node.js and npm (or yarn) installed on your system.
-*   Node.js (v14+ recommended)
+Ensure you have Node.js and npm (or Bun) installed on your system.
+*   Node.js (v14+ recommended) or [Bun](https://bun.sh/)
 *   npm
     ```sh
     npm install npm@latest -g
     ```
-    or yarn
+    or Bun (Recommended)
     ```sh
-    npm install --global yarn
+    curl -fsSL https://bun.sh/install | bash
     ```
 
 ### Installation
@@ -140,22 +144,23 @@ Ensure you have Node.js and npm (or yarn) installed on your system.
     ```bash
     cd CITUCourseBuilder/course-scheduler-web
     ```
-3.  Install NPM packages:
+3.  Install packages:
+    ```bash
+    bun install
+    ```
+    or if using npm:
     ```bash
     npm install
     ```
-    or if using yarn:
-    ```bash
-    yarn install
-    ```
 4.  Run the development server:
+    ```bash
+    bun run dev
+    ```
+    or if using npm:
     ```bash
     npm run dev
     ```
-    or if using yarn:
-    ```bash
-    yarn dev
-    ```
+
 The application will typically be available at `http://localhost:12000`.
 
 

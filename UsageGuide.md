@@ -33,27 +33,35 @@ Welcome to the CITU Course Builder! This guide will walk you through the steps t
 
 ---
 
-## 1. Preparing Your Course Data (AIMS Example)
+## 1. Preparing Your Course Data (WITS or AIMS)
 
-The CITU Course Builder is designed to work with tab-separated course data. For CIT-U students using the AIMS portal:
+The CITU Course Builder is designed to work with both the modern **WITS** platform and legacy **AIMS** portals.
 
-*   Navigate to the section in AIMS that lists the available courses for enlistment.
-*   Select and copy the entire table data containing the course offerings. Ensure you copy all relevant columns (Subject, Section, Schedule, Units, etc.).
+### WITS (Preferred)
+*   Navigate to your section offering in WITS.
+*   Copy the course table directly from the browser. You can even copy multiple subject sections at once; the builder will intelligently separate them and extract metadata like Subject Name and Units from the headers.
 
-![Guide to copying data from AIMS](course-scheduler-web/src/assets/Guide1.PNG)
+### AIMS (Legacy)
+*   Navigate to the section in AIMS that lists available courses.
+*   Select and copy the entire tab-separated table data. Ensure you copy all columns (Subject, Section, Schedule, Units, etc.).
+
+![Guide to copying data](course-scheduler-web/src/assets/Guide1.PNG)
 
 ## 2. Importing Data into CITU Course Builder
 
 Once you have your course data copied:
 
-1.  Open the CITU Course Builder application in your web browser.
-2.  Locate the **"Raw Data Input"** text area (usually in a dedicated "Import" section).
-3.  Paste your copied course data directly into this text area.
-4.  Click the **"Import Data"** button.
+1.  Open the CITU Course Builder application.
+2.  In the **"Import Data"** section, choose your import mode:
+    *   **WITS (New):** Use this for HTML table copies or compact text formats.
+    *   **AIMS (Legacy):** Use this for standard tab-separated pastes from older portals.
+3.  Paste your copied data into the text area.
+4.  Click the **"Import [Mode] Data"** button.
 
-![Guide to pasting data into CITUCourseBuilder](course-scheduler-web/src/assets/Guide2.PNG)
+![Guide to pasting data](course-scheduler-web/src/assets/Guide2.PNG)
 
-Your courses will now appear in the "Course List" table. The application will attempt to parse common schedule formats, including multi-line entries for a single course from AIMS.
+Your courses will now appear in the "Course List" table. The application uses a robust parser that handles multi-line entries, hybrid schedules, and comma-separated days/times seamlessly.
+
 
 ## 3. Managing Your Course List
 
