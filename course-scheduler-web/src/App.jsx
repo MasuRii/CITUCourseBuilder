@@ -739,9 +739,13 @@ function App() {
   const handleAddTimeRange = () => { setExcludedTimeRanges(prev => [...prev, { id: Date.now(), start: '', end: '' }]); };
   const handleRemoveTimeRange = (id) => { if (excludedTimeRanges.length <= 1) return; setExcludedTimeRanges(prev => prev.filter(r => r.id !== id)); };
 
-  const handleLoadRawData = () => {
+  const handleLoadRawData = (mode) => {
     try {
       const p = parseRawCourseData(rawData);
+      if (p.length === 0) {
+        toast.error(`No courses found using ${mode} format. Please ensure you copied the data correctly.`);
+        return;
+      }
       const coursesWithDefaults = p.map((course, index) => ({
         ...course,
         id: course.id ?? `${Date.now()}-${index}`,
@@ -749,12 +753,13 @@ function App() {
         isClosed: course.isClosed ?? (course.totalSlots > 0 && course.enrolled >= course.totalSlots),
       }));
       setAllCourses(prevCourses => [...prevCourses, ...coursesWithDefaults]);
-      toast.success(`Added ${coursesWithDefaults.length} courses!`);
+      toast.success(`Successfully imported ${coursesWithDefaults.length} courses from ${mode}!`);
     } catch (error) {
       console.error("Error parsing raw data:", error);
       toast.error(`Error loading data: ${error.message}`);
     }
   };
+
 
   const handleDeleteCourse = (courseIdentity) => {
     const { id, subject, section } = courseIdentity;
@@ -804,7 +809,7 @@ function App() {
     const scheduleToLock = parseSchedule(courseToLock.schedule);
     console.log('Schedule of course to lock:', scheduleToLock);
 
-    if (!scheduleToLock || scheduleToLock.isTBA || !scheduleToLock.startTime || !scheduleToLock.endTime) {
+    if (!scheduleToLock || scheduleToLock.isTBA || !scheduleToLock.allTimeSlots || scheduleToLock.allTimeSlots.length === 0) {
       console.log('Course has TBA or invalid schedule, skipping conflict check');
       setAllCourses(prev => prev.map(c =>
         c.id === id && c.subject === subject && c.section === section
@@ -819,22 +824,33 @@ function App() {
       console.log(`Checking for conflict with locked course: ${lockedCourse.subject} ${lockedCourse.section}`);
       const lockedSchedule = parseSchedule(lockedCourse.schedule);
       console.log('Schedule of locked course:', lockedSchedule);
-      if (!lockedSchedule || lockedSchedule.isTBA || !lockedSchedule.startTime || !lockedSchedule.endTime) {
+      if (!lockedSchedule || lockedSchedule.isTBA || !lockedSchedule.allTimeSlots || lockedSchedule.allTimeSlots.length === 0) {
         console.log('Locked course has TBA or invalid schedule, skipping');
         continue;
       }
 
-      const commonDays = scheduleToLock.days.filter(day => lockedSchedule.days.includes(day));
-      console.log('Common days:', commonDays);
-      if (commonDays.length > 0) {
-        const hasTimeOverlap = checkTimeOverlap(scheduleToLock.startTime, scheduleToLock.endTime, lockedSchedule.startTime, lockedSchedule.endTime);
-        console.log(`Time overlap check: ${scheduleToLock.startTime}-${scheduleToLock.endTime} and ${lockedSchedule.startTime}-${lockedSchedule.endTime}: ${hasTimeOverlap}`);
-        if (hasTimeOverlap) {
-          console.log(`Conflict detected with course: ${lockedCourse.subject} ${lockedCourse.section}`);
-          conflictingCourses.push(lockedCourse);
+      let hasTimeOverlap = false;
+      for (const slot1 of scheduleToLock.allTimeSlots) {
+        for (const slot2 of lockedSchedule.allTimeSlots) {
+          const commonDays = slot1.days.filter(day => slot2.days.includes(day));
+          if (commonDays.length > 0) {
+            if (slot1.startTime && slot1.endTime && slot2.startTime && slot2.endTime) {
+              if (checkTimeOverlap(slot1.startTime, slot1.endTime, slot2.startTime, slot2.endTime)) {
+                hasTimeOverlap = true;
+                break;
+              }
+            }
+          }
         }
+        if (hasTimeOverlap) break;
+      }
+
+      if (hasTimeOverlap) {
+        console.log(`Conflict detected with course: ${lockedCourse.subject} ${lockedCourse.section}`);
+        conflictingCourses.push(lockedCourse);
       }
     }
+
 
     if (conflictingCourses.length > 0) {
       const attemptedCourseDetails = `${courseBeforeToggle.subject} ${courseBeforeToggle.section} (${courseBeforeToggle.schedule})`;

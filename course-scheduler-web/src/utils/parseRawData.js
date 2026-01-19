@@ -29,6 +29,12 @@ export const parseRawCourseData = (rawText) => {
         return [];
     }
 
+    // Try HTML parsing if it looks like HTML
+    if (rawText.trim().startsWith('<') || rawText.includes('</td>')) {
+        const htmlCourses = parseHTMLVariation(rawText);
+        if (htmlCourses.length > 0) return htmlCourses;
+    }
+
     // Try standard tab-separated parsing first
     let courses = parseTabSeparated(rawText);
 
@@ -37,8 +43,168 @@ export const parseRawCourseData = (rawText) => {
         courses = parseSpaceSeparated(rawText);
     }
 
+    // If still no courses, try the compact variation format (Variation 1 & 2 from ImportDataVariations.md)
+    if (courses.length === 0) {
+        courses = parseCompactVariation(rawText);
+    }
+
     return courses;
 };
+
+/**
+ * Parses course data from an HTML snippet (e.g. copied MUI Table).
+ * @param {string} rawText 
+ * @returns {Course[]}
+ */
+const parseHTMLVariation = (rawText) => {
+    const courses = [];
+    
+    // Split by potential subject headers to handle multiple subjects in one paste
+    const sectionDelimiter = /<p[^>]*MuiTypography-body1[^>]*>/i;
+    const parts = rawText.split(sectionDelimiter);
+    
+    // If there's content before the first header, it won't have a header in its part
+    // but the regex split removes the tag itself. We need to re-add it or use a different split.
+    // Let's use a regex that finds all sections starting with a header.
+    const sections = [];
+    const fullHeaderRegex = /(<p[^>]*MuiTypography-body1[^>]*>.*?<\/p>)(.*?)(?=<p[^>]*MuiTypography-body1[^>]*>|$)/gsi;
+    
+    let match;
+    while ((match = fullHeaderRegex.exec(rawText)) !== null) {
+        sections.push({
+            header: match[1],
+            content: match[2]
+        });
+    }
+
+    // If no sections found with the header regex, try parsing the whole text as one section (old behavior)
+    if (sections.length === 0) {
+        sections.push({ header: '', content: rawText });
+    }
+
+    for (const section of sections) {
+        const headerRegex = />([^<]+)\s*-\s*([^<]+)\s*\((\d+(?:\.\d+)?)\s*units\)<\/p>/i;
+        const headerMatch = section.header.match(headerRegex);
+        
+        let headerSubject = null;
+        let headerTitle = null;
+        let headerUnits = 0;
+
+        if (headerMatch) {
+            headerSubject = headerMatch[1].trim();
+            headerTitle = headerMatch[2].trim();
+            headerUnits = parseFloat(headerMatch[3]);
+        }
+
+        // Find all <tr> elements in this section
+        const rowRegex = /<tr[^>]*>(.*?)<\/tr>/gs;
+        const cellRegex = /<td[^>]*>(.*?)<\/td>/gs;
+        const stripTags = (html) => html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+
+        const rowMatches = section.content.matchAll(rowRegex);
+
+        for (const rowMatch of rowMatches) {
+            const rowContent = rowMatch[1];
+            const cells = [...rowContent.matchAll(cellRegex)].map(m => stripTags(m[1]));
+            
+            if (cells.length >= 8) {
+                const stats = cells[6];
+                const [enrolled, total] = stats.split('/').map(n => parseInt(n, 10));
+                const status = cells[9] || (total > enrolled ? 'Open' : 'Closed');
+
+                const subjectCode = headerSubject || cells[1];
+                const subjectTitle = headerTitle || cells[1];
+                const creditedUnits = headerUnits || 0;
+
+                const course = {
+                    id: `${cells[0]}-${subjectCode}-${Math.random().toString(36).substr(2, 5)}`,
+                    offeringDept: 'N/A',
+                    subject: subjectCode,
+                    subjectTitle: subjectTitle,
+                    creditedUnits: creditedUnits,
+                    section: cells[0],
+                    schedule: `${cells[3]} | ${cells[2]} | ${cells[4]} | ${cells[5]} (${cells[7]})`,
+                    room: cells[4],
+                    totalSlots: total || 0,
+                    enrolled: enrolled || 0,
+                    assessed: 0,
+                    isClosed: status.toLowerCase().includes('closed'),
+                    isLocked: false,
+                    availableSlots: 0
+                };
+
+                // Only add course if it has a valid-looking schedule (not just pipes and mode)
+                if (cells[3] && cells[2] && cells[3].trim() !== "" && cells[2].trim() !== "") {
+                    course.availableSlots = course.totalSlots - course.enrolled;
+                    if (isValidCourse(course)) {
+                        courses.push(course);
+                    }
+                }
+            }
+        }
+    }
+
+    return courses;
+};
+
+/**
+ * Parses a more compact, space/tab separated format where some fields might be missing.
+
+ * Handles Variation 1 and 2 from ImportDataVariations.md.
+ * @param {string} rawText 
+ * @returns {Course[]}
+ */
+const parseCompactVariation = (rawText) => {
+    const courses = [];
+    // Normalize text: replace all whitespace sequences (including newlines and tabs) with a single space
+    const cleanText = rawText.replace(/\s+/g, ' ').trim();
+    
+    // Regex for: Section Subject TimeRange Days Room Type Enrolled/Total Mode Status
+    // Example: G1 C0 08:00 AM - 12:00 PM WFM FIELD LEC 39/40 In-Person Open
+    // section: G1
+    // subject: C0
+    // time: 08:00 AM - 12:00 PM
+    // days: WFM
+    // room: FIELD
+    // type: LEC
+    // enrolled/total: 39/40
+    // mode: In-Person
+    // status: Open
+    const regex = /(?<section>\S+)\s+(?<subject>\S+)\s+(?<time>\d{1,2}:\d{2}\s*[AP]M\s*-\s*\d{1,2}:\d{2}\s*[AP]M)\s+(?<days>[A-Z]+)\s+(?<room>\S+)\s+(?<type>\S+)\s+(?<stats>\d+\/\d+)\s+(?<mode>[\w-]+)\s+(?<status>Open|Closed)/gi;
+
+    const matches = cleanText.matchAll(regex);
+
+    for (const match of matches) {
+        const groups = match.groups;
+        const [enrolled, total] = groups.stats.split('/').map(n => parseInt(n, 10));
+        
+        const course = {
+            id: `${groups.section}-${groups.subject}-${Math.random().toString(36).substr(2, 5)}`, // Ensure uniqueness
+            offeringDept: 'N/A',
+            subject: groups.subject,
+            subjectTitle: groups.subject, // Default to subject code as title is missing
+            creditedUnits: 0, // Default to 0 as units are missing
+            section: groups.section,
+            schedule: `${groups.days} | ${groups.time} | ${groups.room} | ${groups.type} (${groups.mode})`,
+            room: groups.room,
+            totalSlots: total || 0,
+            enrolled: enrolled || 0,
+            assessed: 0,
+            isClosed: groups.status.toLowerCase() === 'closed',
+            isLocked: false,
+            availableSlots: 0
+        };
+
+        course.availableSlots = course.totalSlots - course.enrolled;
+        
+        if (isValidCourse(course)) {
+            courses.push(course);
+        }
+    }
+
+    return courses;
+};
+
 
 const parseTabSeparated = (rawText) => {
     const lines = rawText.trim().split('\n');

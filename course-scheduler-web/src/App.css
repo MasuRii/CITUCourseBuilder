@@ -1935,6 +1935,40 @@ input[type="time"]:focus-visible {
   border: 1px solid rgba(255, 75, 75, 0.25);
 }
 
+.import-mode-toggle {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: var(--space-1);
+  background-color: var(--filter-bg);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  width: fit-content;
+}
+
+.mode-button {
+  padding: var(--space-1) var(--space-4);
+  border: none;
+  background: transparent;
+  color: var(--text-muted-color);
+  border-radius: var(--border-radius-md);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+}
+
+.mode-button.active {
+  background-color: var(--accent);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mode-button:not(.active):hover {
+  background-color: var(--row-hover-bg);
+  color: var(--text-color);
+  transform: none;
+  box-shadow: none;
+}
+
 .raw-data-input {
   display: flex;
   flex-direction: column;
@@ -1942,6 +1976,7 @@ input[type="time"]:focus-visible {
 }
 
 .input-description {
+
   color: var(--text-muted-color);
   margin: 0 0 var(--space-2);
   font-size: var(--font-size-sm);
