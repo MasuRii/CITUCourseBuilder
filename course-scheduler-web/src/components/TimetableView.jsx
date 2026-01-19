@@ -156,19 +156,31 @@ function TimetableView({ lockedCourses, conflictingLockedCourseIds = new Set() }
         scheduleResult.allTimeSlots.forEach(slot => {
             const { days, startTime, endTime, room } = slot;
             if (!startTime || !endTime) return;
+            
             days.forEach(day => {
+                let isFirstOverlappingSlotFound = false;
+                
                 for (let i = 0; i < TIME_SLOTS.length; i++) {
                     const timeGridSlot = TIME_SLOTS[i];
-                    if (timeGridSlot >= startTime && timeGridSlot < endTime) {
+                    const nextTimeGridSlot = TIME_SLOTS[i + 1] || '23:59';
+                    
+                    // A grid slot overlaps if: max(slotStart, gridStart) < min(slotEnd, gridEnd)
+                    const overlapStart = startTime > timeGridSlot ? startTime : timeGridSlot;
+                    const overlapEnd = endTime < nextTimeGridSlot ? endTime : nextTimeGridSlot;
+                    
+                    if (overlapStart < overlapEnd) {
                         if (!coursesByTimeAndDay[timeGridSlot]) {
                             coursesByTimeAndDay[timeGridSlot] = {};
                         }
                         if (!coursesByTimeAndDay[timeGridSlot][day]) {
                             coursesByTimeAndDay[timeGridSlot][day] = [];
                         }
-                        const isStartOfCourseSlot = timeGridSlot === startTime;
+
+                        const isStartOfCourseSlot = !isFirstOverlappingSlotFound;
+                        isFirstOverlappingSlotFound = true;
+
                         let courseAlreadyInCellForThisSlot = coursesByTimeAndDay[timeGridSlot][day].find(
-                            c => c.id === course.id && c.slotStartTime === startTime
+                            c => c.id === course.id && c.slotStartTime === startTime && c.slotEndTime === endTime
                         );
                         if (!courseAlreadyInCellForThisSlot) {
                             coursesByTimeAndDay[timeGridSlot][day].push({
@@ -183,6 +195,7 @@ function TimetableView({ lockedCourses, conflictingLockedCourseIds = new Set() }
                 }
             });
         });
+
     });
     const renderCourseCell = (coursesInGridCell) => {
         if (!coursesInGridCell || coursesInGridCell.length === 0) return null;
