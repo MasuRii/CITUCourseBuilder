@@ -124,6 +124,15 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 9. **Course identity is compound**: Courses are identified by `{id, subject, section}` tuple, not just `id`.
 
+10. **Test coverage baseline established**: Current coverage is 81.25% line coverage, 94.32% function coverage. Critical gaps exist in scheduling algorithms (0% coverage) and export functions (generateIcs.js, convertToRawData.js - 0% coverage). See docs/architecture/TEST_COVERAGE_BASELINE.md for detailed analysis.
+
+11. **Untested critical paths**: 
+    - Scheduling algorithms (~461 lines in App.jsx) - must add tests before migration
+    - ICS calendar generation (generateIcs.js, 111 lines)
+    - Raw data export (convertToRawData.js, 29 lines)
+    - Edge cases in parseSchedule.js (TBA schedules, multi-slot parsing)
+    - Edge cases in parseRawData.js (malformed HTML, invalid formats)
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:
@@ -140,5 +149,6 @@ The following files are protected by the Ralph write-guardrail plugin and should
 - Component Graphs: docs/architecture/COMPONENT_DEPENDENCY_GRAPH.md
 - Algorithm Documentation: docs/architecture/SCHEDULING_ALGORITHMS.md
 - CSS Architecture: docs/architecture/CSS_ARCHITECTURE.md
+- Test Coverage Baseline: docs/architecture/TEST_COVERAGE_BASELINE.md
 - TypeScript Interfaces: docs/architecture/types/index.ts
 - Usage Guide: https://github.com/MasuRii/CITUCourseBuilder/blob/main/UsageGuide.md

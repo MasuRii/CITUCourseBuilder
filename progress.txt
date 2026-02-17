@@ -53,3 +53,20 @@ Self-Review:
   - Created complete Tailwind migration mapping with semantic color tokens
   - Theme switching uses data-theme and data-palette attributes on documentElement
 Unblocked: T1.1.4, T1.1.5, T1.1.6 (no explicit dependencies, all discovery tasks in parallel)
+
+## 2026-02-17 23:45
+Task: T1.1.4 - Audit existing test coverage
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created test coverage baseline report
+  - docs/architecture/TEST_COVERAGE_BASELINE.md: Comprehensive coverage analysis with gaps and recommendations
+  - Updated AGENTS.md with test coverage learnings: baseline established, untested critical paths identified
+Reason: Fourth discovery task - establishes test coverage baseline before migration
+Self-Review:
+  - Ran test suite: 19 tests pass, 0 fail
+  - Coverage: 81.25% line, 94.32% function coverage
+  - Identified critical gaps: scheduling algorithms (0% coverage, ~461 lines), generateIcs.js (0%), convertToRawData.js (0%)
+  - Documented missing test cases for parseSchedule.js edge cases (TBA, multi-slot, invalid inputs)
+  - Documented missing test cases for parseRawData.js edge cases (malformed HTML, invalid formats)
+  - Created recommendations for priority testing before migration
+Unblocked: T1.1.5, T1.1.6 (no explicit dependencies, all discovery tasks in parallel)
