@@ -712,9 +712,10 @@
       "sectionId": "3.1",
       "category": "impl",
       "description": "Copy existing tests for utilities and convert to TypeScript",
-      "passes": false,
+      "passes": true,
       "effort": "XS",
       "risk": "L",
+      "notes": "Copied parseSchedule.test.js (116 lines) to parseSchedule.test.ts (126 lines) and parseRawData.test.js (220 lines) to parseRawData.test.ts (236 lines). All tests converted to TypeScript with proper imports from @/utils/*. Total tests: 61 pass (was 19 in web project + 42 from T3.1.5). Coverage: 87.95% lines (improved from 81.25% baseline), 96.55% functions (improved from 94.32%). No additional learnings for AGENTS.md - standard TypeScript test conversion.",
       "acceptanceCriteria": [
         "Copy parseSchedule.test.js to new project as parseSchedule.test.ts",
         "Copy parseRawData.test.js to new project as parseRawData.test.ts",

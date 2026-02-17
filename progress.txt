@@ -472,14 +472,33 @@ Change: Extracted scheduling algorithms to TypeScript with comprehensive tests
   - course-scheduler-astro/tests/scheduleAlgorithms.test.ts: 42 tests covering all functions
   - course-scheduler-astro/src/types/index.ts: Fixed ParseScheduleFunction (returns null) and GetTimeOfDayBucketFunction (accepts null)
 Reason: Fifth core migration task in Phase 3 - extracts critical scheduling algorithms for reuse while preserving logic exactly
-Self-Review:
-  - All 11 functions have explicit parameter and return types
-  - No `any` types used (verified with grep)
-  - TypeScript compiles with zero errors (astro check && tsc --noEmit)
-  - Created comprehensive test suite: 42 tests pass
-  - Fixed type definitions to match actual implementations
-  - Logic preserved exactly from original App.jsx
-  - Score formula: totalCourses * 100 + totalUnits
-  - SMALL_N_THRESHOLD_PARTIAL = 12 for heuristic switching
-  - All verification checks pass: lint, typecheck, tests (42 pass), format:check
+ Self-Review:
+   - All 11 functions have explicit parameter and return types
+   - No `any` types used (verified with grep)
+   - TypeScript compiles with zero errors (astro check && tsc --noEmit)
+   - Created comprehensive test suite: 42 tests pass
+   - Fixed type definitions to match actual implementations
+   - Logic preserved exactly from original App.jsx
+   - Score formula: totalCourses * 100 + totalUnits
+   - SMALL_N_THRESHOLD_PARTIAL = 12 for heuristic switching
+   - All verification checks pass: lint, typecheck, tests (42 pass), format:check
  Unblocked: T3.1.6, T3.1.7, T3.1.8 (Phase 3.1 utility migration tasks)
+
+## 2026-02-19 01:30
+Task: T3.1.6 - Copy existing tests for utilities and convert to TypeScript
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Copied and converted existing test files to TypeScript
+  - course-scheduler-astro/tests/parseSchedule.test.ts: Converted parseSchedule.test.js (116 → 126 lines)
+  - course-scheduler-astro/tests/parseRawData.test.ts: Converted parseRawData.test.js (220 → 236 lines)
+Reason: Sixth core migration task in Phase 3 - ensures test coverage for migrated utility functions
+Self-Review:
+  - All tests converted to TypeScript with proper imports from @/utils/*
+  - Used non-null assertions (!) where parseSchedule can return null (matches actual return type)
+  - All 61 tests pass (19 original + 42 from T3.1.5)
+  - Coverage improved: 87.95% lines (was 81.25%), 96.55% functions (was 94.32%)
+  - TypeScript check passes with 0 errors
+  - ESLint passes with 0 warnings
+  - Prettier formatting verified
+  - No additional AGENTS.md learnings - standard TypeScript test conversion
+ Unblocked: T3.1.7, T3.1.8 (Phase 3.1 utility migration tasks)
