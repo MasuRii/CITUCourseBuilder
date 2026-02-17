@@ -2,8 +2,8 @@
  * CourseTable Component
  *
  * A React island component for displaying and managing course data in a table format.
- * Supports grouping by subject/department, status filtering, export functionality,
- * and course locking for schedule generation.
+ * Features playful, modern styling with animated buttons, status badges with icons,
+ * and smooth grouping transitions.
  *
  * @module components/CourseTable
  * @see docs/architecture/REACT_ISLANDS_HYDRATION.md - Uses client:load for immediate interactivity
@@ -65,6 +65,126 @@ interface CourseRowProps {
 }
 
 /**
+ * Checkmark icon for available status
+ */
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
+/**
+ * X icon for closed status
+ */
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  );
+}
+
+/**
+ * Alert triangle icon for warning/full status
+ */
+function AlertTriangleIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </svg>
+  );
+}
+
+/**
+ * Lock icon for locked courses
+ */
+function LockIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  );
+}
+
+/**
+ * Unlock icon for unlocked courses
+ */
+function UnlockIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+    </svg>
+  );
+}
+
+/**
  * Menu icon SVG component
  */
 function MenuIcon({ className }: { className?: string }) {
@@ -115,38 +235,14 @@ function InfoIcon({ className }: { className?: string }) {
 }
 
 /**
- * Unlock icon SVG component
- */
-function UnlockIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-      <path d="M7 11V7a5 5 0 0 1 9.9-1" />
-    </svg>
-  );
-}
-
-/**
  * Trash icon SVG component
  */
 function TrashIcon({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="18"
+      height="18"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -191,7 +287,127 @@ function WarningIcon({ className }: { className?: string }) {
 }
 
 /**
- * Renders a single course row
+ * Download icon for export
+ */
+function DownloadIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" x2="12" y1="15" y2="3" />
+    </svg>
+  );
+}
+
+/**
+ * Copy icon for clipboard
+ */
+function CopyIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+    </svg>
+  );
+}
+
+/**
+ * Book icon for subject column
+ */
+function BookIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+    </svg>
+  );
+}
+
+/**
+ * Clock icon for schedule column
+ */
+function ClockIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  );
+}
+
+/**
+ * Map pin icon for room column
+ */
+function MapPinIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+/**
+ * Renders a single course row with enhanced animations
  */
 function CourseRow({
   course,
@@ -223,22 +439,23 @@ function CourseRow({
   return (
     <tr
       className={`
-        border-b border-border-primary transition-colors duration-150
+        border-b border-border-primary transition-all duration-200
         ${rowIndex % 2 === 0 ? 'bg-surface-primary' : 'bg-surface-secondary'}
         ${isLocked ? 'bg-accent/5' : ''}
         ${hasConflict ? 'border-l-4 border-l-danger-border' : ''}
-        hover:bg-surface-hover
+        hover:bg-surface-hover hover:shadow-sm
+        group
       `}
     >
-      <td className="px-3 py-2 text-sm text-content-primary">{course.subject}</td>
-      <td className="px-3 py-2 text-sm text-content-primary">{course.subjectTitle}</td>
-      <td className="px-3 py-2 text-sm text-content-secondary text-center">
+      <td className="px-3 py-2.5 text-sm text-content-primary font-medium">{course.subject}</td>
+      <td className="px-3 py-2.5 text-sm text-content-secondary">{course.subjectTitle}</td>
+      <td className="px-3 py-2.5 text-sm text-content-secondary text-center font-mono">
         {course.creditedUnits ?? course.units}
       </td>
-      <td className="px-3 py-2 text-sm text-content-primary">{course.section}</td>
-      <td className="px-3 py-2 text-sm text-content-primary font-mono">{course.schedule}</td>
-      <td className="px-3 py-2 text-sm text-content-secondary">{course.room}</td>
-      <td className="px-3 py-2 text-sm">
+      <td className="px-3 py-2.5 text-sm text-content-primary font-medium">{course.section}</td>
+      <td className="px-3 py-2.5 text-sm text-content-primary font-mono">{course.schedule}</td>
+      <td className="px-3 py-2.5 text-sm text-content-secondary">{course.room}</td>
+      <td className="px-3 py-2.5">
         <StatusBadge
           isClosed={course.isClosed}
           availableSlots={course.availableSlots}
@@ -247,11 +464,11 @@ function CourseRow({
           totalSlots={course.totalSlots}
         />
       </td>
-      <td className="px-3 py-2">
-        <div className="flex items-center gap-1">
+      <td className="px-3 py-2.5">
+        <div className="flex items-center gap-2">
           {hasConflict && (
             <span
-              className="text-warning"
+              className="text-warning animate-pulse"
               title="Schedule conflict with another locked course"
               aria-label="Schedule conflict"
             >
@@ -263,13 +480,15 @@ function CourseRow({
             onClick={handleToggleLock}
             disabled={!isLocked && !canLock}
             className={`
-              px-2 py-1 text-xs font-medium rounded transition-colors duration-150
-              focus:outline-none focus:ring-2 focus:ring-accent/30
-              disabled:opacity-50 disabled:cursor-not-allowed
+              inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full
+              transition-all duration-200 ease-out transform
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+              active:scale-95
               ${
                 isLocked
-                  ? 'bg-accent text-white hover:bg-accent-hover'
-                  : 'bg-surface-secondary text-content-secondary hover:bg-surface-hover border border-border-primary'
+                  ? 'bg-accent text-white shadow-md hover:bg-accent-hover hover:-translate-y-0.5 hover:shadow-lg'
+                  : 'bg-surface-secondary text-content-secondary border border-border-primary hover:border-accent hover:text-accent hover:-translate-y-0.5'
               }
             `}
             title={
@@ -280,13 +499,25 @@ function CourseRow({
                   : 'Cannot lock - no available slots'
             }
           >
-            {isLocked ? 'Unlock' : 'Lock'}
+            {isLocked ? (
+              <>
+                <LockIcon className="opacity-90" />
+                <span>Locked</span>
+              </>
+            ) : (
+              <>
+                <UnlockIcon />
+                <span>Lock</span>
+              </>
+            )}
           </button>
           <button
             type="button"
             onClick={handleDelete}
-            className="p-1 text-content-secondary hover:text-danger-button-bg transition-colors duration-150
-                       focus:outline-none focus:ring-2 focus:ring-danger-button-bg/30 rounded"
+            className="p-2 text-content-secondary/60 hover:text-danger-button-bg hover:bg-danger/10
+                       transition-all duration-200 ease-out transform
+                       focus:outline-none focus-visible:ring-2 focus-visible:ring-danger-button-bg/50 rounded-lg
+                       opacity-0 group-hover:opacity-100 active:scale-90"
             title="Delete Course"
             aria-label="Delete course"
           >
@@ -312,7 +543,7 @@ function CourseRow({
 }
 
 /**
- * Status badge component
+ * Status badge component with icons for visual clarity
  */
 function StatusBadge({
   isClosed,
@@ -329,29 +560,36 @@ function StatusBadge({
 }): ReactNode {
   if (isClosed) {
     return (
-      <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-danger-surface text-danger-text">
-        Closed
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full bg-danger/10 text-danger border border-danger/20">
+        <XIcon />
+        <span>Closed</span>
       </span>
     );
   }
 
   if (availableSlots <= 0) {
     return (
-      <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-warning-surface text-warning-text">
-        Slots full: {enrolled + assessed}/{totalSlots}
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full bg-warning/10 text-warning border border-warning/20">
+        <AlertTriangleIcon />
+        <span>
+          Full: {enrolled + assessed}/{totalSlots}
+        </span>
       </span>
     );
   }
 
   return (
-    <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-success-surface text-success-text">
-      Available: {availableSlots}/{totalSlots}
+    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full bg-success/10 text-success border border-success/20">
+      <CheckIcon />
+      <span>
+        {availableSlots}/{totalSlots}
+      </span>
     </span>
   );
 }
 
 /**
- * Custom dropdown menu component
+ * Custom dropdown menu component with animations
  */
 function DropdownMenu({
   items,
@@ -417,9 +655,11 @@ function DropdownMenu({
       <button
         type="button"
         onClick={handleToggle}
-        className="p-2 text-content-secondary hover:text-content-primary hover:bg-surface-hover
-                   rounded-lg transition-colors duration-150 focus:outline-none focus:ring-2
-                   focus:ring-accent/30"
+        className={`
+          p-2 text-content-secondary rounded-lg transition-all duration-200 ease-out
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
+          ${isOpen ? 'bg-surface-hover text-content-primary' : 'hover:text-content-primary hover:bg-surface-hover'}
+        `}
         aria-label={triggerLabel}
         aria-haspopup="true"
         aria-expanded={isOpen}
@@ -430,7 +670,7 @@ function DropdownMenu({
       {isOpen && (
         <div
           className="absolute right-0 mt-1 w-56 bg-surface-secondary border border-border-primary
-                     rounded-lg shadow-lg z-[var(--z-dropdown)]"
+                     rounded-xl shadow-lg z-[var(--z-dropdown)] animate-fade-in overflow-hidden"
           role="menu"
         >
           {items.map((item, index) => (
@@ -438,11 +678,17 @@ function DropdownMenu({
               key={index}
               type="button"
               onClick={() => handleItemClick(item.onClick)}
-              className="w-full px-4 py-2 text-left text-sm text-content-primary
+              className="w-full px-4 py-2.5 text-left text-sm text-content-primary
                          hover:bg-surface-hover transition-colors duration-150
-                         first:rounded-t-lg last:rounded-b-lg"
+                         first:rounded-t-xl last:rounded-b-xl
+                         flex items-center gap-2"
               role="menuitem"
             >
+              {item.label.includes('Copy') ? (
+                <CopyIcon className="text-content-secondary" />
+              ) : (
+                <DownloadIcon className="text-content-secondary" />
+              )}
               {item.label}
             </button>
           ))}
@@ -471,7 +717,7 @@ function Tooltip({ text, children }: { text: string; children: ReactNode }): Rea
         <div
           className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5
                      text-xs text-white bg-gray-900 rounded-lg shadow-lg
-                     whitespace-nowrap z-[var(--z-tooltip)]"
+                     whitespace-nowrap z-[var(--z-tooltip)] animate-fade-in"
           role="tooltip"
         >
           {text}
@@ -492,8 +738,10 @@ function Tooltip({ text, children }: { text: string; children: ReactNode }): Rea
  * - Grouping by subject, department, or flat list
  * - Status filtering (all, open, closed)
  * - Export to clipboard and text file
- * - Course locking for schedule generation
+ * - Course locking for schedule generation with animations
  * - Conflict highlighting for locked courses
+ * - Status badges with icons for visual clarity
+ * - Smooth row hover effects and transitions
  * - Tailwind styled with theme support
  *
  * @example
@@ -610,20 +858,24 @@ export default function CourseTable({
   return (
     <div className="bg-surface-primary border border-border-primary rounded-xl shadow-sm overflow-hidden">
       {/* Header Controls */}
-      <div className="p-4 border-b border-border-primary">
+      <div className="p-4 border-b border-border-primary bg-surface-secondary/30">
         <div className="flex flex-wrap items-center gap-4">
           {/* Title */}
-          <h2 className="text-xl font-semibold text-content-primary m-0">Course List</h2>
+          <h2 className="text-xl font-semibold text-content-primary m-0 font-display flex items-center gap-2">
+            <BookIcon className="text-accent" />
+            Course List
+          </h2>
 
           {/* Grouping Controls */}
           <div className="flex items-center gap-2">
-            <label className="text-sm text-content-secondary">Group by:</label>
+            <label className="text-sm text-content-secondary font-medium">Group by:</label>
             <select
               value={groupingKey}
               onChange={onGroupingChange}
               className="px-3 py-1.5 text-sm bg-surface-secondary border border-border-primary
                          rounded-lg text-content-primary focus:outline-none focus:ring-2
-                         focus:ring-accent/30 cursor-pointer"
+                         focus:ring-accent/30 cursor-pointer transition-all duration-150
+                         hover:border-accent/50"
             >
               <option value="none">None</option>
               <option value="subject">Subject</option>
@@ -633,22 +885,23 @@ export default function CourseTable({
 
           {/* Status Filter */}
           <div className="flex items-center gap-2">
-            <span className="text-sm text-content-secondary">Filter:</span>
-            <div className="flex gap-1">
+            <span className="text-sm text-content-secondary font-medium">Filter:</span>
+            <div className="flex gap-1.5">
               {(['all', 'open', 'closed'] as const).map((filter) => (
                 <button
                   key={filter}
                   type="button"
                   onClick={() => onStatusFilterChange(filter)}
                   className={`
-                    px-3 py-1.5 text-sm font-medium rounded-lg transition-colors duration-150
-                    focus:outline-none focus:ring-2 focus:ring-accent/30
+                    px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 ease-out
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
                     ${
                       selectedStatusFilter === filter
-                        ? 'bg-accent text-white'
-                        : 'bg-surface-secondary text-content-secondary hover:bg-surface-hover'
+                        ? 'bg-accent text-white shadow-md transform scale-[1.02]'
+                        : 'bg-surface-secondary text-content-secondary border border-border-primary hover:border-accent hover:text-content-primary'
                     }
                   `}
+                  aria-pressed={selectedStatusFilter === filter}
                 >
                   {filter === 'all'
                     ? 'All Courses'
@@ -665,9 +918,13 @@ export default function CourseTable({
 
           {/* Stats Display */}
           {totalUnitsDisplay > 0 && (
-            <div className="ml-auto text-sm text-content-secondary">
-              {totalUnitsDisplay} units ({uniqueSubjectsDisplay} subjects) -{' '}
-              {lockedCoursesCountDisplay} courses locked
+            <div className="ml-auto text-sm text-content-secondary flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-accent/10 text-accent rounded-full text-xs font-medium">
+                {totalUnitsDisplay} units
+              </span>
+              <span>{uniqueSubjectsDisplay} subjects</span>
+              <span>•</span>
+              <span>{lockedCoursesCountDisplay} locked</span>
             </div>
           )}
 
@@ -677,9 +934,12 @@ export default function CourseTable({
 
         {/* Conflict Warning */}
         {conflictingLockedCourseIds.size > 0 && (
-          <div className="mt-3 px-3 py-2 text-sm text-warning-text bg-warning-surface rounded-lg">
-            Note: Courses highlighted with a red border have schedule conflicts with other locked
-            courses.
+          <div className="mt-3 px-3 py-2 text-sm text-warning-text bg-warning/10 border border-warning/20 rounded-lg flex items-center gap-2 animate-slide-up">
+            <WarningIcon />
+            <span>
+              Note: Courses highlighted with a red border have schedule conflicts with other locked
+              courses.
+            </span>
           </div>
         )}
       </div>
@@ -689,28 +949,37 @@ export default function CourseTable({
         <table className="w-full border-collapse">
           <thead className="bg-surface-tertiary">
             <tr>
-              <th className="px-3 py-2 text-left text-sm font-semibold text-content-secondary">
-                Subject
+              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
+                <div className="flex items-center gap-1.5">
+                  <BookIcon />
+                  Subject
+                </div>
               </th>
-              <th className="px-3 py-2 text-left text-sm font-semibold text-content-secondary">
+              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
                 Title
               </th>
-              <th className="px-3 py-2 text-center text-sm font-semibold text-content-secondary">
+              <th className="px-3 py-3 text-center text-xs font-semibold text-content-secondary uppercase tracking-wider">
                 Units
               </th>
-              <th className="px-3 py-2 text-left text-sm font-semibold text-content-secondary">
+              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
                 Section
               </th>
-              <th className="px-3 py-2 text-left text-sm font-semibold text-content-secondary">
-                Schedule
+              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
+                <div className="flex items-center gap-1.5">
+                  <ClockIcon />
+                  Schedule
+                </div>
               </th>
-              <th className="px-3 py-2 text-left text-sm font-semibold text-content-secondary">
-                Room
+              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
+                <div className="flex items-center gap-1.5">
+                  <MapPinIcon />
+                  Room
+                </div>
               </th>
-              <th className="px-3 py-2 text-left text-sm font-semibold text-content-secondary">
+              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-3 py-2 text-left text-sm font-semibold text-content-secondary">
+              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -719,8 +988,14 @@ export default function CourseTable({
             {/* No Data Row */}
             {(!courses || (Array.isArray(courses) && courses.length === 0)) && (
               <tr>
-                <td colSpan={8} className="px-3 py-8 text-center text-content-secondary">
-                  No courses to display.
+                <td colSpan={8} className="px-3 py-12 text-center text-content-secondary">
+                  <div className="flex flex-col items-center gap-2">
+                    <BookIcon className="w-8 h-8 opacity-30" />
+                    <span className="text-sm">No courses to display.</span>
+                    <span className="text-xs text-content-secondary/60">
+                      Import your schedule data to get started.
+                    </span>
+                  </div>
                 </td>
               </tr>
             )}
@@ -730,13 +1005,19 @@ export default function CourseTable({
               groupedCourses.map((group, groupIndex) => (
                 <Fragment key={`group-${group.groupValue}-${groupIndex}`}>
                   {/* Group Header */}
-                  <tr className="bg-surface-tertiary border-t border-b border-border-secondary">
+                  <tr className="bg-surface-tertiary/50 border-t border-b border-border-secondary">
                     <td
                       colSpan={8}
                       className="px-3 py-2 text-sm font-semibold text-content-primary"
                     >
-                      {group.groupValue} ({group.courses?.length ?? 0}{' '}
-                      {!group.courses || group.courses.length === 1 ? 'course' : 'courses'})
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-accent" />
+                        {group.groupValue}
+                        <span className="text-xs font-normal text-content-secondary ml-1">
+                          ({group.courses?.length ?? 0}{' '}
+                          {!group.courses || group.courses.length === 1 ? 'course' : 'courses'})
+                        </span>
+                      </div>
                     </td>
                   </tr>
                   {/* Group Courses */}
@@ -770,15 +1051,17 @@ export default function CourseTable({
       </div>
 
       {/* Footer Actions */}
-      <div className="p-4 border-t border-border-primary flex flex-wrap items-center justify-between gap-4">
+      <div className="p-4 border-t border-border-primary bg-surface-secondary/20 flex flex-wrap items-center justify-between gap-4">
         <div className="flex gap-2">
           <button
             type="button"
             onClick={onClearAllLocks}
-            className="flex items-center gap-2 px-3 py-2 text-sm font-medium
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium
                        bg-surface-secondary text-content-primary border border-border-primary
-                       rounded-lg hover:bg-surface-hover transition-colors duration-150
-                       focus:outline-none focus:ring-2 focus:ring-accent/30"
+                       rounded-lg transition-all duration-200 ease-out
+                       hover:bg-surface-hover hover:-translate-y-0.5 hover:shadow-md
+                       focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
+                       active:translate-y-0 active:shadow-sm"
           >
             <UnlockIcon className="w-4 h-4" />
             Clear All Locks
@@ -786,20 +1069,24 @@ export default function CourseTable({
           <button
             type="button"
             onClick={onDeleteAllCourses}
-            className="flex items-center gap-2 px-3 py-2 text-sm font-medium
-                       bg-danger-surface text-danger-button-text border border-danger-border
-                       rounded-lg hover:bg-danger-hover transition-colors duration-150
-                       focus:outline-none focus:ring-2 focus:ring-danger-button-bg/30"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium
+                       bg-danger/10 text-danger border border-danger/20
+                       rounded-lg transition-all duration-200 ease-out
+                       hover:bg-danger/20 hover:-translate-y-0.5 hover:shadow-md
+                       focus:outline-none focus-visible:ring-2 focus-visible:ring-danger/50 focus-visible:ring-offset-2
+                       active:translate-y-0 active:shadow-sm"
           >
             <TrashIcon className="w-4 h-4" />
             Delete All Courses
           </button>
         </div>
 
-        <div className="text-sm text-content-secondary">
-          Showing {displayedCount} courses
+        <div className="text-sm text-content-secondary flex items-center gap-1">
+          <span className="font-medium">Showing {displayedCount} courses</span>
           {displayedCount !== allCoursesCount && (
-            <span> (filtered from {allCoursesCount} total)</span>
+            <span className="text-content-secondary/60">
+              (filtered from {allCoursesCount} total)
+            </span>
           )}
         </div>
       </div>
