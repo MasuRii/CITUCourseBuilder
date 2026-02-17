@@ -1,5 +1,8 @@
-/* Import fonts - must be first */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Import fonts - must be first
+   Inter: Clean, modern sans-serif for body text (weights 300-700)
+   JetBrains Mono: Monospace for code/schedule data (weights 400-500)
+   Poppins: Playful display font for headings (weights 500-700) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Poppins:wght@500;600;700&display=swap');
 
 @import 'tailwindcss';
 
@@ -13,6 +16,18 @@
    - data-theme="light" | "dark" (light/dark mode)
    - data-palette="original" | "comfort" | "space" (color palette)
    - 6 total combinations: light/dark × original/comfort/space
+   
+   Typography Scale (modular ratio 1.25):
+   - display: 3rem (48px) - Hero/large titles
+   - h1: 2.25rem (36px) - Page titles
+   - h2: 1.875rem (30px) - Section titles
+   - h3: 1.5rem (24px) - Subsection titles
+   - h4: 1.25rem (20px) - Card/component titles
+   - h5: 1.125rem (18px) - Small titles
+   - h6: 1rem (16px) - Label titles
+   - body: 1rem (16px) - Base text
+   - sm: 0.875rem (14px) - Secondary text
+   - xs: 0.75rem (12px) - Captions, labels
    ============================================ */
 
 /* ============================================
@@ -20,21 +35,27 @@
    ============================================ */
 
 @theme {
-  /* Font Families */
+  /* Font Families
+     - sans: Primary UI font (Inter - clean, modern, highly readable)
+     - display: Heading font (Poppins - playful, rounded, friendly)
+     - mono: Monospace for code/schedule data (JetBrains Mono) */
   --font-sans:
     'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-display: 'Poppins', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 
-  /* Font Sizes */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
+  /* Font Sizes (modular scale with 1.25 ratio for headings) */
+  --text-xs: 0.75rem; /* 12px - captions, labels */
+  --text-sm: 0.875rem; /* 14px - secondary text */
+  --text-base: 1rem; /* 16px - body text */
+  --text-lg: 1.125rem; /* 18px - h5, emphasized text */
+  --text-xl: 1.25rem; /* 20px - h4, card titles */
+  --text-2xl: 1.5rem; /* 24px - h3, subsection titles */
+  --text-3xl: 1.875rem; /* 30px - h2, section titles */
+  --text-4xl: 2.25rem; /* 36px - h1, page titles */
+  --text-5xl: 3rem; /* 48px - display, hero titles */
+  --text-6xl: 3.75rem; /* 60px - large display */
 
   /* Font Weights */
   --font-light: 300;
@@ -44,9 +65,20 @@
   --font-bold: 700;
 
   /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
   --leading-normal: 1.5;
   --leading-relaxed: 1.625;
   --leading-loose: 2;
+
+  /* Letter Spacing */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
 
   /* Spacing */
   --spacing-1: 4px;
@@ -193,18 +225,28 @@
   --font-family-base:
     'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  --font-family-monospace: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-family-display: 'Poppins', 'Inter', system-ui, sans-serif;
+  --font-family-monospace: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   --font-size-base: 16px;
-  --font-size-sm: 0.875rem;
   --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
   --line-height-base: 1.5;
+  --line-height-tight: 1.25;
+  --line-height-relaxed: 1.625;
   --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-wide: 0.025em;
 
   /* Layout */
   --container-width: min(1200px, 95vw);
@@ -595,11 +637,12 @@
 }
 
 html {
-  font-family: var(--font-family-base);
+  font-family: var(--font-sans);
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -616,6 +659,217 @@ body {
 :focus-visible {
   outline: var(--focus-outline);
   outline-offset: var(--focus-outline-offset);
+}
+
+/* ============================================
+   TYPOGRAPHY SCALE
+   ============================================
+   A playful, approachable type system for the "hobby student" aesthetic.
+   Uses Poppins for headings (rounded, friendly) and Inter for body (clean, readable).
+   Monospace (JetBrains Mono) for schedule data and code.
+   ============================================ */
+
+/* Heading base styles */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  color: var(--text-color);
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Display heading - for hero/large titles */
+.display {
+  font-size: var(--text-5xl);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-tighter);
+}
+
+/* Heading 1 - Page titles */
+h1,
+.heading-1 {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-5);
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* Heading 2 - Section titles */
+h2,
+.heading-2 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-semibold);
+  position: relative;
+  padding-bottom: var(--space-3);
+}
+
+h2::after,
+.heading-2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  border-radius: var(--border-radius-pill);
+}
+
+/* Heading 3 - Subsection titles */
+h3,
+.heading-3 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--space-3);
+}
+
+/* Heading 4 - Card/component titles */
+h4,
+.heading-4 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-medium);
+  margin-bottom: var(--space-2);
+}
+
+/* Heading 5 - Small titles */
+h5,
+.heading-5 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  margin-bottom: var(--space-2);
+}
+
+/* Heading 6 - Label titles */
+h6,
+.heading-6 {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Body text variants */
+.text-body {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+}
+
+.text-body-sm {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.text-caption {
+  font-size: var(--text-xs);
+  color: var(--text-muted-color);
+  line-height: var(--leading-normal);
+}
+
+/* Monospace text for schedule data */
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.9em; /* Slightly smaller for better alignment */
+}
+
+/* Text weight utilities */
+.font-light {
+  font-weight: var(--font-light);
+}
+.font-normal {
+  font-weight: var(--font-normal);
+}
+.font-medium {
+  font-weight: var(--font-medium);
+}
+.font-semibold {
+  font-weight: var(--font-semibold);
+}
+.font-bold {
+  font-weight: var(--font-bold);
+}
+
+/* ============================================
+   RESPONSIVE TYPOGRAPHY
+   ============================================ */
+
+/* Tablet and below (768px) */
+@media (max-width: 768px) {
+  html {
+    font-size: 15px; /* Slightly smaller base for tablets */
+  }
+
+  .display {
+    font-size: var(--text-4xl);
+  }
+
+  h1,
+  .heading-1 {
+    font-size: 1.875rem;
+  }
+
+  h2,
+  .heading-2 {
+    font-size: var(--text-2xl);
+  }
+
+  h3,
+  .heading-3 {
+    font-size: var(--text-xl);
+  }
+
+  h4,
+  .heading-4 {
+    font-size: var(--text-lg);
+  }
+
+  h5,
+  .heading-5 {
+    font-size: var(--text-base);
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px; /* Smaller base for mobile */
+  }
+
+  .display {
+    font-size: var(--text-3xl);
+  }
+
+  h1,
+  .heading-1 {
+    font-size: 1.5rem;
+  }
+
+  h2,
+  .heading-2 {
+    font-size: var(--text-xl);
+  }
+
+  h3,
+  .heading-3 {
+    font-size: var(--text-lg);
+  }
+
+  h4,
+  .heading-4 {
+    font-size: var(--text-base);
+  }
 }
 
 /* ============================================
