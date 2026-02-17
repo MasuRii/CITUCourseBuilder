@@ -572,9 +572,10 @@
       "sectionId": "2.3",
       "category": "setup",
       "description": "Add CI status checks",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Workflow already contains 4 CI checks (lint, typecheck, test, build) from T2.3.1. Created docs/BRANCH_PROTECTION.md with manual setup instructions for GitHub branch protection rules. Documented required status checks and step-by-step configuration. Updated AGENTS.md with lesson #23 about CI status checks and branch protection documentation reference.",
       "acceptanceCriteria": [
         "Configure branch protection rules (document for manual setup)",
         "Add lint check to CI",

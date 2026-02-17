@@ -181,6 +181,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 22. **Prettier configuration at monorepo root**: Prettier v3.8.1 is configured at the monorepo root with `prettier-plugin-astro` v0.14.1 for Astro file support. Configuration is in `.prettierrc` with formatting rules: semicolons, single quotes, 2-space tabs, trailing commas (ES5), 100-char print width. The `.prettierignore` file excludes build artifacts (`dist/`, `.astro/`), lock files (`package-lock.json`), and generated files (`*.d.ts`, `*.mjs`). Lint-staged runs Prettier after ESLint on pre-commit for `*.{js,jsx,ts,tsx,astro,json,md,css}` files. Use `bun run format` to format all files and `bun run format:check` to verify formatting in CI.
 
+23. **CI status checks in GitHub Actions**: The GitHub Actions workflow (`.github/workflows/deploy.yml`) includes four CI checks: lint (ESLint), typecheck (TypeScript), test (Vitest), and build (Astro). These checks run on every push to `main` branch. Branch protection rules must be manually configured in GitHub repository settings to require these checks to pass before merging. See `docs/BRANCH_PROTECTION.md` for manual setup instructions. The workflow fails fast - any failing step prevents deployment.
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:
@@ -205,4 +207,5 @@ The following files are protected by the Ralph write-guardrail plugin and should
 - Performance Baseline: docs/architecture/PERFORMANCE_BASELINE.md
 - TypeScript Interfaces: docs/architecture/types/index.ts
 - React Islands Hydration: docs/architecture/REACT_ISLANDS_HYDRATION.md
+- Branch Protection: docs/BRANCH_PROTECTION.md
 - Usage Guide: https://github.com/MasuRii/CITUCourseBuilder/blob/main/UsageGuide.md
