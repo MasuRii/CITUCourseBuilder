@@ -700,3 +700,38 @@ Self-Review:
   - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format
   - No AGENTS.md update needed - standard React island pattern with custom dropdown and table
 Unblocked: T3.2.7, T3.2.8, T3.2.9, T3.2.10 (Phase 3.2 React Components Migration tasks)
+
+## 2026-02-18 03:30
+Task: T3.2.7 - Migrate TimetableView as React island
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created TimetableView.tsx and TimetableViewTest.tsx with TypeScript and Tailwind styling
+  - course-scheduler-astro/src/components/TimetableView.tsx: React island component (460 lines)
+  - course-scheduler-astro/src/components/TimetableViewTest.tsx: Test wrapper component (182 lines)
+  - course-scheduler-astro/package.json: Added html-to-image and jspdf dependencies
+  - course-scheduler-astro/src/pages/index.astro: Added TimetableViewTest section with client:visible directive
+Reason: Seventh React Components Migration task - migrate timetable view to TypeScript with export functionality
+Self-Review:
+  - Component file uses .tsx extension
+  - All props have TypeScript interface (TimetableViewProps) with JSDoc comments
+  - No `any` types in component (verified with grep)
+  - Component type-checks with zero errors
+  - Installed html-to-image@1.11.13 and jspdf@4.1.0 for export functionality
+  - Replaced MUI components with custom Tailwind-styled DropdownMenu component
+  - Features preserved:
+    - Weekly timetable grid with 31 time slots (7:00 AM - 10:00 PM)
+    - 7 days (M, T, W, TH, F, S, SU)
+    - Course cell rendering with conflict highlighting
+    - Export as PNG (using html-to-image toPng)
+    - Export as PDF (using jsPDF)
+    - Export as ICS (using existing generateIcsContent utility)
+    - Summary statistics (units, subjects, courses)
+  - Used useCallback and useEffect for event listener management in dropdown
+  - Tailwind styled with theme-aware utilities
+  - No MUI dependencies - all inline SVG icons
+  - Uses client:visible directive per ADR-001 (heavy component with export libraries, lazy load)
+  - Build chunk: 421.69 kB (gzip: 140.23 kB) - includes html-to-image and jspdf libraries
+  - Build completes in 3.28s (well under 30s target)
+  - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format
+  - No AGENTS.md update needed - standard React island pattern with export functionality
+Unblocked: T3.2.8, T3.2.9, T3.2.10 (Phase 3.2 React Components Migration tasks)

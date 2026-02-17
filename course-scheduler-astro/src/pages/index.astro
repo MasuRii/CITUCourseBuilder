@@ -11,6 +11,7 @@ import RawDataInput from '../components/RawDataInput';
 import ConfirmDialogTest from '../components/ConfirmDialogTest';
 import TimeFilterTest from '../components/TimeFilterTest';
 import CourseTableTest from '../components/CourseTableTest';
+import TimetableViewTest from '../components/TimetableViewTest';
 ---
 
 <BaseLayout title="CIT-U Course Builder - Astro">
@@ -130,6 +131,19 @@ import CourseTableTest from '../components/CourseTableTest';
         export menu below.
       </p>
       <CourseTableTest client:load />
+    </section>
+
+    <!-- TimetableView Test Section -->
+    <section class="p-6 mb-8 rounded-lg bg-surface-secondary border border-default">
+      <h2 class="text-xl font-semibold text-content-primary mb-2">
+        TimetableView Component (client:visible)
+      </h2>
+      <p class="text-content-secondary mb-4">
+        This component displays a visual weekly timetable for locked courses. It supports export to
+        PNG, PDF, and iCalendar (.ics) formats. Test the export menu and conflict highlighting
+        toggle below.
+      </p>
+      <TimetableViewTest client:visible />
     </section>
 
     <!-- Hydration Strategy Table -->

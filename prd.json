@@ -922,9 +922,10 @@
       "sectionId": "3.2",
       "category": "impl",
       "description": "Migrate TimetableView as React island",
-      "passes": false,
+      "passes": true,
       "effort": "L",
       "risk": "M",
+      "notes": "Created TimetableView.tsx (460 lines) and TimetableViewTest.tsx (182 lines) with TypeScript strict mode compliance. Installed html-to-image and jspdf for export functionality. Replaced MUI components (Menu, MenuItem, IconButton, Tooltip) with custom Tailwind-styled DropdownMenu component. All props have TypeScript interface (TimetableViewProps) with JSDoc comments. No 'any' types used. Features: weekly timetable grid with 31 time slots (7:00 AM - 10:00 PM), 7 days (M-SU), course cell rendering with conflict highlighting, export as PNG/PDF/ICS, summary statistics (units, subjects, courses). Uses client:visible directive per ADR-001 (heavy component with export libraries, lazy load). Build chunk: 421.69 kB (gzip: 140.23 kB) - includes html-to-image and jspdf. All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format.",
       "acceptanceCriteria": [
         "Create src/components/TimetableView.tsx",
         "Convert to TypeScript with explicit prop types",
