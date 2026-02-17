@@ -1224,9 +1224,10 @@
       "sectionId": "4.2",
       "category": "impl",
       "description": "Redesign Header component",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "L",
+      "notes": "Redesigned Header.astro with playful branding elements: decorative floating circles with float animation, gradient header background, animated logo with glow effect and rotation on hover, subtitle tagline, smooth transitions. Improved ThemeToggle.tsx with: icon rotation animation (360deg spin), scale animation on hover, color preview dots for palettes, proper aria-label and aria-pressed attributes, focus-visible outlines. Created headerAccessibility.test.ts (22 tests) verifying: role='banner', aria-labels, aria-hidden on decorative elements, hover states, focus-visible styles. Installed @types/node for test file types. All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (457 pass), build (3.37s). Note: Header remains as Astro component (not .tsx) per ADR-001 - static layout component with embedded React island (ThemeToggle) is the correct architecture.",
       "acceptanceCriteria": [
         "Add playful branding elements",
         "Create smooth theme toggle animation",

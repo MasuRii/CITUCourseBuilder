@@ -5,6 +5,12 @@
  * Supports 2 themes (light/dark) and 3 palettes (original/comfort/space)
  * for a total of 6 theme combinations.
  *
+ * Features:
+ * - Smooth icon rotation animation when switching themes
+ * - Scale animation on hover
+ * - Color preview dots for palette selection
+ * - Full keyboard accessibility
+ *
  * Uses localStorage for persistence with the keys:
  * - courseBuilder_theme: 'light' | 'dark'
  * - courseBuilder_palette: 'original' | 'comfort' | 'space'
@@ -31,6 +37,13 @@ const paletteLabels: Record<Palette, string> = {
 const themeLabels: Record<Theme, string> = {
   light: 'Light',
   dark: 'Dark',
+};
+
+// Palette color preview dots
+const paletteColors: Record<Palette, { primary: string; secondary: string }> = {
+  original: { primary: '#6366f1', secondary: '#4f46e5' },
+  comfort: { primary: '#888888', secondary: '#0855b1' },
+  space: { primary: '#2a9d8f', secondary: '#e9c46a' },
 };
 
 // Helper to check if we're on the client
@@ -74,6 +87,9 @@ export function ThemeToggle({ className = '' }: ThemeToggleProps) {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const [palette, setPalette] = useState<Palette>(getInitialPalette);
 
+  // Animation state for icon rotation
+  const [isAnimating, setIsAnimating] = useState(false);
+
   // Apply theme changes to document
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -83,7 +99,10 @@ export function ThemeToggle({ className = '' }: ThemeToggleProps) {
   }, [theme, palette]);
 
   const toggleTheme = useCallback(() => {
+    setIsAnimating(true);
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    // Reset animation state after animation completes
+    setTimeout(() => setIsAnimating(false), 300);
   }, []);
 
   const cyclePalette = useCallback(() => {
@@ -97,63 +116,207 @@ export function ThemeToggle({ className = '' }: ThemeToggleProps) {
   // Don't render until client-side to prevent hydration mismatch
   if (!isClient) {
     return (
-      <div className={`flex items-center gap-4 ${className}`}>
-        <div className="w-24 h-10 bg-surface-secondary animate-pulse rounded-md" />
-        <div className="w-24 h-10 bg-surface-secondary animate-pulse rounded-md" />
+      <div className={`flex items-center gap-3 ${className}`}>
+        <div className="w-24 h-10 bg-white/10 animate-pulse rounded-lg" />
+        <div className="w-24 h-10 bg-white/10 animate-pulse rounded-lg" />
       </div>
     );
   }
 
   return (
-    <div className={`flex items-center gap-4 ${className}`}>
+    <div className={`flex items-center gap-3 ${className}`}>
       {/* Theme Toggle Button */}
       <button
         onClick={toggleTheme}
-        className="px-4 py-2 rounded-md bg-surface-header text-content-header
-                   hover:opacity-90 transition-all duration-150
-                   flex items-center gap-2 font-medium"
+        className="theme-toggle-btn"
         aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+        aria-pressed={theme === 'dark'}
       >
-        {theme === 'light' ? (
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-            />
-          </svg>
-        ) : (
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-            />
-          </svg>
-        )}
-        <span>{themeLabels[theme]}</span>
+        <span className={`theme-icon ${isAnimating ? 'animating' : ''}`}>
+          {theme === 'light' ? (
+            // Moon icon (for switching to dark)
+            <svg className="icon-moon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              />
+            </svg>
+          ) : (
+            // Sun icon (for switching to light)
+            <svg className="icon-sun" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+          )}
+        </span>
+        <span className="theme-label">{themeLabels[theme]}</span>
       </button>
 
       {/* Palette Cycle Button */}
       <button
         onClick={cyclePalette}
-        className="px-4 py-2 rounded-md border border-default
-                   hover:bg-surface-hover transition-all duration-150
-                   flex items-center gap-2 font-medium"
-        aria-label="Cycle color palette"
+        className="palette-toggle-btn"
+        aria-label={`Cycle color palette. Current: ${paletteLabels[palette]}`}
       >
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+        {/* Palette color preview dots */}
+        <div className="palette-preview" aria-hidden="true">
+          <span
+            className="palette-dot"
+            style={{ backgroundColor: paletteColors[palette].primary }}
           />
-        </svg>
-        <span>{paletteLabels[palette]}</span>
+          <span
+            className="palette-dot"
+            style={{ backgroundColor: paletteColors[palette].secondary }}
+          />
+        </div>
+        <span className="palette-label">{paletteLabels[palette]}</span>
       </button>
+
+      <style>{`
+        .theme-toggle-btn,
+        .palette-toggle-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 16px;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 150ms ease;
+          border: none;
+        }
+
+        .theme-toggle-btn {
+          background-color: rgba(255, 255, 255, 0.15);
+          color: #ffffff;
+          backdrop-filter: blur(4px);
+        }
+
+        .theme-toggle-btn:hover {
+          background-color: rgba(255, 255, 255, 0.25);
+          transform: translateY(-1px);
+        }
+
+        .theme-toggle-btn:active {
+          transform: translateY(0);
+        }
+
+        .theme-toggle-btn:focus-visible {
+          outline: 2px solid #ffffff;
+          outline-offset: 2px;
+        }
+
+        .theme-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 20px;
+          height: 20px;
+          transition: transform 300ms ease;
+        }
+
+        .theme-icon.animating {
+          animation: icon-spin 300ms ease;
+        }
+
+        @keyframes icon-spin {
+          0% {
+            transform: rotate(0deg) scale(1);
+          }
+          50% {
+            transform: rotate(180deg) scale(0.8);
+          }
+          100% {
+            transform: rotate(360deg) scale(1);
+          }
+        }
+
+        .icon-moon,
+        .icon-sun {
+          width: 20px;
+          height: 20px;
+        }
+
+        .theme-label {
+          line-height: 1;
+        }
+
+        .palette-toggle-btn {
+          background-color: rgba(255, 255, 255, 0.1);
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .palette-toggle-btn:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+          border-color: rgba(255, 255, 255, 0.3);
+          transform: translateY(-1px);
+        }
+
+        .palette-toggle-btn:active {
+          transform: translateY(0);
+        }
+
+        .palette-toggle-btn:focus-visible {
+          outline: 2px solid #ffffff;
+          outline-offset: 2px;
+        }
+
+        .palette-preview {
+          display: flex;
+          gap: 4px;
+        }
+
+        .palette-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          transition: transform 150ms ease;
+        }
+
+        .palette-toggle-btn:hover .palette-dot {
+          transform: scale(1.2);
+        }
+
+        .palette-label {
+          line-height: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+          .theme-toggle-btn,
+          .palette-toggle-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+          }
+
+          .palette-dot {
+            width: 8px;
+            height: 8px;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .theme-label,
+          .palette-label {
+            display: none;
+          }
+
+          .theme-toggle-btn,
+          .palette-toggle-btn {
+            padding: 8px;
+            min-width: 36px;
+            justify-content: center;
+          }
+        }
+      `}</style>
     </div>
   );
 }
