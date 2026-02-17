@@ -9,6 +9,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import TestIsland from '../components/TestIsland';
 import RawDataInput from '../components/RawDataInput';
 import ConfirmDialogTest from '../components/ConfirmDialogTest';
+import TimeFilterTest from '../components/TimeFilterTest';
 ---
 
 <BaseLayout title="CIT-U Course Builder - Astro">
@@ -102,6 +103,19 @@ import ConfirmDialogTest from '../components/ConfirmDialogTest';
         Press Escape to close, or click outside the dialog.
       </p>
       <ConfirmDialogTest client:load />
+    </section>
+
+    <!-- TimeFilter Test Section -->
+    <section class="p-6 mb-8 rounded-lg bg-surface-secondary border border-default">
+      <h2 class="text-xl font-semibold text-content-primary mb-2">
+        TimeFilter Component (client:visible)
+      </h2>
+      <p class="text-content-secondary mb-4">
+        This component provides day and time filtering for schedule generation. Uses a custom
+        Tailwind-styled time picker instead of react-datepicker. Test the day exclusion buttons and
+        time range selectors below.
+      </p>
+      <TimeFilterTest client:visible />
     </section>
 
     <!-- Hydration Strategy Table -->
