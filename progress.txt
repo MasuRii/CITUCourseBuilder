@@ -216,3 +216,20 @@ Self-Review:
   - Documented hydration strategy per component from ADR-001
   - All acceptance criteria met
 Unblocked: T2.1.3, T2.1.4, T2.1.5 (Phase 2.1 setup tasks, no dependencies between them)
+
+## 2026-02-18 23:10
+Task: T2.1.3 - [setup] TypeScript Configuration
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Verified TypeScript configuration already complete from T2.1.1/T2.1.2
+  - course-scheduler-astro/tsconfig.json: Extends 'astro/tsconfigs/strict' with all required strict options
+  - course-scheduler-astro/package.json: TypeScript 5.9.3, @types/react@19.2.14, @types/react-dom@19.2.3, typecheck script 'astro check && tsc --noEmit'
+  - AGENTS.md: Added lesson #16 about Astro TypeScript configuration
+Reason: Third setup task in Phase 2 - verify TypeScript strict mode is configured
+Self-Review:
+  - Astro's strict preset enables all required options (strict: true, noImplicitAny, strictNullChecks, etc.)
+  - TypeScript check passes with 0 errors, 0 warnings
+  - All @types/* packages installed as dependencies (not devDependencies) - Astro convention
+  - Typecheck script includes both Astro diagnostics and TypeScript compiler
+  - All acceptance criteria verified complete
+ Unblocked: T2.1.4, T2.1.5, T2.2.1 (Phase 2 setup tasks, no dependencies between them)

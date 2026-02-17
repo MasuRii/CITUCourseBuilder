@@ -150,6 +150,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
     - Each island is code-split for optimal caching
     - See docs/architecture/REACT_ISLANDS_HYDRATION.md for complete configuration
 
+16. **TypeScript configuration in Astro**: The `astro/tsconfigs/strict` preset enables all required strict options (`strict: true`, `noImplicitAny`, `strictNullChecks`, `strictFunctionTypes`, etc.). Typecheck script is `astro check && tsc --noEmit` which runs both Astro-specific diagnostics and TypeScript compiler. The `@astrojs/check` package provides Astro file diagnostics. All `@types/*` packages are installed as dependencies (not devDependencies) in Astro projects.
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:

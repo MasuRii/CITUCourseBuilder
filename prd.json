@@ -410,9 +410,10 @@
       "title": "[setup] TypeScript Configuration",
       "category": "setup",
       "description": "Configure TypeScript with strict mode for the entire project",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "M",
+      "notes": "TypeScript configuration verified complete from T2.1.1 and T2.1.2. Astro's tsconfig extends 'astro/tsconfigs/strict' which enables all strict options (strict: true, noImplicitAny, strictNullChecks, etc.). TypeScript 5.9.3 and @types packages (@types/react@19.2.14, @types/react-dom@19.2.3) installed as dependencies. Typecheck script 'astro check && tsc --noEmit' runs Astro diagnostics and TypeScript compiler. Verified: 0 errors, 0 warnings. Updated AGENTS.md with lesson #16 about Astro TypeScript configuration.",
       "acceptanceCriteria": [
         "Install TypeScript and @types packages for React, React-DOM, and other dependencies",
         "Create tsconfig.json with strict: true, noImplicitAny: true, strictNullChecks: true",
