@@ -8,36 +8,80 @@ This file contains critical operational details that AI agents should know when 
 
 ## Project-Specific Configuration
 
-<!-- Add project-specific settings, file paths, or configuration notes here -->
-
-- **Package Manager**: <!-- e.g., npm, yarn, pnpm, bun -->
-- **Build Command**: <!-- e.g., npm run build -->
-- **Test Command**: <!-- e.g., npm test -->
-- **Lint Command**: <!-- e.g., npm run lint -->
+- **Package Manager**: Bun
+- **Build Command**: `bun run build` (Vite for current React app)
+- **Test Command**: `bun test` (Vitest)
+- **Lint Command**: Configured via eslint.config.js
+- **Project Root**: C:\Repository\CITUCourseBuilder
+- **Current App Location**: course-scheduler-web/ (React 19 + Vite)
+- **Target App Location**: course-scheduler-astro/ (Astro 5.x - to be created)
 
 ## Critical Operational Details
 
-<!-- Document important patterns, conventions, or requirements that AI should follow -->
+### Preserved Logic Files (DO NOT MODIFY LOGIC)
+
+These files contain critical parsing and scheduling logic that MUST be preserved exactly:
+- `course-scheduler-web/src/utils/parseSchedule.js` - Schedule string parsing (427 lines)
+- `course-scheduler-web/src/utils/parseRawData.js` - Course data parsing (375 lines)
+- `course-scheduler-web/src/utils/generateIcs.js` - ICS calendar generation (111 lines)
+- `course-scheduler-web/src/utils/convertToRawData.js` - Raw data conversion (29 lines)
+- Scheduling algorithms in App.jsx (~370 lines) - to be extracted to separate module
 
 ### Code Style & Conventions
-- <!-- e.g., Use TypeScript strict mode -->
-- <!-- e.g., Prefer functional components in React -->
+- Use TypeScript strict mode for all new code
+- Prefer functional components in React
+- No `any` types allowed
+- JSDoc comments for public APIs
+- Preserve ALL existing logic exactly when migrating
 
 ### Architecture Notes
-- <!-- e.g., State management approach -->
-- <!-- e.g., API layer patterns -->
+
+**Current React Architecture (course-scheduler-web/):**
+- Single root component (App.jsx) with 22 useState hooks
+- Flat component hierarchy (max 1 level prop drilling)
+- 13 localStorage keys for persistence
+- 11 scheduling algorithms embedded in App.jsx
+- MUI components for UI elements
+- react-toastify for notifications
+- react-datepicker for time selection
+
+**State Categories:**
+1. Core Data: allCourses, processedCourses, rawData
+2. Theme: theme, themePalette
+3. Filters: excludedDays, excludedTimeRanges, sectionTypes, statusFilter
+4. Preferences: maxUnits, maxGapHours, preferredTimeOrder, searchMode
+5. UI State: showTimetable, isGenerating, confirmDialog
+6. Generated: generatedSchedules, currentScheduleIndex
+
+**Component Dependencies:**
+- App.jsx imports all child components directly
+- TimeFilter uses react-datepicker
+- CourseTable uses MUI Menu, MenuItem, IconButton, Tooltip
+- TimetableView uses html-to-image, jspdf for exports
+- ConfirmDialog uses MUI Dialog components
 
 ### Environment Setup
-- <!-- e.g., Required environment variables -->
-- <!-- e.g., Local development prerequisites -->
+- Node.js 18+ required
+- Bun as package manager
+- No environment variables required for local development
+- GitHub Pages deployment with /CITUCourseBuilder/ base path
 
 ## Common Gotchas & Lessons Learned
 
-<!-- Document pitfalls, edge cases, or hard-won knowledge that will help AI agents avoid mistakes -->
+1. **Schedule parsing is complex**: The parseSchedule.js handles TBA schedules, multi-slot schedules, hybrid schedules (F2F+Online), and comma-separated day codes. Any modification risks breaking compatibility with WITS/AIMS data formats.
 
-1. <!-- e.g., Always run migrations before tests -->
-2. <!-- e.g., The CI uses a different Node version than local -->
-3. <!-- e.g., Certain tests require Docker to be running -->
+2. **Conflict detection is critical**: The `checkTimeOverlap` and `isScheduleConflictFree` functions are used extensively. Changes here could cause valid schedules to be rejected or conflicting schedules to be accepted.
+
+3. **localStorage keys are namespaced**: All keys use `courseBuilder_` prefix. The `loadFromLocalStorage` function includes validation and defaults for each key type.
+
+4. **Theme system uses CSS custom properties**: The App.css defines 100+ CSS variables for theming. Light/dark modes plus 3 palettes (original, comfort, space) create 6 theme combinations.
+
+5. **Schedule generation has 3 modes**:
+   - `partial` (default): Heuristic-based, maximizes subjects even if not all fit
+   - `exhaustive`: Tries all combinations, fails if can't fit all subjects
+   - `fast`: Random sampling, may miss optimal schedules
+
+6. **Course identity is compound**: Courses are identified by `{id, subject, section}` tuple, not just `id`.
 
 ## Protected Files
 
@@ -50,7 +94,7 @@ The following files are protected by the Ralph write-guardrail plugin and should
 
 ## References
 
-<!-- Link to relevant documentation, wikis, or external resources -->
-
-- Project Documentation: <!-- link -->
-- API Documentation: <!-- link -->
+- Project Documentation: docs/architecture/ (state analysis, component graphs)
+- Architecture Analysis: docs/architecture/APP_STATE_ANALYSIS.md
+- Component Graphs: docs/architecture/COMPONENT_DEPENDENCY_GRAPH.md
+- Usage Guide: https://github.com/MasuRii/CITUCourseBuilder/blob/main/UsageGuide.md
