@@ -46,6 +46,7 @@ import CourseTable from './CourseTable';
 import RawDataInput from './RawDataInput';
 import TimeFilter from './TimeFilter';
 import TimetableView from './TimetableView';
+import { ToastContainer, subscribeToToasts, type ToastMessage, toast } from './Toast';
 
 // ============================================================================
 // Types
@@ -63,15 +64,6 @@ interface ConfirmDialogState {
   confirmText: string;
   cancelText: string;
   variant: DialogVariant;
-}
-
-/**
- * Toast message type
- */
-interface ToastMessage {
-  id: number;
-  type: 'success' | 'error' | 'info' | 'warning';
-  message: string;
 }
 
 // ============================================================================
@@ -120,27 +112,33 @@ const SECTION_TYPE_DESCRIPTIONS: Record<SectionTypeSuffix, string> = {
 };
 
 // ============================================================================
-// Toast System (Simple Implementation)
+// Toast System Integration
 // ============================================================================
 
-let toastId = 0;
-
 /**
- * Simple toast notification system
- * Uses a global Set of listeners to dispatch toast messages
+ * Toast helper object that wraps the toast function with the callback
+ * This allows external callbacks (like onToast prop) to be notified
  */
-const toastListeners = new Set<(toast: ToastMessage) => void>();
+let globalOnToast: ((message: string, type: ToastMessage['type']) => void) | undefined;
 
-function toast(message: string, type: ToastMessage['type'] = 'info'): void {
-  const id = ++toastId;
-  const toastMessage: ToastMessage = { id, type, message };
-  toastListeners.forEach((listener) => listener(toastMessage));
-
-  // Auto-dismiss after 4 seconds
-  setTimeout(() => {
-    // Remove toast logic handled by component
-  }, 4000);
-}
+const toastHelper = {
+  success: (message: string): void => {
+    toast.success(message);
+    globalOnToast?.(message, 'success');
+  },
+  error: (message: string): void => {
+    toast.error(message);
+    globalOnToast?.(message, 'error');
+  },
+  warning: (message: string): void => {
+    toast.warning(message);
+    globalOnToast?.(message, 'warning');
+  },
+  info: (message: string): void => {
+    toast.info(message);
+    globalOnToast?.(message, 'info');
+  },
+};
 
 // ============================================================================
 // Component
@@ -202,21 +200,26 @@ export default function App({ onToast }: AppProps): ReactNode {
   // =========================================================================
 
   useEffect(() => {
-    const handleToast = (newToast: ToastMessage): void => {
+    // Set the global callback for external notification
+    globalOnToast = onToast;
+
+    // Subscribe to toast messages and update local state
+    const unsubscribe = subscribeToToasts((newToast: ToastMessage) => {
       setToasts((prev) => [...prev, newToast]);
-      onToast?.(newToast.message, newToast.type);
+    });
 
-      // Auto-dismiss after 4 seconds
-      setTimeout(() => {
-        setToasts((prev) => prev.filter((t) => t.id !== newToast.id));
-      }, 4000);
-    };
-
-    toastListeners.add(handleToast);
     return () => {
-      toastListeners.delete(handleToast);
+      unsubscribe();
+      globalOnToast = undefined;
     };
   }, [onToast]);
+
+  /**
+   * Handle dismissing a toast notification
+   */
+  const handleDismissToast = useCallback((id: number): void => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
 
   // =========================================================================
   // Derived State
@@ -300,17 +303,17 @@ export default function App({ onToast }: AppProps): ReactNode {
 
   /**
    * Handle loading raw data from WITS or AIMS
+   * Returns true on success, false on failure for visual feedback
    */
   const handleLoadRawData = useCallback(
-    (mode: 'WITS' | 'AIMS'): void => {
+    (mode: 'WITS' | 'AIMS'): boolean => {
       try {
         const parsed = parseRawCourseData(rawData);
         if (parsed.length === 0) {
-          toast(
-            `No courses found using ${mode} format. Please ensure you copied the data correctly.`,
-            'error'
+          toastHelper.error(
+            `No courses found using ${mode} format. Please ensure you copied the data correctly.`
           );
-          return;
+          return false;
         }
 
         const coursesWithDefaults: Course[] = parsed.map(
@@ -327,14 +330,15 @@ export default function App({ onToast }: AppProps): ReactNode {
         );
 
         courseState.addCourses(coursesWithDefaults);
-        toast(
-          `Successfully imported ${coursesWithDefaults.length} courses from ${mode}!`,
-          'success'
+        toastHelper.success(
+          `Successfully imported ${coursesWithDefaults.length} courses from ${mode}!`
         );
+        return true;
       } catch (error) {
         console.error('Error parsing raw data:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        toast(`Error loading data: ${errorMessage}`, 'error');
+        toastHelper.error(`Error loading data: ${errorMessage}`);
+        return false;
       }
     },
     [rawData, courseState]
@@ -360,7 +364,7 @@ export default function App({ onToast }: AppProps): ReactNode {
 
       // Check available slots
       if (!courseBeforeToggle.isLocked && courseBeforeToggle.availableSlots <= 0) {
-        toast('Cannot lock - no available slots', 'error');
+        toastHelper.error('Cannot lock - no available slots');
         return;
       }
 
@@ -428,9 +432,8 @@ export default function App({ onToast }: AppProps): ReactNode {
           .map((c) => `${c.subject} ${c.section} (${c.schedule})`)
           .join('; ');
 
-        toast(
-          `Lock failed: Attempted to lock ${attemptedCourseDetails}, but it conflicts with: ${conflictingDetails}`,
-          'error'
+        toastHelper.error(
+          `Lock failed: Attempted to lock ${attemptedCourseDetails}, but it conflicts with: ${conflictingDetails}`
         );
 
         setConfirmDialog({
@@ -503,7 +506,7 @@ export default function App({ onToast }: AppProps): ReactNode {
       onConfirm: () => {
         courseState.clearAllLocks();
         setConfirmDialog((d) => ({ ...d, open: false }));
-        toast('All locks cleared!', 'success');
+        toastHelper.success('All locks cleared!');
       },
       onCancel: () => {
         setConfirmDialog((d) => ({ ...d, open: false }));
@@ -699,7 +702,7 @@ export default function App({ onToast }: AppProps): ReactNode {
         scheduleGeneration.clearAllSchedules();
         courseState.clearAllLocks();
         setConfirmDialog((d) => ({ ...d, open: false }));
-        toast('Schedule reset and all locks cleared!', 'success');
+        toastHelper.success('Schedule reset and all locks cleared!');
       },
       onCancel: () => {
         setConfirmDialog((d) => ({ ...d, open: false }));
@@ -733,9 +736,8 @@ export default function App({ onToast }: AppProps): ReactNode {
 
       // Warn for exhaustive search with many subjects
       if (scheduleSearchMode === 'exhaustive' && Object.keys(coursesBySubject).length > 12) {
-        toast(
-          'Warning: Exhaustive search may be very slow for more than 12 subjects. Consider using Fast mode.',
-          'info'
+        toastHelper.info(
+          'Warning: Exhaustive search may be very slow for more than 12 subjects. Consider using Fast mode.'
         );
       }
 
@@ -757,9 +759,8 @@ export default function App({ onToast }: AppProps): ReactNode {
           );
 
           if (!isActuallyConflictFree) {
-            toast(
-              'The best schedule found still had conflicts. Please try again or adjust filters. No schedule applied.',
-              'error'
+            toastHelper.error(
+              'The best schedule found still had conflicts. Please try again or adjust filters. No schedule applied.'
             );
             return;
           }
@@ -769,12 +770,11 @@ export default function App({ onToast }: AppProps): ReactNode {
           scheduleGeneration.addGeneratedSchedule(scheduleKeys);
           scheduleGeneration.incrementScheduleCount();
 
-          toast(
-            `Generated schedule #${scheduleGeneration.generatedScheduleCount + 1} with ${result.bestSchedule.length} courses (${result.bestScore - result.bestSchedule.length * 100} units)`,
-            'success'
+          toastHelper.success(
+            `Generated schedule #${scheduleGeneration.generatedScheduleCount + 1} with ${result.bestSchedule.length} courses (${result.bestScore - result.bestSchedule.length * 100} units)`
           );
         } else {
-          toast("Couldn't generate a valid schedule with current filters", 'error');
+          toastHelper.error("Couldn't generate a valid schedule with current filters");
         }
         return;
       }
@@ -803,12 +803,11 @@ export default function App({ onToast }: AppProps): ReactNode {
           );
           const uniqueSubjects = new Set(bestPartial.map((c) => c.subject)).size;
 
-          toast(
-            `Generated schedule #${scheduleGeneration.generatedScheduleCount + 1} with ${bestPartial.length} courses (${totalUnits} units, ${uniqueSubjects} subjects)`,
-            'success'
+          toastHelper.success(
+            `Generated schedule #${scheduleGeneration.generatedScheduleCount + 1} with ${bestPartial.length} courses (${totalUnits} units, ${uniqueSubjects} subjects)`
           );
         } else {
-          toast("Couldn't generate a valid partial schedule with current filters", 'error');
+          toastHelper.error("Couldn't generate a valid partial schedule with current filters");
         }
         return;
       }
@@ -959,9 +958,8 @@ export default function App({ onToast }: AppProps): ReactNode {
         );
 
         if (!isActuallyConflictFree) {
-          toast(
-            'The best schedule found still had conflicts. Please try again or adjust filters. No schedule applied.',
-            'error'
+          toastHelper.error(
+            'The best schedule found still had conflicts. Please try again or adjust filters. No schedule applied.'
           );
           return;
         }
@@ -971,12 +969,11 @@ export default function App({ onToast }: AppProps): ReactNode {
         scheduleGeneration.addGeneratedSchedule(scheduleKeys);
         scheduleGeneration.incrementScheduleCount();
 
-        toast(
-          `Generated schedule #${scheduleGeneration.generatedScheduleCount + 1} with ${bestSchedule.length} courses (${bestScore - bestSchedule.length * 100} units)`,
-          'success'
+        toastHelper.success(
+          `Generated schedule #${scheduleGeneration.generatedScheduleCount + 1} with ${bestSchedule.length} courses (${bestScore - bestSchedule.length * 100} units)`
         );
       } else {
-        toast("Couldn't generate a valid schedule with current filters", 'error');
+        toastHelper.error("Couldn't generate a valid schedule with current filters");
       }
     } finally {
       scheduleGeneration.setIsGenerating(false);
@@ -1009,23 +1006,7 @@ export default function App({ onToast }: AppProps): ReactNode {
   return (
     <div className="flex flex-col gap-6 p-4 max-w-7xl mx-auto">
       {/* Toast Container */}
-      {toasts.length > 0 && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-96 max-w-[calc(100%-2rem)]">
-          {toasts.map((t) => (
-            <div
-              key={t.id}
-              className={`px-4 py-3 rounded-lg shadow-lg text-sm font-medium
-                ${t.type === 'success' ? 'bg-success text-white' : ''}
-                ${t.type === 'error' ? 'bg-danger text-white' : ''}
-                ${t.type === 'warning' ? 'bg-warning text-white' : ''}
-                ${t.type === 'info' ? 'bg-accent text-white' : ''}
-              `}
-            >
-              {t.message}
-            </div>
-          ))}
-        </div>
-      )}
+      <ToastContainer toasts={toasts} onDismiss={handleDismissToast} position="top-center" />
 
       {/* Header Controls */}
       <div className="flex flex-wrap gap-4 items-center justify-between">

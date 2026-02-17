@@ -1837,6 +1837,39 @@ h6,
   animation: bounce 0.5s var(--ease-in-out);
 }
 
+/* Bounce once animation (for toast icons) */
+@keyframes bounce-once {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce-once {
+  animation: bounce-once 0.4s var(--ease-out);
+}
+
+/* Toast slide in from right */
+@keyframes toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-toast-slide-in {
+  animation: toast-slide-in 0.3s var(--ease-out);
+}
+
 /* ============================================
    THEME FLASH PREVENTION SCRIPT
    ============================================
