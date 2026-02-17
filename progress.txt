@@ -502,3 +502,23 @@ Self-Review:
   - Prettier formatting verified
   - No additional AGENTS.md learnings - standard TypeScript test conversion
  Unblocked: T3.1.7, T3.1.8 (Phase 3.1 utility migration tasks)
+
+## 2026-02-19 02:05
+Task: T3.1.7 - Create comprehensive test suite for scheduling algorithms
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Verified test suite already complete from T3.1.5, updated prd.json status
+  - prd.json: Updated T3.1.7 passes=true with notes explaining completion during T3.1.5
+Reason: Test suite (scheduleAlgorithms.test.ts) was created as part of T3.1.5 when extracting scheduling algorithms. All acceptance criteria verified: 42 tests covering all functions, 87.95% coverage (exceeds 80%), edge cases covered (TBA, multi-slot, hybrid, online classes), 61 total tests pass.
+Self-Review:
+  - scheduleAlgorithms.test.ts exists with 418 lines, 42 tests for scheduling functions
+  - Coverage exceeds target: 87.95% lines, 96.55% functions
+  - All edge cases tested: TBA schedules, conflict detection, time boundaries, online vs campus
+  - Tests for checkTimeOverlap: 4 tests including edge cases and invalid formats
+  - Tests for isScheduleConflictFree: 4 tests including TBA handling
+  - Tests for generateExhaustiveBestSchedule: 3 tests with known inputs
+  - Tests for generateBestPartialSchedule: 5 tests including constraint validation
+  - Tests for exceedsMaxUnits/exceedsMaxGap: 8 tests total
+  - All verification checks pass: typecheck (0 errors), tests (61 pass), lint, format
+  - No additional AGENTS.md update needed - T3.1.5 already documented scheduling algorithms
+Unblocked: T3.1.8 (Phase 3.1 utility migration task - partially complete, needs ScheduleAlgorithmOptions interface)
