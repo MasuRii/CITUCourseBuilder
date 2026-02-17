@@ -19,3 +19,20 @@ Self-Review:
   - Created Mermaid diagrams for visualization
   - Flat architecture confirmed (max 1 level prop drilling)
 Unblocked: T1.1.2 (no explicit dependency, but analysis provides foundation)
+
+## 2026-02-17 22:15
+Task: T1.1.2 - Catalog all scheduling algorithms and their dependencies
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created comprehensive algorithm documentation and TypeScript interfaces
+  - docs/architecture/SCHEDULING_ALGORITHMS.md: 13 algorithm functions documented (~461 lines), TypeScript interfaces for all data structures, complexity analysis, call graph diagrams
+  - docs/architecture/types/index.ts: 25+ TypeScript interfaces including Course, TimeSlot, ParsedSchedule, SchedulePreferences, FilterState, AppState
+Reason: Second discovery task - establishes TypeScript foundation for migration and documents all algorithms for extraction
+Self-Review:
+  - Found 13 algorithm functions (exceeds 12+ requirement)
+  - All functions have explicit TypeScript signatures
+  - Identified parseSchedule as critical external dependency for all algorithms
+  - Three generation modes: exhaustive, partial (heuristic), fast (random)
+  - Score-based optimization with multi-factor scoring
+  - Threshold-based switching (SMALL_N_THRESHOLD_PARTIAL = 12)
+Unblocked: T1.1.3, T1.1.4, T1.1.5, T1.1.6 (no explicit dependencies, all discovery tasks in parallel)

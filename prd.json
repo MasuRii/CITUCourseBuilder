@@ -183,9 +183,10 @@
       "sectionId": "1.1",
       "category": "discovery",
       "description": "Catalog all scheduling algorithms and their dependencies",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "L",
+      "notes": "Cataloged 13 algorithm functions (~461 lines total): loadFromLocalStorage, getSectionTypeSuffix, checkTimeOverlap, isScheduleConflictFree, getTimeOfDayBucket, scoreScheduleByTimePreference, exceedsMaxUnits, exceedsMaxGap, countCampusDays, generateExhaustiveBestSchedule, getAllSubsets, generateBestPartialSchedule_Heuristic, generateBestPartialSchedule. Created comprehensive TypeScript interfaces in docs/architecture/types/index.ts with 25+ types including Course, TimeSlot, ParsedSchedule, SchedulePreferences. Created call graph diagram showing algorithm dependencies. Key finding: All algorithms depend on parseSchedule from utils.",
       "acceptanceCriteria": [
         "Document: checkTimeOverlap, isScheduleConflictFree, getTimeOfDayBucket, scoreScheduleByTimePreference, exceedsMaxUnits, exceedsMaxGap, countCampusDays, generateExhaustiveBestSchedule, getAllSubsets, generateBestPartialSchedule_Heuristic, generateBestPartialSchedule, loadFromLocalStorage",
         "Create function signature documentation with TypeScript interfaces",

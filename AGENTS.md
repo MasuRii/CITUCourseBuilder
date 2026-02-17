@@ -25,7 +25,36 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 - `course-scheduler-web/src/utils/parseRawData.js` - Course data parsing (375 lines)
 - `course-scheduler-web/src/utils/generateIcs.js` - ICS calendar generation (111 lines)
 - `course-scheduler-web/src/utils/convertToRawData.js` - Raw data conversion (29 lines)
-- Scheduling algorithms in App.jsx (~370 lines) - to be extracted to separate module
+- Scheduling algorithms in App.jsx (~461 lines) - to be extracted to separate module
+
+### Scheduling Algorithms (13 Functions)
+
+**Core Utility Functions:**
+- `loadFromLocalStorage(key, defaultValue)` - Load persisted state with validation (~72 lines)
+- `getSectionTypeSuffix(sectionString)` - Extract AP3/AP4/AP5 from section string (~5 lines)
+
+**Time & Conflict Detection:**
+- `checkTimeOverlap(start1, end1, start2, end2)` - Check if two time ranges overlap (~6 lines)
+- `isScheduleConflictFree(schedule, parseFn, overlapFn)` - Verify schedule has no conflicts (~31 lines)
+- `getTimeOfDayBucket(time)` - Categorize time as morning/afternoon/evening (~7 lines)
+
+**Constraint Validation:**
+- `scoreScheduleByTimePreference(schedule, prefOrder)` - Score schedule by time preferences (~15 lines)
+- `exceedsMaxUnits(schedule, maxUnits)` - Check if exceeds unit limit (~7 lines)
+- `exceedsMaxGap(schedule, maxGapHours)` - Check if gaps exceed threshold (~30 lines)
+- `countCampusDays(schedule)` - Count unique on-campus days (~16 lines)
+
+**Schedule Generation:**
+- `getAllSubsets(arr)` - Generate power set (~9 lines)
+- `generateExhaustiveBestSchedule(...)` - Exhaustive search algorithm (~83 lines)
+- `generateBestPartialSchedule_Heuristic(...)` - Heuristic-based generator (~121 lines)
+- `generateBestPartialSchedule(...)` - Main partial schedule entry point (~64 lines)
+
+**Critical Dependencies:**
+- All schedule analysis functions depend on `parseSchedule` from utils
+- `SMALL_N_THRESHOLD_PARTIAL = 12` - Threshold for switching from exhaustive to heuristic
+- Score formula: `totalCourses * 100 + totalUnits` (higher is better)
+- Time preference score: lower is better (based on preference order index)
 
 ### Code Style & Conventions
 - Use TypeScript strict mode for all new code
@@ -40,10 +69,16 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 - Single root component (App.jsx) with 22 useState hooks
 - Flat component hierarchy (max 1 level prop drilling)
 - 13 localStorage keys for persistence
-- 11 scheduling algorithms embedded in App.jsx
+- 13 scheduling algorithms embedded in App.jsx (~461 lines)
 - MUI components for UI elements
 - react-toastify for notifications
 - react-datepicker for time selection
+
+**TypeScript Interfaces (docs/architecture/types/index.ts):**
+- Core types: DayCode, TimeOfDayBucket, ScheduleSearchMode, GroupingMode
+- Data types: TimeSlot, ParsedSchedule, Course, GroupedCourse, CoursesBySubject
+- State types: FilterState, SchedulePreferences, AppState
+- 25+ interfaces defined for migration
 
 **State Categories:**
 1. Core Data: allCourses, processedCourses, rawData
@@ -94,7 +129,9 @@ The following files are protected by the Ralph write-guardrail plugin and should
 
 ## References
 
-- Project Documentation: docs/architecture/ (state analysis, component graphs)
+- Project Documentation: docs/architecture/ (state analysis, component graphs, algorithm docs)
 - Architecture Analysis: docs/architecture/APP_STATE_ANALYSIS.md
 - Component Graphs: docs/architecture/COMPONENT_DEPENDENCY_GRAPH.md
+- Algorithm Documentation: docs/architecture/SCHEDULING_ALGORITHMS.md
+- TypeScript Interfaces: docs/architecture/types/index.ts
 - Usage Guide: https://github.com/MasuRii/CITUCourseBuilder/blob/main/UsageGuide.md
