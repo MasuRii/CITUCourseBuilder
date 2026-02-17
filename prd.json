@@ -798,9 +798,10 @@
       "sectionId": "3.2",
       "category": "impl",
       "description": "Create Header component (Astro)",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created Header.astro with theme-aware logo switching using CSS visibility. Header includes logo (switches between light/dark variants), title 'CIT-U Course Builder', and ThemeToggle React island. Integrated into BaseLayout.astro. Copied logo SVGs to public folder. Responsive design with breakpoints at 480px and 360px. Build completes in 1.68s. All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format.",
       "acceptanceCriteria": [
         "Create src/components/Header.astro",
         "Include logo, title, theme toggle",

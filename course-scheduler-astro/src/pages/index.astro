@@ -7,26 +7,16 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TestIsland from '../components/TestIsland';
-import ThemeToggle from '../components/ThemeToggle';
 ---
 
 <BaseLayout title="CIT-U Course Builder - Astro">
   <main class="container-main py-8">
-    <!-- Header with Theme Toggle -->
-    <header class="flex items-center justify-between mb-8 p-4 rounded-lg bg-surface-header">
-      <div>
-        <h1 class="text-2xl font-bold text-content-header m-0">CITU Course Builder</h1>
-        <p class="text-content-header text-opacity-80 m-0">Astro 5.x + React 19.x + Tailwind 4.x</p>
-      </div>
-      <ThemeToggle client:load />
-    </header>
-
     <!-- Theme Test Section -->
     <section class="p-6 mb-8 rounded-lg bg-surface-secondary border border-default">
       <h2 class="text-xl font-semibold text-content-primary mb-4">Theme System Test</h2>
       <p class="text-content-secondary mb-4">
-        Use the theme toggle buttons above to test the 6 theme combinations. The colors below should
-        change based on the selected theme and palette.
+        Use the theme toggle buttons in the header to test the 6 theme combinations. The colors
+        below should change based on the selected theme and palette.
       </p>
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
