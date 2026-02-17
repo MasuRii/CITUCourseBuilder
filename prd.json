@@ -1141,9 +1141,10 @@
       "sectionId": "4.1",
       "category": "impl",
       "description": "Define Tailwind color palette for \"hobby student\" aesthetic",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "L",
+      "notes": "Completed color palette definition in global.css (Tailwind v4 CSS-based config). Added missing 'info' semantic color to all 6 theme combinations (light/dark × original/comfort/space). Created comprehensive contrast verification test (tests/colorContrast.test.ts, 77 tests) using WCAG 2.1 luminance formulas. All primary text colors meet 4.5:1 requirement. Semantic colors (success, warning, danger, info) meet 3:1 requirement for large text/UI elements. The Space palette uses teal (#2a9d8f) with ~3.3:1 contrast - acceptable for UI elements. Updated AGENTS.md with lesson #26 about color palette and contrast verification.",
       "acceptanceCriteria": [
         "Create playful, approachable color scheme",
         "Define primary, secondary, accent colors",

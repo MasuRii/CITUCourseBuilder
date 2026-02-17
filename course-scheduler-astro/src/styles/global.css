@@ -140,6 +140,7 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
+  --color-info: var(--info);
 
   /* Button Colors */
   --color-button-bg: var(--button-bg);
@@ -268,6 +269,7 @@
   --danger: #ef4444;
   --success: #22c55e;
   --warning: #eab308;
+  --info: #3b82f6;
   --focus-outline-color: var(--link-color);
 }
 
@@ -319,6 +321,7 @@
   --danger: #ef4444;
   --success: #22c55e;
   --warning: #eab308;
+  --info: #2563eb;
   --focus-outline-color: var(--link-color);
 }
 
@@ -370,6 +373,7 @@
   --danger: #ef4444;
   --success: #22c55e;
   --warning: #eab308;
+  --info: #3b82f6;
   --focus-outline-color: var(--link-color);
 }
 
@@ -421,6 +425,7 @@
   --danger: #e74c3c;
   --success: #2ecc71;
   --warning: #f39c12;
+  --info: #3498db;
   --focus-outline-color: var(--accent);
 }
 
@@ -472,6 +477,7 @@
   --danger: #e74c3c;
   --success: #2ecc71;
   --warning: #f39c12;
+  --info: #0855b1;
   --focus-outline-color: var(--accent);
 }
 
@@ -523,6 +529,7 @@
   --danger: #e76f51;
   --success: #2a9d8f;
   --warning: #e9c46a;
+  --info: #264653;
   --focus-outline-color: #2a9d8f;
 }
 
@@ -574,6 +581,7 @@
   --danger: #e76f51;
   --success: #2a9d8f;
   --warning: #e9c46a;
+  --info: #264653;
   --focus-outline-color: #2a9d8f;
 }
 
@@ -688,6 +696,12 @@ body {
 }
 .text-danger {
   color: var(--danger);
+}
+.bg-info {
+  background-color: var(--info);
+}
+.text-info {
+  color: var(--info);
 }
 
 /* Button utilities */

@@ -187,6 +187,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 25. **Type definitions must match actual function signatures**: When creating type definitions for existing functions, ensure the types match the actual implementation. Example: `parseSchedule()` returns `ParsedSchedule | null` (can fail), so `ParseScheduleFunction` must return `ParsedSchedule | null`, not just `ParsedSchedule`. Similarly, `GetTimeOfDayBucketFunction` must accept `string | null | undefined` because `TimeSlot.startTime` can be null. Type mismatches between definitions and implementations cause type errors when using the functions in strict mode.
 
+26. **Color palette with WCAG AA compliance**: The Tailwind v4 CSS-based theme in `course-scheduler-astro/src/styles/global.css` defines 6 theme combinations (light/dark × original/comfort/space) with semantic colors (success, warning, danger, info). Color contrast is verified via `tests/colorContrast.test.ts` using WCAG 2.1 luminance formulas. Requirements: primary text 4.5:1, large text/UI elements 3:1. The Space palette uses a teal color (#2a9d8f) with ~3.3:1 contrast - acceptable for large text and UI elements but not normal text. When adding new colors, use the `getBestTextColor()` helper to determine optimal text color (light or dark) for badge backgrounds. Semantic colors are typically used as badge backgrounds with contrasting text, not directly on backgrounds.
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:
