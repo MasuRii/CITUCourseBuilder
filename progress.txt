@@ -294,3 +294,24 @@ Self-Review:
   - Configuration in package.json as specified
   - All acceptance criteria met
 Unblocked: T2.2.2 (Phase 2.2 setup task, depends on lint-staged for pre-commit hooks)
+
+## 2026-02-19 00:30
+Task: T2.2.2 - Install and configure husky
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Installed and configured husky for git hooks
+  - package.json: Added husky@9.1.7 as dev dependency, added prepare script
+  - .husky/pre-commit: Runs `bun run lint-staged` to lint staged files
+  - .husky/commit-msg: Validates conventional commits format with helpful error messages
+  - git config: Set core.hooksPath to .husky
+  - AGENTS.md: Added lesson #20 about husky pre-commit and commit-msg hooks
+Reason: Second pre-commit hook setup task in Phase 2.2 - enables automated linting and commit message validation
+Self-Review:
+  - husky@9.1.7 installed successfully
+  - Pre-commit hook configured to run lint-staged
+  - Commit-msg hook validates conventional commits format
+  - Hooks allow merge commits, revert commits, and fixup/squash commits without validation
+  - Conventional commit types documented: feat, fix, build, chore, ci, docs, style, refactor, perf, test
+  - Git hooks path verified: .husky
+  - All acceptance criteria met
+Unblocked: T2.2.3, T2.2.4, T2.3.1, T2.3.2 (Phase 2 setup tasks, no dependencies between them)

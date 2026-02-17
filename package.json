@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -14,6 +15,7 @@
     ]
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "lint-staged": "^16.2.7"
   }
 }

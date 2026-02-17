@@ -489,9 +489,10 @@
       "sectionId": "2.2",
       "category": "setup",
       "description": "Install and configure husky",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Installed husky@9.1.7 at monorepo root. Initialized with `bunx husky init`. Created pre-commit hook running `bun run lint-staged`. Created commit-msg hook validating conventional commits format (feat|fix|build|chore|ci|docs|style|refactor|perf|test)[scope]?: description. Hooks allow merge commits, revert commits, and fixup/squash commits. Git hooks path set to .husky via `git config core.hooksPath .husky`. Updated AGENTS.md with lesson #20 about husky configuration.",
       "acceptanceCriteria": [
         "Install: `bun add -d husky`",
         "Initialize: `bunx husky init`",

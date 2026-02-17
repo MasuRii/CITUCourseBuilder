@@ -158,6 +158,13 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 19. **Lint-staged configuration at monorepo root**: The root `package.json` contains lint-staged configuration for the entire project. File patterns cover `*.{js,jsx,ts,tsx}` and `*.astro` files running `eslint --fix`. The configuration works with husky (T2.2.2) for pre-commit hooks. ESLint must be installed at root level (T2.2.3) for the linting commands to execute successfully.
 
+20. **Husky pre-commit and commit-msg hooks**: Husky v9.1.7 is configured at the monorepo root with two hooks:
+    - `.husky/pre-commit`: Runs `bun run lint-staged` to lint staged files before commit
+    - `.husky/commit-msg`: Validates conventional commits format (type[scope]: description)
+    - Git hooks path is set via `git config core.hooksPath .husky`
+    - The commit-msg hook allows merge commits, revert commits, and fixup/squash commits without validation
+    - Conventional commit types: feat, fix, build, chore, ci, docs, style, refactor, perf, test
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:
