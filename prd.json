@@ -1120,9 +1120,10 @@
       "sectionId": "3.3",
       "category": "impl",
       "description": "Verify export functionality",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created comprehensive export verification tests (tests/exportVerification.test.ts, 48 tests, 850+ expect() calls). Verified all export formats: course list copy to clipboard (convertCoursesToRawData), course list download as .txt (Blob generation), timetable export as PNG (data preparation), timetable export as PDF (summary stats), timetable export as .ics (generateIcsContent). Tests cover: basic functionality, field handling, roundtrip verification, ICS calendar structure, event content, recurrence rules (day code mapping), special schedule handling (TBA, hybrid, online), edge cases (long titles, special characters, unicode, large numbers), format consistency. All 358 tests pass. Verified: convertCoursesToRawData produces tab-separated 12-field format, generateIcsContent produces valid iCalendar format with VCALENDAR/VEVENT structure, RRULE with FREQ=WEEKLY and COUNT=16. No AGENTS.md update needed - export behavior unchanged from original.",
       "acceptanceCriteria": [
         "Test course list copy to clipboard",
         "Test course list download as .txt",
