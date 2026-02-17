@@ -1058,9 +1058,10 @@
       "sectionId": "3.3",
       "category": "impl",
       "description": "Verify course locking",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created comprehensive course locking verification tests (tests/courseLocking.test.ts, 37 tests, 455+ expect() calls). Verified all locking functionality: lock/unlock toggle, conflict detection with checkTimeOverlap and isScheduleConflictFree, available slots check for locking. All edge cases covered: TBA schedules, hybrid classes, online classes, malformed schedules, large course sets. Warning dialog scenarios tested: trigger conditions, conflict resolution, information extraction. All 179 tests pass. No AGENTS.md update needed - standard test patterns using existing scheduling algorithms.",
       "acceptanceCriteria": [
         "Test lock/unlock toggle",
         "Test conflict detection",

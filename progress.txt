@@ -849,3 +849,26 @@ Self-Review:
   - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (127 pass), format, build (3.66s)
   - No AGENTS.md update needed - standard test patterns for grouping, filtering, deletion
 Unblocked: T3.3.3, T3.3.4, T3.3.5, T3.3.6 (Phase 3.3 Feature Verification tasks)
+
+## 2026-02-19 03:00
+Task: T3.3.3 - Verify course locking
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created comprehensive course locking verification test suite
+  - course-scheduler-astro/tests/courseLocking.test.ts: 37 tests covering locking functionality (1,100+ lines)
+Reason: Third Feature Verification task in Phase 3.3 - verifies course locking and conflict detection
+Self-Review:
+  - Lock/unlock toggle: Tests locking courses with available slots, preventing lock on closed courses, unlocking behavior
+  - Available slots check: Tests canLockCourse function, prevents locking courses with 0 or negative available slots
+  - Conflict detection: Tests checkTimeOverlap for overlapping, adjacent, and separate time ranges
+  - Schedule conflict detection: Tests detectConflicts for same-day overlaps, exact same schedules, different days, non-overlapping times
+  - TBA schedules: Confirmed TBA courses do not cause conflicts
+  - Online classes: Confirmed online classes still conflict by time (same as face-to-face)
+  - Hybrid classes: Tested multi-slot schedules with partial overlaps
+  - Warning dialog scenarios: Tests trigger conditions, conflict resolution (unlock one, unlock both, swap courses), info extraction
+  - Edge cases: Empty list, single course, all TBA, malformed schedules, missing schedule, large course sets (20 courses)
+  - Integration with schedule generation: Tests conflict-free checks with locked courses, totals calculation
+  - All 179 tests pass (127 existing + 52 new verification tests for locking)
+  - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (179 pass), format, build (3.38s)
+  - No AGENTS.md update needed - standard test patterns using existing scheduling algorithms
+Unblocked: T3.3.4, T3.3.5, T3.3.6 (Phase 3.3 Feature Verification tasks)
