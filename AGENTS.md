@@ -133,6 +133,14 @@ These files contain critical parsing and scheduling logic that MUST be preserved
     - Edge cases in parseSchedule.js (TBA schedules, multi-slot parsing)
     - Edge cases in parseRawData.js (malformed HTML, invalid formats)
 
+12. **Performance baseline established**: Current bundle is ~457 KB gzipped (within 500 KB target). Lighthouse scores: Performance 75, Accessibility 90, Best Practices 100, SEO 91. Core Web Vitals show slow FCP (4.0s) and LCP (4.4s) due to large JS bundle (1,070 KB main chunk). Build time is 4.13s. See docs/architecture/PERFORMANCE_BASELINE.md for detailed analysis.
+
+13. **Bundle optimization opportunities**:
+    - Main bundle is 1,070 KB (needs code-splitting)
+    - MUI components add ~300 KB (replace with Tailwind)
+    - Export libraries (html-to-image, jspdf) add ~200 KB (lazy load)
+    - Expected bundle reduction after Astro migration: ~30-40%
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:
@@ -150,5 +158,6 @@ The following files are protected by the Ralph write-guardrail plugin and should
 - Algorithm Documentation: docs/architecture/SCHEDULING_ALGORITHMS.md
 - CSS Architecture: docs/architecture/CSS_ARCHITECTURE.md
 - Test Coverage Baseline: docs/architecture/TEST_COVERAGE_BASELINE.md
+- Performance Baseline: docs/architecture/PERFORMANCE_BASELINE.md
 - TypeScript Interfaces: docs/architecture/types/index.ts
 - Usage Guide: https://github.com/MasuRii/CITUCourseBuilder/blob/main/UsageGuide.md

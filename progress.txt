@@ -70,3 +70,22 @@ Self-Review:
   - Documented missing test cases for parseRawData.js edge cases (malformed HTML, invalid formats)
   - Created recommendations for priority testing before migration
 Unblocked: T1.1.5, T1.1.6 (no explicit dependencies, all discovery tasks in parallel)
+
+## 2026-02-18 00:15
+Task: T1.1.5 - Document current performance metrics
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created comprehensive performance baseline documentation
+  - docs/architecture/PERFORMANCE_BASELINE.md: Bundle size analysis, build time, Lighthouse scores, Core Web Vitals, memory patterns, optimization opportunities
+  - Updated AGENTS.md with performance learnings (items 12-13)
+Reason: Fifth discovery task - establishes performance baseline before migration to measure improvements
+Self-Review:
+  - Bundle size: ~457 KB gzipped (within 500 KB target)
+  - Build time: 4.13s (within 30s target)
+  - Lighthouse scores: Performance 75, Accessibility 90, Best Practices 100, SEO 91
+  - Core Web Vitals: FCP 4.0s, LCP 4.4s, TBT 70ms, CLS 0
+  - Identified main bundle issue: 1,070 KB single chunk needs code-splitting
+  - Documented memory usage patterns for localStorage, React state, schedule generation
+  - Created migration recommendations with expected improvements (30-40% bundle reduction)
+Unblocked: T1.1.6 (no explicit dependency, next discovery task)
+
