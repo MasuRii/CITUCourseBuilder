@@ -109,14 +109,20 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 3. **localStorage keys are namespaced**: All keys use `courseBuilder_` prefix. The `loadFromLocalStorage` function includes validation and defaults for each key type.
 
-4. **Theme system uses CSS custom properties**: The App.css defines 100+ CSS variables for theming. Light/dark modes plus 3 palettes (original, comfort, space) create 6 theme combinations.
+4. **Theme system uses CSS custom properties**: The App.css defines 107 CSS variables for theming. Light/dark modes plus 3 palettes (original, comfort, space) create 6 theme combinations. Theme switching uses `data-theme` and `data-palette` attributes on `document.documentElement`. See docs/architecture/CSS_ARCHITECTURE.md for complete inventory.
 
-5. **Schedule generation has 3 modes**:
+5. **CSS specificity gotchas**: The CSS uses `!important` in 8 places (conflict highlighting, group header rows). These override theme-specific styles and must be handled carefully in Tailwind migration.
+
+6. **Responsive breakpoints**: CSS uses 992px, 768px, 480px breakpoints. The 768px breakpoint transforms tables to card-based layout (requires special handling in migration).
+
+7. **Toastify CSS overrides**: 16 CSS custom properties control react-toastify styling. These map to theme colors and must be preserved or replaced with custom toast component.
+
+8. **Schedule generation has 3 modes**:
    - `partial` (default): Heuristic-based, maximizes subjects even if not all fit
    - `exhaustive`: Tries all combinations, fails if can't fit all subjects
    - `fast`: Random sampling, may miss optimal schedules
 
-6. **Course identity is compound**: Courses are identified by `{id, subject, section}` tuple, not just `id`.
+9. **Course identity is compound**: Courses are identified by `{id, subject, section}` tuple, not just `id`.
 
 ## Protected Files
 
@@ -133,5 +139,6 @@ The following files are protected by the Ralph write-guardrail plugin and should
 - Architecture Analysis: docs/architecture/APP_STATE_ANALYSIS.md
 - Component Graphs: docs/architecture/COMPONENT_DEPENDENCY_GRAPH.md
 - Algorithm Documentation: docs/architecture/SCHEDULING_ALGORITHMS.md
+- CSS Architecture: docs/architecture/CSS_ARCHITECTURE.md
 - TypeScript Interfaces: docs/architecture/types/index.ts
 - Usage Guide: https://github.com/MasuRii/CITUCourseBuilder/blob/main/UsageGuide.md
