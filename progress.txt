@@ -313,5 +313,29 @@ Self-Review:
   - Hooks allow merge commits, revert commits, and fixup/squash commits without validation
   - Conventional commit types documented: feat, fix, build, chore, ci, docs, style, refactor, perf, test
   - Git hooks path verified: .husky
+   - All acceptance criteria met
+ Unblocked: T2.2.3, T2.2.4, T2.3.1, T2.3.2 (Phase 2 setup tasks, no dependencies between them)
+
+## 2026-02-18 00:45
+Task: T2.2.3 - Configure ESLint for Astro + React
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Configured ESLint v10.0.0 at monorepo root with flat config
+  - eslint.config.js: Created at root with support for .js, .jsx, .ts, .tsx, and .astro files
+  - package.json: Added lint and lint:fix scripts, installed ESLint packages
+  - Removed nested eslint.config.js from course-scheduler-web/ to avoid conflicts
+  - Preserved logic files explicitly ignored in ESLint config
+  - Fixed minor lint error in course-scheduler-web/src/App.jsx (useless assignment on line 408)
+  - AGENTS.md: Added lesson #21 about ESLint flat config at monorepo root
+Reason: Third pre-commit hook setup task in Phase 2.2 - enables ESLint linting for the entire monorepo
+Self-Review:
+  - ESLint v10.0.0 with flat config working correctly
+  - Supports all required file types: .js, .jsx, .ts, .tsx, .astro
+  - React hooks rules configured (react-hooks/recommended)
+  - React refresh rules configured for .tsx files
+  - TypeScript rules from typescript-eslint/configs.recommended
+  - Astro rules from eslint-plugin-astro/configs['flat/recommended']
+  - Preserved logic files correctly ignored
+  - No linting errors after fixes (`bun run lint` passes with exit code 0)
   - All acceptance criteria met
-Unblocked: T2.2.3, T2.2.4, T2.3.1, T2.3.2 (Phase 2 setup tasks, no dependencies between them)
+ Unblocked: T2.2.4, T2.3.1, T2.3.2 (Phase 2 setup tasks, no dependencies between them)

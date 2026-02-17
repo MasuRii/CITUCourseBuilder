@@ -10,7 +10,7 @@
  * - courseBuilder_palette: 'original' | 'comfort' | 'space'
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useSyncExternalStore } from 'react';
 
 type Theme = 'light' | 'dark';
 type Palette = 'original' | 'comfort' | 'space';
@@ -33,34 +33,54 @@ const themeLabels: Record<Theme, string> = {
   dark: 'Dark',
 };
 
-export function ThemeToggle({ className = '' }: ThemeToggleProps) {
-  const [theme, setTheme] = useState<Theme>('dark');
-  const [palette, setPalette] = useState<Palette>('original');
-  const [mounted, setMounted] = useState(false);
+// Helper to check if we're on the client
+function getSnapshot(): boolean {
+  return typeof window !== 'undefined';
+}
 
-  // Initialize theme from localStorage on mount
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('courseBuilder_theme') as Theme | null;
-    const savedPalette = localStorage.getItem('courseBuilder_palette') as Palette | null;
-    
-    if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
-      setTheme(savedTheme);
-    }
-    if (savedPalette && palettes.includes(savedPalette)) {
-      setPalette(savedPalette);
-    }
-    setMounted(true);
-  }, []);
+function getServerSnapshot(): boolean {
+  return false;
+}
+
+function subscribe(_callback: () => void): () => void {
+  // No subscription needed - this just detects client-side
+  return () => {};
+}
+
+/**
+ * Get initial theme from localStorage or default to 'dark'
+ */
+function getInitialTheme(): Theme {
+  if (typeof window === 'undefined') return 'dark';
+  const saved = localStorage.getItem('courseBuilder_theme');
+  return saved === 'light' || saved === 'dark' ? saved : 'dark';
+}
+
+/**
+ * Get initial palette from localStorage or default to 'original'
+ */
+function getInitialPalette(): Palette {
+  if (typeof window === 'undefined') return 'original';
+  const saved = localStorage.getItem('courseBuilder_palette') as Palette | null;
+  return saved && palettes.includes(saved) ? saved : 'original';
+}
+
+export function ThemeToggle({ className = '' }: ThemeToggleProps) {
+  // Use useSyncExternalStore to detect client-side mounting
+  const isClient = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  
+  // Initialize theme and palette from localStorage using lazy initialization
+  // This avoids the need to set state in useEffect
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [palette, setPalette] = useState<Palette>(getInitialPalette);
 
   // Apply theme changes to document
   useEffect(() => {
-    if (!mounted) return;
-    
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.setAttribute('data-palette', palette);
     localStorage.setItem('courseBuilder_theme', theme);
     localStorage.setItem('courseBuilder_palette', palette);
-  }, [theme, palette, mounted]);
+  }, [theme, palette]);
 
   const toggleTheme = useCallback(() => {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
@@ -74,8 +94,8 @@ export function ThemeToggle({ className = '' }: ThemeToggleProps) {
     });
   }, []);
 
-  // Don't render until mounted to prevent hydration mismatch
-  if (!mounted) {
+  // Don't render until client-side to prevent hydration mismatch
+  if (!isClient) {
     return (
       <div className={`flex items-center gap-4 ${className}`}>
         <div className="w-24 h-10 bg-surface-secondary animate-pulse rounded-md" />

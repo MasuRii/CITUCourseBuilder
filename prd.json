@@ -510,9 +510,10 @@
       "sectionId": "2.2",
       "category": "setup",
       "description": "Configure ESLint for Astro + React",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Configured ESLint v10.0.0 at monorepo root with flat config supporting .js, .jsx, .ts, .tsx, and .astro files. Installed packages: eslint, @eslint/js, eslint-plugin-astro, eslint-plugin-react, eslint-plugin-react-hooks, eslint-plugin-react-refresh, typescript-eslint, globals. Preserved logic files are explicitly ignored. Removed nested ESLint config from course-scheduler-web/ to avoid conflicts. Added lint and lint:fix scripts to root package.json. Fixed minor lint error in App.jsx (useless assignment). Updated AGENTS.md with lesson #21.",
       "acceptanceCriteria": [
         "Install: `bun add -d eslint @eslint/js eslint-plugin-astro eslint-plugin-react`",
         "Create eslint.config.js with Astro + React rules",

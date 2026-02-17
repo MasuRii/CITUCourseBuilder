@@ -405,7 +405,7 @@ function generateBestPartialSchedule_Heuristic(
         if (conflictsWithCurrent) continue;
 
         const units = parseFloat(candidate.creditedUnits || candidate.units) || 0;
-        let priority = 0;
+        let priority;
         if (!currentSubjectsSet.has(candidate.subject)) {
           priority = 20000 + units;
         } else {

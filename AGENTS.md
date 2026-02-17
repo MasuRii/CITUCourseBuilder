@@ -11,7 +11,7 @@ This file contains critical operational details that AI agents should know when 
 - **Package Manager**: Bun
 - **Build Command**: `bun run build` (Vite for current React app)
 - **Test Command**: `bun test` (Vitest)
-- **Lint Command**: Configured via eslint.config.js
+- **Lint Command**: Configured via eslint.config.js at monorepo root
 - **Project Root**: C:\Repository\CITUCourseBuilder
 - **Current App Location**: course-scheduler-web/ (React 19 + Vite)
 - **Target App Location**: course-scheduler-astro/ (Astro 5.x - initialized)
@@ -164,6 +164,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
     - Git hooks path is set via `git config core.hooksPath .husky`
     - The commit-msg hook allows merge commits, revert commits, and fixup/squash commits without validation
     - Conventional commit types: feat, fix, build, chore, ci, docs, style, refactor, perf, test
+
+21. **ESLint flat config at monorepo root**: ESLint v10.0.0 is configured at the monorepo root with flat config (`eslint.config.js`). The configuration supports JavaScript (.js, .jsx), TypeScript (.ts, .tsx), and Astro (.astro) files. Key packages: `eslint`, `@eslint/js`, `eslint-plugin-astro`, `eslint-plugin-react`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`, `typescript-eslint`, `globals`. Preserved logic files (parseSchedule.js, parseRawData.js, generateIcs.js, convertToRawData.js) are explicitly ignored via the `ignores` property in the config. Nested ESLint configs (like the one that was in `course-scheduler-web/`) should be removed to avoid conflicts - the root config handles all files. Use `bun run lint` to check all files and `bun run lint:fix` to auto-fix issues.
 
 ## Protected Files
 
