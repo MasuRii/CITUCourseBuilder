@@ -1,0 +1,85 @@
+---
+/**
+ * BaseLayout.astro
+ *
+ * Base layout component for the CITU Course Builder application.
+ * Provides consistent HTML structure, meta tags, theme initialization,
+ * and global styles for all pages.
+ *
+ * @see docs/architecture/REACT_ISLANDS_HYDRATION.md for hydration strategy
+ */
+
+import '../styles/global.css';
+
+interface Props {
+  /** Page title (appended to base title) */
+  title?: string;
+  /** Page description for SEO */
+  description?: string;
+  /** Additional CSS classes for the body element */
+  bodyClass?: string;
+}
+
+const {
+  title = 'CIT-U Course Builder',
+  description = 'Plan, Filter, and Optimize Your Class Schedules with Ease! A modern web application for Cebu Institute of Technology - University students.',
+  bodyClass = '',
+} = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8" />
+
+    <!-- Viewport configuration for responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content={description} />
+    <meta name="author" content="MasuRii" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://masurii.github.io/CITUCourseBuilder/" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/CITUCourseBuilder/og-image.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://masurii.github.io/CITUCourseBuilder/" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content="/CITUCourseBuilder/og-image.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Google Site Verification -->
+    <meta name="google-site-verification" content="K--i5wR_AhvXzOAVQ75izpbc3fRS-bfEvhdFNjeq8Dg" />
+
+    <!-- Theme Color for Mobile Browsers -->
+    <meta name="theme-color" content="#0f172a" />
+
+    <!-- Page Title -->
+    <title>{title}</title>
+
+    <!-- Theme Flash Prevention: Apply theme before page renders -->
+    <script is:inline>
+      (function () {
+        const theme = localStorage.getItem('courseBuilder_theme') || 'dark';
+        const palette = localStorage.getItem('courseBuilder_palette') || 'original';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.setAttribute('data-palette', palette);
+      })();
+    </script>
+  </head>
+
+  <body class:list={['min-h-screen transition-theme', bodyClass]}>
+    <slot />
+  </body>
+</html>

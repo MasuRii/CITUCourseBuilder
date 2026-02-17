@@ -542,3 +542,22 @@ Self-Review:
   - Format check passes
   - Note: T3.1.5 already extracted algorithms to utils/, this task provides alternative import path
  Unblocked: T3.2.1, T3.2.2, T3.2.3, T3.2.4, T3.2.5, T3.2.6, T3.2.7, T3.2.8, T3.2.9, T3.2.10 (Phase 3.2 React Components Migration tasks)
+
+## 2026-02-18 01:15
+Task: T3.2.1 - Create Astro base layout
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created BaseLayout.astro with comprehensive HTML head and theme support
+  - course-scheduler-astro/src/layouts/BaseLayout.astro: Base layout component with Props interface (title, description, bodyClass)
+  - course-scheduler-astro/src/pages/index.astro: Updated to use BaseLayout instead of inline HTML structure
+Reason: First React Components Migration task in Phase 3.2 - establishes consistent page structure for all pages
+Self-Review:
+  - All meta tags present: charset, viewport, description, author, robots, Open Graph (4), Twitter Cards (4), favicon (3 variants), google-site-verification, theme-color
+  - Theme initialization script uses is:inline directive for flash prevention
+  - Global styles imported correctly
+  - Props interface with JSDoc documentation for TypeScript compliance
+  - Updated index.astro to use BaseLayout demonstrates layout works correctly
+  - Build completes in ~1.58s
+  - All verification checks pass: typecheck (0 errors, 0 warnings), lint (0 warnings), tests (61 pass), build
+  - No AGENTS.md update needed - standard Astro layout pattern
+ Unblocked: T3.2.2, T3.2.3, T3.2.4, T3.2.5, T3.2.6, T3.2.7, T3.2.8, T3.2.9, T3.2.10 (Phase 3.2 React Components Migration tasks)
