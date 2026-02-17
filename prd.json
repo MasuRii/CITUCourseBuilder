@@ -843,9 +843,10 @@
       "sectionId": "3.2",
       "category": "impl",
       "description": "Migrate ConfirmDialog as React island",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created ConfirmDialog.tsx (205 lines) and ConfirmDialogTest.tsx (95 lines) with TypeScript strict mode compliance. Component uses Tailwind styling with theme-aware utilities (bg-surface-secondary, text-content-primary, text-accent, text-warning, text-danger-button-bg). Props interface with JSDoc comments for all 8 props (open, title, message, onConfirm, onCancel, confirmText, cancelText, variant). No 'any' types used. Exported DialogVariant type for reuse. Features: three variants (info, warning, danger), keyboard accessibility (Escape to close, Enter to confirm), backdrop click to dismiss, body scroll lock when open, autoFocus on confirm button, ARIA attributes for accessibility. Inline SVG icons (Info and AlertTriangle) instead of MUI. Build chunk: 4.68 kB (gzip: 1.73 kB). All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (80 pass), format.",
       "acceptanceCriteria": [
         "Create src/components/ConfirmDialog.tsx",
         "Convert to TypeScript with explicit prop types",

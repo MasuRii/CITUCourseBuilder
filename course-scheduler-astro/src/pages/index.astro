@@ -8,6 +8,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TestIsland from '../components/TestIsland';
 import RawDataInput from '../components/RawDataInput';
+import ConfirmDialogTest from '../components/ConfirmDialogTest';
 ---
 
 <BaseLayout title="CIT-U Course Builder - Astro">
@@ -89,6 +90,18 @@ import RawDataInput from '../components/RawDataInput';
           client:load
         />
       </div>
+    </section>
+
+    <!-- ConfirmDialog Test Section -->
+    <section class="p-6 mb-8 rounded-lg bg-surface-secondary border border-default">
+      <h2 class="text-xl font-semibold text-content-primary mb-2">
+        ConfirmDialog Component (client:load)
+      </h2>
+      <p class="text-content-secondary mb-4">
+        This component provides accessible confirmation dialogs. Test the dialog variants below.
+        Press Escape to close, or click outside the dialog.
+      </p>
+      <ConfirmDialogTest client:load />
     </section>
 
     <!-- Hydration Strategy Table -->
