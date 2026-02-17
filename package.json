@@ -1,0 +1,19 @@
+{
+  "name": "citu-course-builder",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.astro": [
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "lint-staged": "^16.2.7"
+  }
+}

@@ -156,6 +156,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 18. **Astro project structure with path aliases**: The `course-scheduler-astro/src/` directory follows a standard Astro + React islands architecture with directories for components (React islands), layouts (Astro layouts), pages (Astro pages), styles (global CSS), utils (preserved logic), hooks (custom React hooks), types (TypeScript definitions), and assets (static assets). TypeScript path aliases are configured in `tsconfig.json` with `baseUrl: "."` and `paths` mapping `@/*`, `@components/*`, `@layouts/*`, etc. to their respective directories for clean imports. A separate `tests/` directory exists at the project root for test files.
 
+19. **Lint-staged configuration at monorepo root**: The root `package.json` contains lint-staged configuration for the entire project. File patterns cover `*.{js,jsx,ts,tsx}` and `*.astro` files running `eslint --fix`. The configuration works with husky (T2.2.2) for pre-commit hooks. ESLint must be installed at root level (T2.2.3) for the linting commands to execute successfully.
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:

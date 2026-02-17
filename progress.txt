@@ -276,3 +276,21 @@ Self-Review:
   - Build completes in ~1.47s
   - All acceptance criteria verified complete
 Unblocked: T2.2.1, T2.2.2, T2.2.3, T2.2.4, T2.3.1, T2.3.2 (Phase 2 setup tasks, no dependencies between them)
+
+## 2026-02-19 00:15
+Task: T2.2.1 - Install and configure lint-staged
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Installed and configured lint-staged at monorepo root
+  - package.json: Created at root level with lint-staged configuration
+  - lint-staged: Installed v16.2.7 as dev dependency
+  - File patterns configured for *.{js,jsx,ts,tsx} and *.astro running 'eslint --fix'
+  - AGENTS.md: Added lesson #19 about monorepo lint-staged configuration
+Reason: First pre-commit hook setup task in Phase 2.2 - establishes lint-staged configuration for the entire project
+Self-Review:
+  - lint-staged installed successfully at root level
+  - Configuration supports all required file patterns (.js, .jsx, .ts, .tsx, .astro)
+  - ESLint commands will work after T2.2.3 completes
+  - Configuration in package.json as specified
+  - All acceptance criteria met
+Unblocked: T2.2.2 (Phase 2.2 setup task, depends on lint-staged for pre-commit hooks)
