@@ -1,5 +1,11 @@
 ---
-
+/**
+ * Main Index Page
+ * 
+ * Entry point for the CITU Course Builder application.
+ * Contains test island for React hydration verification.
+ */
+import TestIsland from '../components/TestIsland';
 ---
 
 <html lang="en">
@@ -7,11 +13,128 @@
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>CITU Course Builder - Astro</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<main>
+			<h1>CITU Course Builder</h1>
+			<p>Astro 5.x + React 19.x + Tailwind 4.x</p>
+			
+			<section class="test-section">
+				<h2>React Island Test (client:load)</h2>
+				<p>This component tests React hydration with <code>client:load</code> directive.</p>
+				<p>If the buttons work, React hydration is working correctly.</p>
+				<TestIsland client:load />
+			</section>
+
+			<section class="hydration-info">
+				<h2>Hydration Strategy (from ADR-001)</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Component</th>
+							<th>Directive</th>
+							<th>Rationale</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>RawDataInput</td>
+							<td><code>client:load</code></td>
+							<td>Critical for user input, must be interactive immediately</td>
+						</tr>
+						<tr>
+							<td>CourseTable</td>
+							<td><code>client:load</code></td>
+							<td>Central feature, user interacts immediately</td>
+						</tr>
+						<tr>
+							<td>TimeFilter</td>
+							<td><code>client:visible</code></td>
+							<td>Can wait until user scrolls to filter section</td>
+						</tr>
+						<tr>
+							<td>TimetableView</td>
+							<td><code>client:visible</code></td>
+							<td>Heavy component with export libraries, lazy load</td>
+						</tr>
+						<tr>
+							<td>ConfirmDialog</td>
+							<td><code>client:load</code></td>
+							<td>May appear on initial interaction</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+		</main>
 	</body>
 </html>
+
+<style>
+	main {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 2rem;
+		font-family: system-ui, -apple-system, sans-serif;
+	}
+
+	h1 {
+		color: #1976d2;
+		margin-bottom: 0.5rem;
+	}
+
+	p {
+		color: #666;
+	}
+
+	.test-section {
+		padding: 1.5rem;
+		margin: 1.5rem 0;
+		border: 2px dashed #1976d2;
+		border-radius: 8px;
+		background: #f5f5f5;
+	}
+
+	.test-section h2 {
+		margin-top: 0;
+		color: #1976d2;
+	}
+
+	.hydration-info {
+		margin: 2rem 0;
+		padding: 1rem;
+		background: #fafafa;
+		border-radius: 8px;
+	}
+
+	.hydration-info h2 {
+		margin-top: 0;
+		color: #333;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin-top: 1rem;
+	}
+
+	th, td {
+		padding: 0.75rem;
+		text-align: left;
+		border-bottom: 1px solid #e0e0e0;
+	}
+
+	th {
+		background: #e3f2fd;
+		font-weight: bold;
+	}
+
+	code {
+		background: #e8e8e8;
+		padding: 0.125rem 0.375rem;
+		border-radius: 4px;
+		font-family: 'Courier New', monospace;
+	}
+</style>

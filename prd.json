@@ -389,9 +389,10 @@
       "sectionId": "2.1",
       "category": "setup",
       "description": "Configure Astro for React islands",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Configured React islands with hydration directives. Created test island component (TestIsland.tsx) with TypeScript props interface. Verified hydration works with client:load directive. Created comprehensive documentation at docs/architecture/REACT_ISLANDS_HYDRATION.md with hydration strategy per component. Build completes in ~1.4s. React runtime chunk is 58.5 kB gzipped (only loaded when islands present). Updated AGENTS.md with lesson #15.",
       "acceptanceCriteria": [
         "Add @astrojs/react integration",
         "Configure client:load, client:visible directives",

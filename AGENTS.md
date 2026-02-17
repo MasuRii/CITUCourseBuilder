@@ -143,6 +143,13 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 14. **Astro project initialized**: The `course-scheduler-astro/` directory contains Astro 5.17.x with React 19.x and Tailwind 4.x integrations. Build time is ~1.4s, significantly faster than the React/Vite build (4.13s). TypeScript strict mode is enabled via `extends: "astro/tsconfigs/strict"`. Base path `/CITUCourseBuilder/` configured for GitHub Pages deployment.
 
+15. **React islands hydration strategy defined**: Each component has a specific hydration directive based on its interactivity needs:
+    - `client:load`: RawDataInput, CourseTable, ConfirmDialog (immediate interactivity required)
+    - `client:visible`: TimeFilter, TimetableView (lazy load when scrolled into view)
+    - React runtime (~58.5 kB gzipped) only loads when islands are present
+    - Each island is code-split for optimal caching
+    - See docs/architecture/REACT_ISLANDS_HYDRATION.md for complete configuration
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:
@@ -166,4 +173,5 @@ The following files are protected by the Ralph write-guardrail plugin and should
 - Test Coverage Baseline: docs/architecture/TEST_COVERAGE_BASELINE.md
 - Performance Baseline: docs/architecture/PERFORMANCE_BASELINE.md
 - TypeScript Interfaces: docs/architecture/types/index.ts
+- React Islands Hydration: docs/architecture/REACT_ISLANDS_HYDRATION.md
 - Usage Guide: https://github.com/MasuRii/CITUCourseBuilder/blob/main/UsageGuide.md
