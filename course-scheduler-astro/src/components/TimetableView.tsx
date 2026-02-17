@@ -1,6 +1,6 @@
 import { toPng } from 'html-to-image';
 import jsPDF from 'jspdf';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { generateIcsContent } from '@/utils/generateIcs';
 import { parseSchedule } from '@/utils/parseSchedule';
 import type { Course, DayCode } from '@/types/index';
@@ -61,6 +61,78 @@ const DAY_NAMES: readonly string[] = [
 ] as const;
 
 /**
+ * Color palette for subject color coding (playful, vibrant colors)
+ */
+const SUBJECT_COLORS: readonly string[] = [
+  'bg-violet-500', // Purple
+  'bg-blue-500', // Blue
+  'bg-emerald-500', // Green
+  'bg-amber-500', // Amber
+  'bg-rose-500', // Rose
+  'bg-cyan-500', // Cyan
+  'bg-orange-500', // Orange
+  'bg-pink-500', // Pink
+  'bg-teal-500', // Teal
+  'bg-indigo-500', // Indigo
+  'bg-lime-500', // Lime
+  'bg-sky-500', // Sky
+] as const;
+
+/**
+ * Lighter variants for course card backgrounds
+ */
+const SUBJECT_COLORS_LIGHT: readonly string[] = [
+  'bg-violet-100 dark:bg-violet-900/40',
+  'bg-blue-100 dark:bg-blue-900/40',
+  'bg-emerald-100 dark:bg-emerald-900/40',
+  'bg-amber-100 dark:bg-amber-900/40',
+  'bg-rose-100 dark:bg-rose-900/40',
+  'bg-cyan-100 dark:bg-cyan-900/40',
+  'bg-orange-100 dark:bg-orange-900/40',
+  'bg-pink-100 dark:bg-pink-900/40',
+  'bg-teal-100 dark:bg-teal-900/40',
+  'bg-indigo-100 dark:bg-indigo-900/40',
+  'bg-lime-100 dark:bg-lime-900/40',
+  'bg-sky-100 dark:bg-sky-900/40',
+] as const;
+
+/**
+ * Border colors for course cards
+ */
+const SUBJECT_BORDER_COLORS: readonly string[] = [
+  'border-violet-400 dark:border-violet-500',
+  'border-blue-400 dark:border-blue-500',
+  'border-emerald-400 dark:border-emerald-500',
+  'border-amber-400 dark:border-amber-500',
+  'border-rose-400 dark:border-rose-500',
+  'border-cyan-400 dark:border-cyan-500',
+  'border-orange-400 dark:border-orange-500',
+  'border-pink-400 dark:border-pink-500',
+  'border-teal-400 dark:border-teal-500',
+  'border-indigo-400 dark:border-indigo-500',
+  'border-lime-400 dark:border-lime-500',
+  'border-sky-400 dark:border-sky-500',
+] as const;
+
+/**
+ * Text colors for subject labels (darker variants for readability)
+ */
+const SUBJECT_TEXT_COLORS: readonly string[] = [
+  'text-violet-700 dark:text-violet-200',
+  'text-blue-700 dark:text-blue-200',
+  'text-emerald-700 dark:text-emerald-200',
+  'text-amber-700 dark:text-amber-200',
+  'text-rose-700 dark:text-rose-200',
+  'text-cyan-700 dark:text-cyan-200',
+  'text-orange-700 dark:text-orange-200',
+  'text-pink-700 dark:text-pink-200',
+  'text-teal-700 dark:text-teal-200',
+  'text-indigo-700 dark:text-indigo-200',
+  'text-lime-700 dark:text-lime-200',
+  'text-sky-700 dark:text-sky-200',
+] as const;
+
+/**
  * Converts a 24-hour format time string to 12-hour format with AM/PM
  *
  * @param timeStr - Time string in "HH:MM" 24-hour format
@@ -75,6 +147,22 @@ function formatTo12Hour(timeStr: string): string {
 }
 
 /**
+ * Generates a consistent color index for a subject using a simple hash function
+ *
+ * @param subject - Subject code (e.g., "CS 101")
+ * @returns Index into the color palette arrays
+ */
+function getSubjectColorIndex(subject: string): number {
+  let hash = 0;
+  for (let i = 0; i < subject.length; i++) {
+    const char = subject.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  return Math.abs(hash) % SUBJECT_COLORS.length;
+}
+
+/**
  * Course data extended with slot-specific information for timetable rendering
  */
 interface CourseInSlot extends Course {
@@ -82,6 +170,7 @@ interface CourseInSlot extends Course {
   slotEndTime: string;
   isStartOfCourseSlot: boolean;
   slotRoom: string;
+  colorIndex: number;
 }
 
 /**
@@ -97,7 +186,7 @@ export interface TimetableViewProps {
 }
 
 /**
- * Dropdown menu component for export options
+ * Dropdown menu component for export options with animated icons
  */
 interface DropdownMenuProps {
   readonly isOpen: boolean;
@@ -113,7 +202,7 @@ function DropdownMenu({
   onExportPng,
   onExportPdf,
   onExportIcs,
-}: DropdownMenuProps) {
+}: DropdownMenuProps): React.ReactNode {
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Handle click outside
@@ -153,64 +242,131 @@ function DropdownMenu({
   return (
     <div
       ref={menuRef}
-      className="absolute right-0 top-full z-50 mt-1 min-w-48 rounded-lg border border-border-primary bg-surface-secondary py-1 shadow-lg"
+      className="absolute right-0 top-full z-50 mt-2 min-w-48 rounded-xl border border-border-primary bg-surface-secondary py-2 shadow-xl animate-slide-up"
       role="menu"
       aria-orientation="vertical"
     >
+      <div className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-content-secondary">
+        Export Options
+      </div>
       <button
         onClick={() => {
           onExportPng();
           onClose();
         }}
-        className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-content-primary hover:bg-surface-tertiary"
+        className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-content-primary hover:bg-surface-tertiary transition-colors group"
         role="menuitem"
       >
-        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
-        Export as PNG
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+        </span>
+        <div>
+          <div className="font-medium">Export as PNG</div>
+          <div className="text-xs text-content-secondary">High-quality image</div>
+        </div>
       </button>
       <button
         onClick={() => {
           onExportPdf();
           onClose();
         }}
-        className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-content-primary hover:bg-surface-tertiary"
+        className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-content-primary hover:bg-surface-tertiary transition-colors group"
         role="menuitem"
       >
-        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-          />
-        </svg>
-        Export as PDF
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 group-hover:scale-110 transition-transform">
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+            />
+          </svg>
+        </span>
+        <div>
+          <div className="font-medium">Export as PDF</div>
+          <div className="text-xs text-content-secondary">Print-ready document</div>
+        </div>
       </button>
       <button
         onClick={() => {
           onExportIcs();
           onClose();
         }}
-        className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-content-primary hover:bg-surface-tertiary"
+        className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-content-primary hover:bg-surface-tertiary transition-colors group"
         role="menuitem"
       >
-        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
-        Export as .ics
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+        </span>
+        <div>
+          <div className="font-medium">Export as .ics</div>
+          <div className="text-xs text-content-secondary">Calendar file</div>
+        </div>
       </button>
+    </div>
+  );
+}
+
+/**
+ * Tooltip component for course details on hover
+ */
+interface TooltipProps {
+  readonly course: CourseInSlot;
+  readonly children: React.ReactNode;
+}
+
+function Tooltip({ course, children }: TooltipProps): React.ReactNode {
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+      onFocus={() => setIsVisible(true)}
+      onBlur={() => setIsVisible(false)}
+    >
+      {children}
+      {isVisible && (
+        <div
+          className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 text-xs rounded-lg shadow-lg animate-fade-in pointer-events-none"
+          style={{
+            backgroundColor: 'var(--card-bg)',
+            border: '1px solid var(--border-color)',
+            minWidth: '180px',
+          }}
+        >
+          <div className="font-semibold text-content-primary mb-1">{course.subject}</div>
+          <div className="text-content-secondary">
+            <div>Section: {course.section}</div>
+            <div>Room: {course.slotRoom}</div>
+            <div>
+              Time: {course.slotStartTime} - {course.slotEndTime}
+            </div>
+            <div>Units: {course.units}</div>
+          </div>
+          {/* Tooltip arrow */}
+          <div
+            className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent"
+            style={{ borderTopColor: 'var(--border-color)' }}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -232,7 +388,7 @@ export default function TimetableView({
   onToast,
 }: TimetableViewProps): React.ReactNode {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const timetableRef = useRef<HTMLTableElement>(null);
+  const timetableRef = useRef<HTMLDivElement>(null);
 
   /**
    * Handle export as PNG image
@@ -345,21 +501,55 @@ export default function TimetableView({
     }
   };
 
+  // Calculate summary statistics
+  const { totalUnits, uniqueSubjects, subjectColorMap } = useMemo(() => {
+    const units = lockedCourses.reduce((sum, course) => {
+      const courseUnits = parseFloat(course.creditedUnits || course.units);
+      return isNaN(courseUnits) ? sum : sum + courseUnits;
+    }, 0);
+    const subjects = new Set(lockedCourses.map((course) => course.subject));
+
+    // Assign colors to subjects
+    const colorMap = new Map<string, number>();
+    subjects.forEach((subject) => {
+      colorMap.set(subject, getSubjectColorIndex(subject));
+    });
+
+    return { totalUnits: units, uniqueSubjects: subjects.size, subjectColorMap: colorMap };
+  }, [lockedCourses]);
+
   // Show empty state if no locked courses
   if (!lockedCourses || lockedCourses.length === 0) {
     return (
-      <div className="rounded-lg bg-surface-secondary p-8 text-center shadow-md">
-        <p className="text-content-secondary">No locked courses to display in timetable.</p>
+      <div className="rounded-2xl bg-surface-secondary p-8 text-center shadow-md border border-border-primary">
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-light">
+            <svg
+              className="h-8 w-8 text-accent"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-content-primary font-display">
+              No Schedule to Display
+            </h3>
+            <p className="text-content-secondary mt-1">
+              Lock some courses to see them in your weekly timetable.
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
-
-  // Calculate summary statistics
-  const totalUnits = lockedCourses.reduce((sum, course) => {
-    const units = parseFloat(course.creditedUnits || course.units);
-    return isNaN(units) ? sum : sum + units;
-  }, 0);
-  const uniqueSubjects = new Set(lockedCourses.map((course) => course.subject)).size;
 
   // Build courses by time and day mapping
   const coursesByTimeAndDay: Record<string, Record<string, CourseInSlot[]>> = {};
@@ -374,6 +564,8 @@ export default function TimetableView({
     ) {
       return;
     }
+
+    const colorIndex = subjectColorMap.get(course.subject) ?? 0;
 
     scheduleResult.allTimeSlots.forEach((slot) => {
       const { days, startTime, endTime, room } = slot;
@@ -412,6 +604,7 @@ export default function TimetableView({
                 slotEndTime: endTime,
                 isStartOfCourseSlot: isStartOfCourseSlot,
                 slotRoom: room || course.room,
+                colorIndex: colorIndex,
               });
             }
           }
@@ -428,61 +621,112 @@ export default function TimetableView({
 
     const startCourses = coursesInGridCell.filter((c) => c.isStartOfCourseSlot);
     if (startCourses.length === 0) {
-      return <div className="h-full bg-accent opacity-70"></div>;
+      return <div className="h-full rounded-md bg-accent/30" />;
     }
 
     return startCourses.map((course, index) => {
       const isConflicting = conflictingLockedCourseIds.has(course.id);
+      const bgColor = SUBJECT_COLORS_LIGHT[course.colorIndex];
+      const borderColor = SUBJECT_BORDER_COLORS[course.colorIndex];
+      const textColor = SUBJECT_TEXT_COLORS[course.colorIndex];
+
       return (
-        <div
-          key={`${course.id}-${course.slotStartTime}-${index}`}
-          className={`h-full overflow-hidden rounded p-1 text-xs text-white transition-all ${
-            isConflicting
-              ? 'border-l-4 border-l-[#a5283a] bg-[#a5283a22]'
-              : 'bg-accent hover:bg-accent-hover'
-          }`}
-          tabIndex={0}
-          aria-label={`Locked course: ${course.subject} section ${course.section} in room ${course.slotRoom}, from ${course.slotStartTime} to ${course.slotEndTime}${isConflicting ? ' (conflict)' : ''}`}
-        >
-          <div className="font-semibold whitespace-nowrap">{course.subject}</div>
-          <div className="text-[0.65rem] opacity-90">{course.section}</div>
-          <div className="text-[0.65rem] opacity-80">{course.slotRoom}</div>
-          {isConflicting && (
-            <span
-              title="Schedule conflict with another locked course"
-              aria-label="Schedule conflict"
-              className="ml-1 text-sm align-middle"
-              style={{ color: '#a5283a' }}
+        <Tooltip key={`${course.id}-${course.slotStartTime}-${index}`} course={course}>
+          <div
+            className={`h-full overflow-hidden rounded-lg border-2 p-1.5 transition-all duration-200 hover:scale-[1.02] hover:shadow-md ${
+              isConflicting
+                ? 'border-l-4 border-l-[#a5283a] !bg-red-100 dark:!bg-red-900/30 !border-red-300 dark:!border-red-700'
+                : `${bgColor} ${borderColor}`
+            }`}
+            tabIndex={0}
+            aria-label={`Locked course: ${course.subject} section ${course.section} in room ${course.slotRoom}, from ${course.slotStartTime} to ${course.slotEndTime}${isConflicting ? ' (conflict)' : ''}`}
+          >
+            <div
+              className={`font-bold text-xs truncate ${isConflicting ? 'text-red-700 dark:text-red-300' : textColor}`}
             >
-              ⚠️
-            </span>
-          )}
-        </div>
+              {course.subject}
+            </div>
+            <div
+              className={`text-[0.65rem] truncate ${isConflicting ? 'text-red-600 dark:text-red-400' : 'text-content-secondary'}`}
+            >
+              {course.section}
+            </div>
+            <div
+              className={`text-[0.6rem] truncate ${isConflicting ? 'text-red-500 dark:text-red-400' : 'text-content-secondary opacity-75'}`}
+            >
+              {course.slotRoom}
+            </div>
+            {isConflicting && (
+              <div className="flex items-center gap-0.5 mt-0.5">
+                <svg className="h-3 w-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="text-[0.6rem] text-red-500 font-medium">Conflict</span>
+              </div>
+            )}
+          </div>
+        </Tooltip>
       );
     });
   };
 
   return (
-    <div className="mt-6 w-full overflow-x-auto">
+    <div className="mt-6 w-full">
       {/* Header with title and export menu */}
-      <div className="mb-2 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-content-primary">Weekly Timetable</h3>
-        <div className="relative">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex items-center justify-center rounded-lg p-2 text-content-secondary transition-colors hover:bg-surface-tertiary hover:text-content-primary"
-            aria-label="Export timetable options"
-            aria-expanded={isMenuOpen}
-            aria-haspopup="true"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-light">
+            <svg
+              className="h-5 w-5 text-accent"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-content-primary font-display">
+              Weekly Timetable
+            </h3>
+            <p className="text-xs text-content-secondary">Your locked courses visualized</p>
+          </div>
+        </div>
+        <div className="relative">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+              isMenuOpen
+                ? 'bg-accent text-white shadow-md'
+                : 'bg-surface-secondary text-content-primary border border-border-primary hover:border-accent hover:bg-accent-light'
+            }`}
+            aria-label="Export timetable options"
+            aria-expanded={isMenuOpen}
+            aria-haspopup="true"
+          >
+            <svg
+              className={`h-4 w-4 transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+              />
+            </svg>
+            <span>Export</span>
           </button>
           <DropdownMenu
             isOpen={isMenuOpen}
@@ -495,81 +739,147 @@ export default function TimetableView({
       </div>
 
       {/* Timetable grid */}
-      <table
-        className="w-full border-collapse overflow-hidden rounded-lg bg-surface-secondary shadow-md"
-        style={{ tableLayout: 'fixed' }}
-        role="table"
-        aria-label="Weekly timetable of locked courses"
+      <div
         ref={timetableRef}
+        className="overflow-x-auto rounded-2xl border border-border-primary bg-surface-secondary shadow-lg"
       >
-        <caption className="sr-only">
-          Weekly timetable showing locked courses by day and time slot.
-        </caption>
-        <thead>
-          <tr role="row">
-            <th
-              className="sticky left-0 z-[3] w-[70px] border border-border-primary bg-accent-light p-1 text-center font-bold text-content-primary"
-              role="columnheader"
-              aria-label="Time"
-              scope="col"
-            >
-              Time
-            </th>
-            {DAYS.map((day, index) => (
+        <table
+          className="w-full border-collapse"
+          style={{ tableLayout: 'fixed', minWidth: '800px' }}
+          role="table"
+          aria-label="Weekly timetable of locked courses"
+        >
+          <caption className="sr-only">
+            Weekly timetable showing locked courses by day and time slot.
+          </caption>
+          <thead>
+            <tr role="row">
               <th
-                key={day}
-                className="sticky top-0 z-[2] min-w-[110px] border border-border-primary bg-accent-light p-1 text-center font-bold text-content-primary"
+                className="sticky left-0 z-[3] w-[70px] border-b-2 border-r border-border-primary bg-accent-light p-2 text-center"
                 role="columnheader"
-                aria-label={DAY_NAMES[index]}
+                aria-label="Time"
                 scope="col"
               >
-                <div className="text-sm font-bold">{day}</div>
-                <div className="text-[0.65rem] opacity-80">{DAY_NAMES[index]}</div>
+                <span className="text-xs font-bold text-content-primary">Time</span>
               </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {TIME_SLOTS.map((timeSlot) => (
-            <tr key={timeSlot} className="time-row" role="row">
-              <td
-                className="sticky left-0 z-[1] border border-border-primary bg-accent-light/50 p-1 text-center font-semibold text-content-primary text-xs whitespace-nowrap"
-                role="rowheader"
-                aria-label={formatTo12Hour(timeSlot)}
-                scope="row"
-              >
-                {formatTo12Hour(timeSlot)}
-              </td>
-              {DAYS.map((day) => (
-                <td
-                  key={`${day}-${timeSlot}`}
-                  className="h-[50px] border border-border-primary p-0.5 align-top"
-                  role="cell"
-                  tabIndex={0}
-                  aria-label={`Courses on ${DAY_NAMES[DAYS.indexOf(day)]} at ${formatTo12Hour(timeSlot)}`}
+              {DAYS.map((day, index) => (
+                <th
+                  key={day}
+                  className="sticky top-0 z-[2] min-w-[100px] border-b-2 border-border-primary bg-accent-light p-2 text-center"
+                  role="columnheader"
+                  aria-label={DAY_NAMES[index]}
+                  scope="col"
                 >
-                  {coursesByTimeAndDay[timeSlot]?.[day]
-                    ? renderCourseCell(coursesByTimeAndDay[timeSlot][day])
-                    : null}
-                </td>
+                  <div className="text-sm font-bold text-content-primary">{day}</div>
+                  <div className="text-[0.65rem] text-content-secondary">{DAY_NAMES[index]}</div>
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {TIME_SLOTS.map((timeSlot, rowIndex) => (
+              <tr
+                key={timeSlot}
+                className={`time-row ${rowIndex % 2 === 0 ? 'bg-surface-secondary' : 'bg-surface-tertiary/30'}`}
+                role="row"
+              >
+                <td
+                  className="sticky left-0 z-[1] border-r border-border-primary bg-accent-light/50 p-1.5 text-center"
+                  role="rowheader"
+                  aria-label={formatTo12Hour(timeSlot)}
+                  scope="row"
+                >
+                  <span className="text-[0.65rem] font-semibold text-content-primary whitespace-nowrap">
+                    {formatTo12Hour(timeSlot)}
+                  </span>
+                </td>
+                {DAYS.map((day) => (
+                  <td
+                    key={`${day}-${timeSlot}`}
+                    className="h-[52px] border-r border-b border-border-primary/50 p-0.5 align-top"
+                    role="cell"
+                    tabIndex={0}
+                    aria-label={`Courses on ${DAY_NAMES[DAYS.indexOf(day)]} at ${formatTo12Hour(timeSlot)}`}
+                  >
+                    {coursesByTimeAndDay[timeSlot]?.[day]
+                      ? renderCourseCell(coursesByTimeAndDay[timeSlot][day])
+                      : null}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      {/* Summary section */}
-      <div className="mt-4 rounded-lg bg-surface-secondary p-3 shadow-md">
-        <div className="flex flex-wrap justify-between gap-4 text-sm text-content-primary">
-          <span>
-            <strong>Total Units:</strong> {totalUnits}
-          </span>
-          <span>
-            <strong>Subjects:</strong> {uniqueSubjects}
-          </span>
-          <span>
-            <strong>Courses:</strong> {lockedCourses.length}
-          </span>
+      {/* Summary section with playful design */}
+      <div className="mt-4 grid grid-cols-3 gap-3">
+        <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 p-4 border border-emerald-200 dark:border-emerald-800">
+          <div className="flex items-center gap-2 mb-1">
+            <svg
+              className="h-4 w-4 text-emerald-600 dark:text-emerald-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+              />
+            </svg>
+            <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+              Total Units
+            </span>
+          </div>
+          <div className="text-2xl font-bold text-emerald-800 dark:text-emerald-200 font-display">
+            {totalUnits}
+          </div>
+        </div>
+        <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 border border-blue-200 dark:border-blue-800">
+          <div className="flex items-center gap-2 mb-1">
+            <svg
+              className="h-4 w-4 text-blue-600 dark:text-blue-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+              />
+            </svg>
+            <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Subjects</span>
+          </div>
+          <div className="text-2xl font-bold text-blue-800 dark:text-blue-200 font-display">
+            {uniqueSubjects}
+          </div>
+        </div>
+        <div className="rounded-xl bg-gradient-to-br from-violet-50 to-violet-100 dark:from-violet-900/30 dark:to-violet-800/30 p-4 border border-violet-200 dark:border-violet-800">
+          <div className="flex items-center gap-2 mb-1">
+            <svg
+              className="h-4 w-4 text-violet-600 dark:text-violet-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+              />
+            </svg>
+            <span className="text-xs font-medium text-violet-700 dark:text-violet-300">
+              Courses
+            </span>
+          </div>
+          <div className="text-2xl font-bold text-violet-800 dark:text-violet-200 font-display">
+            {lockedCourses.length}
+          </div>
         </div>
       </div>
     </div>

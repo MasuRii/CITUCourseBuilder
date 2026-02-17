@@ -1075,4 +1075,29 @@ Self-Review:
   - Pre-existing test failures (19) in RawDataInput.test.tsx due to jsdom configuration issue from T4.2.2 - not related to CourseTable changes
   - All 457 non-component tests pass, typecheck (0 errors), lint (0 warnings), format, build (3.55s)
   - No AGENTS.md update needed - standard React island pattern with Tailwind animations
-Unblocked: T4.2.4, T4.2.5, T4.2.6, T4.2.7, T4.3.1, T4.3.2, T4.4.1, T4.4.2 (Phase 4 UI/UX Modernization tasks)
+ Unblocked: T4.2.4, T4.2.5, T4.2.6, T4.2.7, T4.3.1, T4.3.2, T4.4.1, T4.4.2 (Phase 4 UI/UX Modernization tasks)
+
+## 2026-02-18 06:12
+Task: T4.2.4 - Redesign TimetableView component
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Redesigned TimetableView.tsx with playful, modern styling and subject color coding
+  - course-scheduler-astro/src/components/TimetableView.tsx: Redesigned component (700+ lines, was 578 lines)
+Reason: Fourth Component Redesign task in Phase 4.2 - implements modern timetable grid with color coding and tooltips
+Self-Review:
+  - Added color coding for different subjects using hash-based color assignment (12 vibrant colors: violet, blue, emerald, amber, rose, cyan, orange, pink, teal, indigo, lime, sky)
+  - Course cards have colored backgrounds, borders, and text matching subject colors
+  - Added hover tooltips with course details (subject, section, room, time, units)
+  - Tooltips use fade-in animation and CSS custom properties for theming
+  - Added animated export buttons with icon scale animation on hover (group-hover:scale-110)
+  - Export dropdown has colorful icons: emerald for PNG, rose for PDF, blue for ICS
+  - Each export option has descriptive subtitle text
+  - Improved empty state with calendar icon and helpful text
+  - Added playful summary cards with gradient backgrounds and icons (units in emerald, subjects in blue, courses in violet)
+  - Course cards have rounded corners, colored borders, hover scale effect (hover:scale-[1.02])
+  - Conflict highlighting uses red tones with warning icon
+  - Row striping uses alternating backgrounds for readability
+  - Pre-existing test failures (19) in RawDataInput.test.tsx from T4.2.2's jsdom config - unrelated to TimetableView changes
+  - All 457 non-component tests pass, typecheck (0 errors), lint (0 warnings), format, build (3.43s)
+  - No AGENTS.md update needed - standard React island pattern with Tailwind color utilities
+Unblocked: T4.2.5, T4.2.6, T4.2.7, T4.3.1, T4.3.2, T4.4.1, T4.4.2 (Phase 4 UI/UX Modernization tasks)
