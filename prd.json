@@ -328,9 +328,10 @@
       "sectionId": "1.2",
       "category": "discovery",
       "description": "Create ADR for state management approach",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created ADR-003-state-management-approach.md with comprehensive state management strategy. Documented decision to continue with React state via islands + localStorage persistence. Analyzed 4 alternatives (Zustand, Jotai, Nanostores, React Built-in) with pros/cons tables. Created implementation strategy with 6 custom hooks: useLocalStorage, useCourseState, useFilterState, useThemeState, useSchedulePreferences, useScheduleGeneration. Documented SSR/CSR boundary handling including theme flash prevention. Documented all 13 localStorage keys. Updated AGENTS.md with ADR-003 reference.",
       "acceptanceCriteria": [
         "Document decision: React state via islands + localStorage",
         "Consider alternatives: Zustand, Jotai, Nanostores",
