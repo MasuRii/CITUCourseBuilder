@@ -642,9 +642,10 @@
       "title": "[impl] Migrate generateIcs.js to TypeScript",
       "category": "impl",
       "description": "Convert generateIcs.js to generateIcs.ts with full type safety while preserving ALL logic exactly",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "M",
+      "notes": "Converted generateIcs.js (122 lines) to generateIcs.ts (134 lines) with full TypeScript strict mode compliance. All 4 functions have explicit parameter and return types. Used Course and DayCode interfaces from @/types/index. No 'any' types used. Used readonly DayCode[] for day arrays and readonly Course[] for locked courses. Logic preserved exactly - same iCalendar output generation.",
       "acceptanceCriteria": [
         "Copy course-scheduler-web/src/utils/generateIcs.js to course-scheduler-astro/src/utils/generateIcs.ts",
         "Add explicit parameter and return types to all functions",
