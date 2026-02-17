@@ -189,14 +189,14 @@ sequenceDiagram
 
 ## Component Coupling Analysis
 
-| Component | Coupled To | Coupling Level | Notes |
-|-----------|------------|----------------|-------|
-| App.jsx | All components | High | Root component, owns all state |
-| TimeFilter | react-datepicker | Low | Single external dependency |
-| CourseTable | MUI, Toastify, convertToRawData | Medium | Export functionality |
-| TimetableView | MUI, Toastify, html-to-image, jspdf, generateIcs | High | Export dependencies |
-| RawDataInput | prop-types | Low | Minimal, pure component |
-| ConfirmDialog | MUI | Low | Self-contained modal |
+| Component     | Coupled To                                       | Coupling Level | Notes                          |
+| ------------- | ------------------------------------------------ | -------------- | ------------------------------ |
+| App.jsx       | All components                                   | High           | Root component, owns all state |
+| TimeFilter    | react-datepicker                                 | Low            | Single external dependency     |
+| CourseTable   | MUI, Toastify, convertToRawData                  | Medium         | Export functionality           |
+| TimetableView | MUI, Toastify, html-to-image, jspdf, generateIcs | High           | Export dependencies            |
+| RawDataInput  | prop-types                                       | Low            | Minimal, pure component        |
+| ConfirmDialog | MUI                                              | Low            | Self-contained modal           |
 
 ---
 

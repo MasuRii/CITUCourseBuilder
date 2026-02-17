@@ -9,36 +9,36 @@
 
 ### 1.1 Core Utility Functions
 
-| Function | Location (App.jsx) | Lines | Purpose |
-|----------|-------------------|-------|---------|
-| `loadFromLocalStorage` | 42-114 | ~72 | Load persisted state from localStorage with validation |
-| `getSectionTypeSuffix` | 116-121 | ~5 | Extract section type (AP3/AP4/AP5) from section string |
+| Function               | Location (App.jsx) | Lines | Purpose                                                |
+| ---------------------- | ------------------ | ----- | ------------------------------------------------------ |
+| `loadFromLocalStorage` | 42-114             | ~72   | Load persisted state from localStorage with validation |
+| `getSectionTypeSuffix` | 116-121            | ~5    | Extract section type (AP3/AP4/AP5) from section string |
 
 ### 1.2 Time & Schedule Analysis Functions
 
-| Function | Location (App.jsx) | Lines | Purpose |
-|----------|-------------------|-------|---------|
-| `checkTimeOverlap` | 123-129 | ~6 | Check if two time ranges overlap |
-| `isScheduleConflictFree` | 131-162 | ~31 | Verify a schedule has no internal conflicts |
-| `getTimeOfDayBucket` | 164-171 | ~7 | Categorize time as morning/afternoon/evening/any |
-| `scoreScheduleByTimePreference` | 173-188 | ~15 | Score schedule based on time preferences |
+| Function                        | Location (App.jsx) | Lines | Purpose                                          |
+| ------------------------------- | ------------------ | ----- | ------------------------------------------------ |
+| `checkTimeOverlap`              | 123-129            | ~6    | Check if two time ranges overlap                 |
+| `isScheduleConflictFree`        | 131-162            | ~31   | Verify a schedule has no internal conflicts      |
+| `getTimeOfDayBucket`            | 164-171            | ~7    | Categorize time as morning/afternoon/evening/any |
+| `scoreScheduleByTimePreference` | 173-188            | ~15   | Score schedule based on time preferences         |
 
 ### 1.3 Constraint Validation Functions
 
-| Function | Location (App.jsx) | Lines | Purpose |
-|----------|-------------------|-------|---------|
-| `exceedsMaxUnits` | 190-197 | ~7 | Check if schedule exceeds maximum unit limit |
-| `exceedsMaxGap` | 199-229 | ~30 | Check if schedule has gaps exceeding threshold |
-| `countCampusDays` | 231-247 | ~16 | Count unique on-campus days in schedule |
+| Function          | Location (App.jsx) | Lines | Purpose                                        |
+| ----------------- | ------------------ | ----- | ---------------------------------------------- |
+| `exceedsMaxUnits` | 190-197            | ~7    | Check if schedule exceeds maximum unit limit   |
+| `exceedsMaxGap`   | 199-229            | ~30   | Check if schedule has gaps exceeding threshold |
+| `countCampusDays` | 231-247            | ~16   | Count unique on-campus days in schedule        |
 
 ### 1.4 Schedule Generation Algorithms
 
-| Function | Location (App.jsx) | Lines | Purpose |
-|----------|-------------------|-------|---------|
-| `generateExhaustiveBestSchedule` | 250-333 | ~83 | Exhaustive search for optimal schedule |
-| `getAllSubsets` | 335-344 | ~9 | Generate all subsets of an array (power set) |
-| `generateBestPartialSchedule_Heuristic` | 347-468 | ~121 | Heuristic-based partial schedule generator |
-| `generateBestPartialSchedule` | 471-535 | ~64 | Main partial schedule entry point |
+| Function                                | Location (App.jsx) | Lines | Purpose                                      |
+| --------------------------------------- | ------------------ | ----- | -------------------------------------------- |
+| `generateExhaustiveBestSchedule`        | 250-333            | ~83   | Exhaustive search for optimal schedule       |
+| `getAllSubsets`                         | 335-344            | ~9    | Generate all subsets of an array (power set) |
+| `generateBestPartialSchedule_Heuristic` | 347-468            | ~121  | Heuristic-based partial schedule generator   |
+| `generateBestPartialSchedule`           | 471-535            | ~64   | Main partial schedule entry point            |
 
 **Total Algorithm Code:** ~461 lines (including loadFromLocalStorage)
 
@@ -134,7 +134,7 @@ export interface ParsedSchedule {
 /**
  * Discriminated union for schedule types
  */
-export type ScheduleType = 
+export type ScheduleType =
   | { type: 'tba' }
   | { type: 'single'; slot: TimeSlot }
   | { type: 'multi'; slots: TimeSlot[] };
@@ -321,17 +321,17 @@ export interface AppState {
   allCourses: Course[];
   processedCourses: Course[] | GroupedCourse[];
   rawData: string;
-  
+
   // Theme
   theme: ThemeMode;
   themePalette: ThemePaletteState;
-  
+
   // Filters
   filterState: FilterState;
-  
+
   // Preferences
   preferences: SchedulePreferences;
-  
+
   // UI State
   conflictingLockedCourseIds: Set<string>;
   showTimetable: boolean;
@@ -356,19 +356,14 @@ export interface AppState {
  * @param defaultValue - Default value if key not found or invalid
  * @returns The parsed and validated value, or defaultValue
  */
-function loadFromLocalStorage<T>(
-  key: string, 
-  defaultValue: T
-): T;
+function loadFromLocalStorage<T>(key: string, defaultValue: T): T;
 
 /**
  * Extracts the section type suffix from a section string
  * @param sectionString - Section identifier (e.g., "BSIT-1A-AP3")
  * @returns Section type suffix ("AP3", "AP4", "AP5") or null
  */
-function getSectionTypeSuffix(
-  sectionString: string | undefined
-): 'AP3' | 'AP4' | 'AP5' | null;
+function getSectionTypeSuffix(sectionString: string | undefined): 'AP3' | 'AP4' | 'AP5' | null;
 ```
 
 ### 3.2 Time & Conflict Detection Functions
@@ -382,12 +377,7 @@ function getSectionTypeSuffix(
  * @param end2 - End time of second range (HH:mm)
  * @returns true if ranges overlap, false otherwise
  */
-function checkTimeOverlap(
-  start1: string, 
-  end1: string, 
-  start2: string, 
-  end2: string
-): boolean;
+function checkTimeOverlap(start1: string, end1: string, start2: string, end2: string): boolean;
 
 /**
  * Checks if a schedule has no internal time conflicts
@@ -407,9 +397,7 @@ function isScheduleConflictFree(
  * @param time - Time string in HH:mm format
  * @returns Time bucket category
  */
-function getTimeOfDayBucket(
-  time: string | null | undefined
-): TimeOfDayBucket;
+function getTimeOfDayBucket(time: string | null | undefined): TimeOfDayBucket;
 ```
 
 ### 3.3 Scoring & Validation Functions
@@ -422,10 +410,7 @@ function getTimeOfDayBucket(
  * @param prefOrder - Ordered preference array
  * @returns Score (lower is better)
  */
-function scoreScheduleByTimePreference(
-  schedule: Course[],
-  prefOrder: TimeOfDayBucket[]
-): number;
+function scoreScheduleByTimePreference(schedule: Course[], prefOrder: TimeOfDayBucket[]): number;
 
 /**
  * Checks if a schedule exceeds maximum units
@@ -433,10 +418,7 @@ function scoreScheduleByTimePreference(
  * @param maxUnits - Maximum allowed units (empty string = no limit)
  * @returns true if exceeds limit, false otherwise
  */
-function exceedsMaxUnits(
-  schedule: Course[],
-  maxUnits: string
-): boolean;
+function exceedsMaxUnits(schedule: Course[], maxUnits: string): boolean;
 
 /**
  * Checks if schedule has gaps exceeding threshold
@@ -444,10 +426,7 @@ function exceedsMaxUnits(
  * @param maxGapHours - Maximum gap in hours (empty string = no limit)
  * @returns true if any gap exceeds threshold, false otherwise
  */
-function exceedsMaxGap(
-  schedule: Course[],
-  maxGapHours: string
-): boolean;
+function exceedsMaxGap(schedule: Course[], maxGapHours: string): boolean;
 
 /**
  * Counts unique on-campus days in a schedule
@@ -455,9 +434,7 @@ function exceedsMaxGap(
  * @param schedule - Array of courses to analyze
  * @returns Number of unique on-campus days
  */
-function countCampusDays(
-  schedule: Course[]
-): number;
+function countCampusDays(schedule: Course[]): number;
 ```
 
 ### 3.4 Schedule Generation Functions
@@ -468,9 +445,7 @@ function countCampusDays(
  * @param arr - Input array
  * @returns Array of all subsets
  */
-function getAllSubsets<T>(
-  arr: T[]
-): T[][];
+function getAllSubsets<T>(arr: T[]): T[][];
 
 /**
  * Exhaustive search for optimal schedule
@@ -533,21 +508,21 @@ function generateBestPartialSchedule(
 
 ### 4.1 Dependency Matrix
 
-| Function | Dependencies |
-|----------|-------------|
-| `loadFromLocalStorage` | None |
-| `getSectionTypeSuffix` | None |
-| `checkTimeOverlap` | None |
-| `isScheduleConflictFree` | `checkTimeOverlap`, `parseSchedule` |
-| `getTimeOfDayBucket` | None |
-| `scoreScheduleByTimePreference` | `getTimeOfDayBucket`, `parseSchedule` |
-| `exceedsMaxUnits` | None |
-| `exceedsMaxGap` | `parseSchedule` |
-| `countCampusDays` | `parseSchedule` |
-| `getAllSubsets` | None |
-| `generateExhaustiveBestSchedule` | `isScheduleConflictFree`, `exceedsMaxUnits`, `exceedsMaxGap`, `scoreScheduleByTimePreference`, `countCampusDays`, `checkTimeOverlap`, `parseSchedule` |
-| `generateBestPartialSchedule_Heuristic` | `exceedsMaxUnits`, `exceedsMaxGap`, `scoreScheduleByTimePreference`, `countCampusDays`, `checkTimeOverlap`, `parseSchedule` |
-| `generateBestPartialSchedule` | `getAllSubsets`, `isScheduleConflictFree`, `exceedsMaxUnits`, `exceedsMaxGap`, `scoreScheduleByTimePreference`, `countCampusDays`, `generateBestPartialSchedule_Heuristic`, `parseSchedule` |
+| Function                                | Dependencies                                                                                                                                                                                |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loadFromLocalStorage`                  | None                                                                                                                                                                                        |
+| `getSectionTypeSuffix`                  | None                                                                                                                                                                                        |
+| `checkTimeOverlap`                      | None                                                                                                                                                                                        |
+| `isScheduleConflictFree`                | `checkTimeOverlap`, `parseSchedule`                                                                                                                                                         |
+| `getTimeOfDayBucket`                    | None                                                                                                                                                                                        |
+| `scoreScheduleByTimePreference`         | `getTimeOfDayBucket`, `parseSchedule`                                                                                                                                                       |
+| `exceedsMaxUnits`                       | None                                                                                                                                                                                        |
+| `exceedsMaxGap`                         | `parseSchedule`                                                                                                                                                                             |
+| `countCampusDays`                       | `parseSchedule`                                                                                                                                                                             |
+| `getAllSubsets`                         | None                                                                                                                                                                                        |
+| `generateExhaustiveBestSchedule`        | `isScheduleConflictFree`, `exceedsMaxUnits`, `exceedsMaxGap`, `scoreScheduleByTimePreference`, `countCampusDays`, `checkTimeOverlap`, `parseSchedule`                                       |
+| `generateBestPartialSchedule_Heuristic` | `exceedsMaxUnits`, `exceedsMaxGap`, `scoreScheduleByTimePreference`, `countCampusDays`, `checkTimeOverlap`, `parseSchedule`                                                                 |
+| `generateBestPartialSchedule`           | `getAllSubsets`, `isScheduleConflictFree`, `exceedsMaxUnits`, `exceedsMaxGap`, `scoreScheduleByTimePreference`, `countCampusDays`, `generateBestPartialSchedule_Heuristic`, `parseSchedule` |
 
 ### 4.2 Call Graph (Mermaid Diagram)
 
@@ -558,31 +533,31 @@ graph TD
         GES[generateExhaustiveBestSchedule]
         GPH[generateBestPartialSchedule_Heuristic]
     end
-    
+
     subgraph "Core Algorithms"
         GAS[getAllSubsets]
         ISCF[isScheduleConflictFree]
     end
-    
+
     subgraph "Constraint Validators"
         EMU[exceedsMaxUnits]
         EMG[exceedsMaxGap]
         CCD[countCampusDays]
     end
-    
+
     subgraph "Scoring"
         SSTP[scoreScheduleByTimePreference]
         GTOD[getTimeOfDayBucket]
     end
-    
+
     subgraph "Time Utilities"
         CTO[checkTimeOverlap]
     end
-    
+
     subgraph "External Dependencies"
         PS[parseSchedule]
     end
-    
+
     %% Entry point connections
     GPS --> GAS
     GPS --> ISCF
@@ -591,7 +566,7 @@ graph TD
     GPS --> SSTP
     GPS --> CCD
     GPS --> GPH
-    
+
     GES --> ISCF
     GES --> EMU
     GES --> EMG
@@ -599,26 +574,26 @@ graph TD
     GES --> CCD
     GES --> CTO
     GES --> PS
-    
+
     GPH --> EMU
     GPH --> EMG
     GPH --> SSTP
     GPH --> CCD
     GPH --> CTO
     GPH --> PS
-    
+
     %% Core algorithm connections
     ISCF --> CTO
     ISCF --> PS
-    
+
     %% Constraint connections
     EMG --> PS
     CCD --> PS
-    
+
     %% Scoring connections
     SSTP --> GTOD
     SSTP --> PS
-    
+
     %% Styling
     classDef entryPoint fill:#e1f5fe,stroke:#01579b
     classDef coreAlg fill:#fff3e0,stroke:#e65100
@@ -626,7 +601,7 @@ graph TD
     classDef scoring fill:#e8f5e9,stroke:#1b5e20
     classDef utility fill:#fce4ec,stroke:#880e4f
     classDef external fill:#f5f5f5,stroke:#424242
-    
+
     class GPS,GES,GPH entryPoint
     class GAS,ISCF coreAlg
     class EMU,EMG,CCD constraint
@@ -644,51 +619,51 @@ flowchart TB
         FD[Filter Settings]
         UP[User Preferences]
     end
-    
+
     subgraph Filtering["Course Filtering"]
         FF[Filter Function]
         FC[Filtered Courses]
     end
-    
+
     subgraph Indexing["Course Indexing"]
         CBS[coursesBySubject]
     end
-    
+
     subgraph Generation["Schedule Generation"]
         mode{Search Mode}
         exh[Exhaustive Search]
         par[Partial Search]
         fast[Fast Random]
     end
-    
+
     subgraph Output["Generated Schedule"]
         BS[Best Schedule]
         LS[Locked Courses]
     end
-    
+
     AC --> FF
     FD --> FF
     FF --> FC
     FC --> CBS
     UP --> Generation
-    
+
     CBS --> mode
     mode -->|exhaustive| exh
     mode -->|partial| par
     mode -->|fast| fast
-    
+
     exh --> BS
     par --> BS
     fast --> BS
-    
+
     BS --> LS
-    
+
     subgraph Constraints["Constraint Checks"]
         C1[Conflict Free?]
         C2[Max Units?]
         C3[Max Gap?]
     end
-    
+
     Generation -.-> Constraints
 ```
 
@@ -698,19 +673,19 @@ flowchart TB
 
 ### 5.1 Time Complexity
 
-| Algorithm | Time Complexity | Space Complexity | Notes |
-|-----------|-----------------|------------------|-------|
-| `checkTimeOverlap` | O(1) | O(1) | Simple string comparisons |
-| `isScheduleConflictFree` | O(n² × m) | O(1) | n=courses, m=time slots per course |
-| `getTimeOfDayBucket` | O(1) | O(1) | Simple string parsing |
-| `scoreScheduleByTimePreference` | O(n × m) | O(1) | n=courses, m=time slots |
-| `exceedsMaxUnits` | O(n) | O(1) | Single pass sum |
-| `exceedsMaxGap` | O(n × m × log(m)) | O(n × m) | Sort per day |
-| `countCampusDays` | O(n × m) | O(k) | k=unique days |
-| `getAllSubsets` | O(2ⁿ) | O(2ⁿ) | Power set generation |
-| `generateExhaustiveBestSchedule` | O(kⁿ × n² × m) | O(n) | k=sections per subject, n=subjects |
-| `generateBestPartialSchedule_Heuristic` | O(attempts × n² × m) | O(n) | Configurable attempts |
-| `generateBestPartialSchedule` | O(min(2ⁿ, attempts × n² × m)) | O(2ⁿ) or O(n) | Switches based on threshold |
+| Algorithm                               | Time Complexity               | Space Complexity | Notes                              |
+| --------------------------------------- | ----------------------------- | ---------------- | ---------------------------------- |
+| `checkTimeOverlap`                      | O(1)                          | O(1)             | Simple string comparisons          |
+| `isScheduleConflictFree`                | O(n² × m)                     | O(1)             | n=courses, m=time slots per course |
+| `getTimeOfDayBucket`                    | O(1)                          | O(1)             | Simple string parsing              |
+| `scoreScheduleByTimePreference`         | O(n × m)                      | O(1)             | n=courses, m=time slots            |
+| `exceedsMaxUnits`                       | O(n)                          | O(1)             | Single pass sum                    |
+| `exceedsMaxGap`                         | O(n × m × log(m))             | O(n × m)         | Sort per day                       |
+| `countCampusDays`                       | O(n × m)                      | O(k)             | k=unique days                      |
+| `getAllSubsets`                         | O(2ⁿ)                         | O(2ⁿ)            | Power set generation               |
+| `generateExhaustiveBestSchedule`        | O(kⁿ × n² × m)                | O(n)             | k=sections per subject, n=subjects |
+| `generateBestPartialSchedule_Heuristic` | O(attempts × n² × m)          | O(n)             | Configurable attempts              |
+| `generateBestPartialSchedule`           | O(min(2ⁿ, attempts × n² × m)) | O(2ⁿ) or O(n)    | Switches based on threshold        |
 
 ### 5.2 Performance Thresholds
 
@@ -742,12 +717,14 @@ import { parseRawCourseData } from './utils/parseRawData';
 ### 6.2 DOM Dependencies
 
 The `loadFromLocalStorage` function has DOM dependencies:
+
 - `window.localStorage` - Required for persistence
 - `document.documentElement` - Used in theme effect (not in extracted function)
 
 ### 6.3 State Dependencies
 
 These functions interact with React state (will need adaptation for extraction):
+
 - `generateBestSchedule` (async wrapper in App.jsx) - Uses multiple state setters
 - Conflict detection effect - Uses `allCourses` state
 

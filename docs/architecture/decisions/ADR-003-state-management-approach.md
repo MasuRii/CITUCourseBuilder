@@ -17,13 +17,13 @@ The CITUCourseBuilder application manages significant client-side state across m
 
 ### Current State Architecture
 
-| Category | State Count | Persistence | Purpose |
-|----------|-------------|-------------|---------|
-| Core Data | 5 | localStorage | Courses, filters, processed data |
-| Theme | 2 | localStorage | Light/dark mode, palette |
-| Filters/Preferences | 8 | localStorage | Exclusion rules, constraints |
-| UI State | 5 | None | Dialogs, loading, schedule display |
-| **Total** | **22** | **13 keys** | |
+| Category            | State Count | Persistence  | Purpose                            |
+| ------------------- | ----------- | ------------ | ---------------------------------- |
+| Core Data           | 5           | localStorage | Courses, filters, processed data   |
+| Theme               | 2           | localStorage | Light/dark mode, palette           |
+| Filters/Preferences | 8           | localStorage | Exclusion rules, constraints       |
+| UI State            | 5           | None         | Dialogs, loading, schedule display |
+| **Total**           | **22**      | **13 keys**  |                                    |
 
 ### State Categories
 
@@ -65,49 +65,50 @@ We will use React's built-in state management (useState, useReducer) within Reac
 
 ### Zustand
 
-| Aspect | Pros | Cons |
-|--------|------|------|
-| **Simplicity** | Minimal boilerplate, easy to learn | Additional dependency (~3 KB) |
-| **Persistence** | Built-in persist middleware | Overkill for island-scoped state |
-| **DevTools** | Excellent debugging tools | Not needed for this project size |
-| **TypeScript** | Full TypeScript support | We already have typed interfaces |
-| **SSR** | Works with SSR frameworks | We don't need SSR state |
+| Aspect          | Pros                               | Cons                             |
+| --------------- | ---------------------------------- | -------------------------------- |
+| **Simplicity**  | Minimal boilerplate, easy to learn | Additional dependency (~3 KB)    |
+| **Persistence** | Built-in persist middleware        | Overkill for island-scoped state |
+| **DevTools**    | Excellent debugging tools          | Not needed for this project size |
+| **TypeScript**  | Full TypeScript support            | We already have typed interfaces |
+| **SSR**         | Works with SSR frameworks          | We don't need SSR state          |
 
 **Verdict**: Not chosen because our state is entirely client-side and scoped to React islands. Zustand's primary benefits (shared state across islands, SSR support) aren't needed. Adding a state library would increase bundle size without meaningful benefit.
 
 ### Jotai
 
-| Aspect | Pros | Cons |
-|--------|------|------|
-| **Atomic model** | Fine-grained reactivity | Learning curve for atomic model |
-| **Bundle size** | Very small (~2 KB) | Different mental model from useState |
-| **TypeScript** | Excellent type inference | Overkill for simple state |
-| **No providers** | Can use without context | Not beneficial for island-scoped state |
+| Aspect           | Pros                     | Cons                                   |
+| ---------------- | ------------------------ | -------------------------------------- |
+| **Atomic model** | Fine-grained reactivity  | Learning curve for atomic model        |
+| **Bundle size**  | Very small (~2 KB)       | Different mental model from useState   |
+| **TypeScript**   | Excellent type inference | Overkill for simple state              |
+| **No providers** | Can use without context  | Not beneficial for island-scoped state |
 
 **Verdict**: Not chosen because the atomic state model introduces unnecessary complexity. Our current state structure (22 useState hooks) maps directly to custom hooks, making Jotai's primitives redundant.
 
 ### Nanostores
 
-| Aspect | Pros | Cons |
-|--------|------|------|
-| **Framework agnostic** | Works in Astro and React | Requires learning new API |
-| **Tiny bundle** | ~0.5 KB | Limited ecosystem |
+| Aspect                   | Pros                        | Cons                             |
+| ------------------------ | --------------------------- | -------------------------------- |
+| **Framework agnostic**   | Works in Astro and React    | Requires learning new API        |
+| **Tiny bundle**          | ~0.5 KB                     | Limited ecosystem                |
 | **Cross-island sharing** | Share state between islands | We don't need cross-island state |
-| **SSR friendly** | Built for Astro ecosystem | All our state is client-only |
+| **SSR friendly**         | Built for Astro ecosystem   | All our state is client-only     |
 
 **Verdict**: Not chosen because while Nanostores is designed for Astro, our state is entirely client-side and doesn't need to be shared across islands. The App.jsx component is the only state owner, and child components receive props directly (max 1 level drilling).
 
 ### React Built-in State (Chosen)
 
-| Aspect | Pros | Cons |
-|--------|------|------|
-| **Zero dependencies** | No additional bundle size | Must implement persistence manually |
-| **Team familiarity** | Already using useState patterns | None significant |
-| **TypeScript** | Full type safety with interfaces | None significant |
-| **Island compatibility** | Works perfectly with hydration | None significant |
-| **Migration simplicity** | Extract to hooks, no paradigm shift | None significant |
+| Aspect                   | Pros                                | Cons                                |
+| ------------------------ | ----------------------------------- | ----------------------------------- |
+| **Zero dependencies**    | No additional bundle size           | Must implement persistence manually |
+| **Team familiarity**     | Already using useState patterns     | None significant                    |
+| **TypeScript**           | Full type safety with interfaces    | None significant                    |
+| **Island compatibility** | Works perfectly with hydration      | None significant                    |
+| **Migration simplicity** | Extract to hooks, no paradigm shift | None significant                    |
 
 **Verdict**: **Chosen** because:
+
 - State is entirely client-side (no SSR considerations)
 - Flat component architecture means no complex prop drilling
 - localStorage persistence is straightforward
@@ -139,13 +140,16 @@ export function useLocalStorage<T>(
     }
   });
 
-  const setValue = useCallback((value: T | ((prev: T) => T)) => {
-    setStoredValue((prev) => {
-      const valueToStore = value instanceof Function ? value(prev) : value;
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
-      return valueToStore;
-    });
-  }, [key]);
+  const setValue = useCallback(
+    (value: T | ((prev: T) => T)) => {
+      setStoredValue((prev) => {
+        const valueToStore = value instanceof Function ? value(prev) : value;
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        return valueToStore;
+      });
+    },
+    [key]
+  );
 
   return [storedValue, setValue];
 }
@@ -161,25 +165,38 @@ import type { Course, GroupedCourse } from '../types';
 
 export function useCourseState() {
   const [allCourses, setAllCourses] = useLocalStorage<Course[]>('courseBuilder_allCourses', []);
-  const [groupingKey, setGroupingKey] = useLocalStorage<string>('courseBuilder_groupingKey', 'subject');
-  const [selectedStatusFilter, setSelectedStatusFilter] = useLocalStorage<string>('courseBuilder_selectedStatusFilter', 'open');
-  const [selectedSectionTypes, setSelectedSectionTypes] = useLocalStorage<string[]>('courseBuilder_selectedSectionTypes', []);
+  const [groupingKey, setGroupingKey] = useLocalStorage<string>(
+    'courseBuilder_groupingKey',
+    'subject'
+  );
+  const [selectedStatusFilter, setSelectedStatusFilter] = useLocalStorage<string>(
+    'courseBuilder_selectedStatusFilter',
+    'open'
+  );
+  const [selectedSectionTypes, setSelectedSectionTypes] = useLocalStorage<string[]>(
+    'courseBuilder_selectedSectionTypes',
+    []
+  );
 
   // Derived state
-  const lockedCourses = useMemo(() => 
-    allCourses.filter(c => c.isLocked), [allCourses]
-  );
-  
-  const totalUnits = useMemo(() =>
-    lockedCourses.reduce((sum, c) => sum + parseFloat(c.units || '0'), 0), [lockedCourses]
+  const lockedCourses = useMemo(() => allCourses.filter((c) => c.isLocked), [allCourses]);
+
+  const totalUnits = useMemo(
+    () => lockedCourses.reduce((sum, c) => sum + parseFloat(c.units || '0'), 0),
+    [lockedCourses]
   );
 
   return {
-    allCourses, setAllCourses,
-    groupingKey, setGroupingKey,
-    selectedStatusFilter, setSelectedStatusFilter,
-    selectedSectionTypes, setSelectedSectionTypes,
-    lockedCourses, totalUnits,
+    allCourses,
+    setAllCourses,
+    groupingKey,
+    setGroupingKey,
+    selectedStatusFilter,
+    setSelectedStatusFilter,
+    selectedSectionTypes,
+    setSelectedSectionTypes,
+    lockedCourses,
+    totalUnits,
   };
 }
 ```
@@ -192,16 +209,29 @@ import { useLocalStorage } from './useLocalStorage';
 import type { TimeRange } from '../types';
 
 export function useFilterState() {
-  const [excludedDays, setExcludedDays] = useLocalStorage<string[]>('courseBuilder_excludedDays', []);
-  const [excludedTimeRanges, setExcludedTimeRanges] = useLocalStorage<TimeRange[]>('courseBuilder_excludedTimeRanges', []);
+  const [excludedDays, setExcludedDays] = useLocalStorage<string[]>(
+    'courseBuilder_excludedDays',
+    []
+  );
+  const [excludedTimeRanges, setExcludedTimeRanges] = useLocalStorage<TimeRange[]>(
+    'courseBuilder_excludedTimeRanges',
+    []
+  );
   const [maxUnits, setMaxUnits] = useLocalStorage<string>('courseBuilder_maxUnits', '');
-  const [maxClassGapHours, setMaxClassGapHours] = useLocalStorage<string>('courseBuilder_maxClassGapHours', '');
+  const [maxClassGapHours, setMaxClassGapHours] = useLocalStorage<string>(
+    'courseBuilder_maxClassGapHours',
+    ''
+  );
 
   return {
-    excludedDays, setExcludedDays,
-    excludedTimeRanges, setExcludedTimeRanges,
-    maxUnits, setMaxUnits,
-    maxClassGapHours, setMaxClassGapHours,
+    excludedDays,
+    setExcludedDays,
+    excludedTimeRanges,
+    setExcludedTimeRanges,
+    maxUnits,
+    setMaxUnits,
+    maxClassGapHours,
+    setMaxClassGapHours,
   };
 }
 ```
@@ -244,19 +274,21 @@ export function useSchedulePreferences() {
     'courseBuilder_preferredTimeOfDay',
     DEFAULT_TIME_ORDER
   );
-  const [scheduleSearchMode, setScheduleSearchMode] = useLocalStorage<'fast' | 'exhaustive' | 'partial'>(
-    'courseBuilder_scheduleSearchMode',
-    'partial'
-  );
+  const [scheduleSearchMode, setScheduleSearchMode] = useLocalStorage<
+    'fast' | 'exhaustive' | 'partial'
+  >('courseBuilder_scheduleSearchMode', 'partial');
   const [minimizeDaysOnCampus, setMinimizeDaysOnCampus] = useLocalStorage<boolean>(
     'courseBuilder_minimizeDaysOnCampus',
     false
   );
 
   return {
-    preferredTimeOfDayOrder, setPreferredTimeOfDayOrder,
-    scheduleSearchMode, setScheduleSearchMode,
-    minimizeDaysOnCampus, setMinimizeDaysOnCampus,
+    preferredTimeOfDayOrder,
+    setPreferredTimeOfDayOrder,
+    scheduleSearchMode,
+    setScheduleSearchMode,
+    minimizeDaysOnCampus,
+    setMinimizeDaysOnCampus,
   };
 }
 ```
@@ -280,10 +312,14 @@ export function useScheduleGeneration() {
   }, []);
 
   return {
-    generatedSchedules, setGeneratedSchedules,
-    currentScheduleIndex, setCurrentScheduleIndex,
-    isGenerating, setIsGenerating,
-    generatedScheduleCount, setGeneratedScheduleCount,
+    generatedSchedules,
+    setGeneratedSchedules,
+    currentScheduleIndex,
+    setCurrentScheduleIndex,
+    isGenerating,
+    setIsGenerating,
+    generatedScheduleCount,
+    setGeneratedScheduleCount,
     clearSchedules,
   };
 }
@@ -351,12 +387,12 @@ Astro renders static HTML at build time. React islands hydrate client-side only.
 
 ### Hydration Considerations
 
-| Consideration | Solution |
-|---------------|----------|
-| **Initial render mismatch** | useLocalStorage reads on mount, not during SSR |
-| **Theme flash** | Inline script in `<head>` reads localStorage before React loads |
-| **Empty state on SSR** | Static HTML shows empty/default state, React populates on hydration |
-| **localStorage availability** | useLocalStorage checks `window` existence |
+| Consideration                 | Solution                                                            |
+| ----------------------------- | ------------------------------------------------------------------- |
+| **Initial render mismatch**   | useLocalStorage reads on mount, not during SSR                      |
+| **Theme flash**               | Inline script in `<head>` reads localStorage before React loads     |
+| **Empty state on SSR**        | Static HTML shows empty/default state, React populates on hydration |
+| **localStorage availability** | useLocalStorage checks `window` existence                           |
 
 ### Theme Flash Prevention
 
@@ -366,18 +402,21 @@ Astro renders static HTML at build time. React islands hydrate client-side only.
 ---
 
 <html>
-<head>
-  <script is:inline>
-    // Run before React to prevent theme flash
-    const theme = localStorage.getItem('courseBuilder_theme') || 'dark';
-    const palette = JSON.parse(localStorage.getItem('courseBuilder_themePalette') || '{"light":"original","dark":"original"}');
-    document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.setAttribute('data-palette', palette[theme]);
-  </script>
-</head>
-<body>
-  <slot />
-</body>
+  <head>
+    <script is:inline>
+      // Run before React to prevent theme flash
+      const theme = localStorage.getItem('courseBuilder_theme') || 'dark';
+      const palette = JSON.parse(
+        localStorage.getItem('courseBuilder_themePalette') ||
+          '{"light":"original","dark":"original"}'
+      );
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute('data-palette', palette[theme]);
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 ```
 
@@ -385,21 +424,21 @@ Astro renders static HTML at build time. React islands hydrate client-side only.
 
 ### localStorage Keys (13 total)
 
-| Key | Type | Default | Purpose |
-|-----|------|---------|---------|
-| `courseBuilder_allCourses` | `Course[]` | `[]` | Imported courses |
-| `courseBuilder_excludedDays` | `string[]` | `[]` | Days to exclude |
-| `courseBuilder_excludedTimeRanges` | `TimeRange[]` | `[]` | Time exclusions |
-| `courseBuilder_theme` | `'light' \| 'dark'` | `'dark'` | Theme mode |
-| `courseBuilder_themePalette` | `{light, dark}` | `{original, original}` | Palette per theme |
-| `courseBuilder_groupingKey` | `string` | `'subject'` | Table grouping |
-| `courseBuilder_selectedSectionTypes` | `string[]` | `[]` | Section filters |
-| `courseBuilder_selectedStatusFilter` | `string` | `'open'` | Status filter |
-| `courseBuilder_maxUnits` | `string` | `''` | Max units constraint |
-| `courseBuilder_maxClassGapHours` | `string` | `''` | Max gap constraint |
-| `courseBuilder_preferredTimeOfDay` | `string[]` | `['morning', 'afternoon', 'evening']` | Time preference |
-| `courseBuilder_scheduleSearchMode` | `string` | `'partial'` | Generation mode |
-| `courseBuilder_minimizeDaysOnCampus` | `boolean` | `false` | Minimize days |
+| Key                                  | Type                | Default                               | Purpose              |
+| ------------------------------------ | ------------------- | ------------------------------------- | -------------------- |
+| `courseBuilder_allCourses`           | `Course[]`          | `[]`                                  | Imported courses     |
+| `courseBuilder_excludedDays`         | `string[]`          | `[]`                                  | Days to exclude      |
+| `courseBuilder_excludedTimeRanges`   | `TimeRange[]`       | `[]`                                  | Time exclusions      |
+| `courseBuilder_theme`                | `'light' \| 'dark'` | `'dark'`                              | Theme mode           |
+| `courseBuilder_themePalette`         | `{light, dark}`     | `{original, original}`                | Palette per theme    |
+| `courseBuilder_groupingKey`          | `string`            | `'subject'`                           | Table grouping       |
+| `courseBuilder_selectedSectionTypes` | `string[]`          | `[]`                                  | Section filters      |
+| `courseBuilder_selectedStatusFilter` | `string`            | `'open'`                              | Status filter        |
+| `courseBuilder_maxUnits`             | `string`            | `''`                                  | Max units constraint |
+| `courseBuilder_maxClassGapHours`     | `string`            | `''`                                  | Max gap constraint   |
+| `courseBuilder_preferredTimeOfDay`   | `string[]`          | `['morning', 'afternoon', 'evening']` | Time preference      |
+| `courseBuilder_scheduleSearchMode`   | `string`            | `'partial'`                           | Generation mode      |
+| `courseBuilder_minimizeDaysOnCampus` | `boolean`           | `false`                               | Minimize days        |
 
 ### Persistence Flow
 

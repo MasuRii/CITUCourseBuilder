@@ -20,7 +20,6 @@ const availableDays = [
  * @property {string} end - End time in HH:mm format (internal state).
  */
 
-
 const timeStringToDate = (timeString) => {
   if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) {
     return null;
@@ -31,7 +30,7 @@ const timeStringToDate = (timeString) => {
     date.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
     return date;
   } catch (e) {
-    console.error("Error converting time string to Date:", e);
+    console.error('Error converting time string to Date:', e);
     return null;
   }
 };
@@ -53,7 +52,6 @@ const createTimeDate = (hours, minutes) => {
 
 const minSelectableTime = createTimeDate(7, 30);
 const maxSelectableTime = createTimeDate(22, 0);
-
 
 /**
  * Component for selecting day and time filters.

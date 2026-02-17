@@ -530,9 +530,10 @@
       "sectionId": "2.2",
       "category": "setup",
       "description": "Configure Prettier with Astro plugin",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Installed Prettier v3.8.1 with prettier-plugin-astro v0.14.1 at monorepo root. Created .prettierrc with formatting rules (semicolons, single quotes, 2-space tabs, trailing commas ES5, 100-char print width). Created .prettierignore to exclude build artifacts, lock files, and generated files. Added format and format:check scripts to package.json. Updated lint-staged to run prettier --write after ESLint for *.{js,jsx,ts,tsx,astro,json,md,css} files. All verification checks pass: format:check, lint, tests, typecheck. Updated AGENTS.md with lesson #22.",
       "acceptanceCriteria": [
         "Install: `bun add -d prettier prettier-plugin-astro`",
         "Create .prettierrc with formatting rules",

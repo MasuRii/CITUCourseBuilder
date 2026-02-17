@@ -5,7 +5,7 @@
  * @returns {string|null} The time in HH:mm format or null if invalid.
  */
 function convertAmPmTo24Hour(timeStr) {
-  if (!timeStr || typeof timeStr !== "string") return null;
+  if (!timeStr || typeof timeStr !== 'string') return null;
 
   const lowerTimeStr = timeStr.toLowerCase();
   const match = lowerTimeStr.match(/([0-9]{1,2}):([0-9]{2}) *(am|pm)/);
@@ -22,12 +22,12 @@ function convertAmPmTo24Hour(timeStr) {
   const period = match[3];
 
   if (hours === 12) {
-    hours = period === "am" ? 0 : 12;
-  } else if (period === "pm") {
+    hours = period === 'am' ? 0 : 12;
+  } else if (period === 'pm') {
     hours += 12;
   }
 
-  const hoursStr = hours.toString().padStart(2, "0");
+  const hoursStr = hours.toString().padStart(2, '0');
 
   return `${hoursStr}:${minutes}`;
 }
@@ -39,16 +39,16 @@ function convertAmPmTo24Hour(timeStr) {
  */
 function normalizeDayCode(day) {
   const dayMap = {
-    M: "M",
-    T: "T",
-    W: "W",
-    TH: "TH",
-    F: "F",
-    S: "S",
-    SAT: "S", // Map SAT to S
-    SU: "SU",
-    U: "SU",
-    SUN: "SU", // Map SUN to SU
+    M: 'M',
+    T: 'T',
+    W: 'W',
+    TH: 'TH',
+    F: 'F',
+    S: 'S',
+    SAT: 'S', // Map SAT to S
+    SU: 'SU',
+    U: 'SU',
+    SUN: 'SU', // Map SUN to SU
   };
 
   return dayMap[day] || null;
@@ -60,12 +60,12 @@ function normalizeDayCode(day) {
  * @returns {{startTime: string, endTime: string} | null}
  */
 function parseSingleTimeRange(timeRangeStr) {
-  const timeRangeParts = timeRangeStr.split("-").map((time) => time.trim());
+  const timeRangeParts = timeRangeStr.split('-').map((time) => time.trim());
   if (timeRangeParts.length !== 2) {
     // Check if it's a comma-separated list of ranges (e.g., "03:00 PM - 04:30 PM, 03:00 PM - 04:30 PM")
     // This often happens in Hybrid classes where multiple modes share the same time
-    if (timeRangeStr.includes(",")) {
-      const firstRange = timeRangeStr.split(",")[0].trim();
+    if (timeRangeStr.includes(',')) {
+      const firstRange = timeRangeStr.split(',')[0].trim();
       return parseSingleTimeRange(firstRange);
     }
     console.warn(`Could not parse time range: ${timeRangeStr}`);
@@ -76,9 +76,7 @@ function parseSingleTimeRange(timeRangeStr) {
   const endTime = convertAmPmTo24Hour(timeRangeParts[1]);
 
   if (!startTime || !endTime) {
-    console.warn(
-      `Could not convert time to 24hr format in range: ${timeRangeStr}`
-    );
+    console.warn(`Could not convert time to 24hr format in range: ${timeRangeStr}`);
     return null;
   }
   return { startTime, endTime };
@@ -100,18 +98,15 @@ function parseDaySegment(daySegmentStr) {
 
   // Order matters: TH before T, SAT before S, SUN before S/U
   const specialDayMappings = [
-    { token: "TH", code: "TH" },
-    { token: "SAT", code: "S" },
-    { token: "SUN", code: "SU" },
+    { token: 'TH', code: 'TH' },
+    { token: 'SAT', code: 'S' },
+    { token: 'SUN', code: 'SU' },
   ];
 
   specialDayMappings.forEach((mapping) => {
     if (remainingDayStr.includes(mapping.token)) {
       days.push(mapping.code);
-      remainingDayStr = remainingDayStr.replace(
-        new RegExp(mapping.token, "g"),
-        ""
-      );
+      remainingDayStr = remainingDayStr.replace(new RegExp(mapping.token, 'g'), '');
     }
   });
 
@@ -140,17 +135,17 @@ function parseDaySegment(daySegmentStr) {
  *                        Times are in 24-hour format (HH:mm). Days are single chars (M, T, W, TH, F, S, SU).
  */
 function parseSchedule(scheduleString) {
-  if (!scheduleString || typeof scheduleString !== "string") {
+  if (!scheduleString || typeof scheduleString !== 'string') {
     return null;
   }
 
   const upperScheduleString = scheduleString.toUpperCase().trim();
 
-  if (upperScheduleString === "TBA") {
+  if (upperScheduleString === 'TBA') {
     return { days: [], startTime: null, endTime: null, isTBA: true };
   }
 
-  const combinedParts = upperScheduleString.split("+").map((s) => s.trim());
+  const combinedParts = upperScheduleString.split('+').map((s) => s.trim());
   let finalTimeSlots = [];
   let allRepresentativeDays = new Set();
 
@@ -158,14 +153,10 @@ function parseSchedule(scheduleString) {
     const slotsFromPart = parseSchedulePart(partStr);
     if (slotsFromPart && slotsFromPart.length > 0) {
       finalTimeSlots.push(...slotsFromPart);
-      slotsFromPart.forEach((slot) =>
-        slot.days.forEach((day) => allRepresentativeDays.add(day))
-      );
+      slotsFromPart.forEach((slot) => slot.days.forEach((day) => allRepresentativeDays.add(day)));
     } else if (combinedParts.length === 1 && !slotsFromPart) {
       // if single part fails to parse, return null for the whole schedule
-      console.warn(
-        `Failed to parse schedule part: ${partStr} in ${scheduleString}`
-      );
+      console.warn(`Failed to parse schedule part: ${partStr} in ${scheduleString}`);
       return null;
     }
   }
@@ -201,19 +192,23 @@ function parseSchedule(scheduleString) {
 function parseSchedulePart(schedulePartStr) {
   // If the part is completely empty or just whitespace/pipes/commas/mode, skip it
   // Optimized check to avoid logs for empty skeletons like "| | | (In-Person)"
-  const cleaned = schedulePartStr.replace(/\([^)]*\)/g, '').replace(/[|,\s]+/g, '').trim();
+  const cleaned = schedulePartStr
+    .replace(/\([^)]*\)/g, '')
+    .replace(/[|,\s]+/g, '')
+    .trim();
   if (!cleaned) {
     return [];
   }
 
-  const rawParts = schedulePartStr.split("|").map((part) => part.trim());
+  const rawParts = schedulePartStr.split('|').map((part) => part.trim());
 
   if (rawParts.length < 2) {
     // Attempt to parse as space-separated format (fallback for new data variations)
     // Regex matches: Days Time Range Room [Type]
     // Example: "F 9:00AM-10:30AM RTL313 LEC" or multiple concatenated "F ... T ..."
     // Updated regex to handle optional spaces in time range (e.g. "08:00 AM - 12:00 PM")
-    const fallbackRegex = /([A-Z]+(?:\/[A-Z]+)*)\s+(\d{1,2}:\d{2}\s*[AP]M\s*-\s*\d{1,2}:\d{2}\s*[AP]M)\s+(\S+)(?:\s+(\S+))?/gi;
+    const fallbackRegex =
+      /([A-Z]+(?:\/[A-Z]+)*)\s+(\d{1,2}:\d{2}\s*[AP]M\s*-\s*\d{1,2}:\d{2}\s*[AP]M)\s+(\S+)(?:\s+(\S+))?/gi;
     const matches = [...schedulePartStr.matchAll(fallbackRegex)];
 
     if (matches.length > 0) {
@@ -228,17 +223,16 @@ function parseSchedulePart(schedulePartStr) {
         const parsedTime = parseSingleTimeRange(timeRangeStr);
 
         if (parsedDays.length > 0 && parsedTime) {
-           slots.push({
-             days: parsedDays,
-             startTime: parsedTime.startTime,
-             endTime: parsedTime.endTime,
-             room: room
-           });
+          slots.push({
+            days: parsedDays,
+            startTime: parsedTime.startTime,
+            endTime: parsedTime.endTime,
+            room: room,
+          });
         }
       }
       if (slots.length > 0) return slots;
     }
-
 
     console.warn(
       `Could not parse schedule part: ${schedulePartStr} - Expected at least 2 parts (Days | Times).`
@@ -248,44 +242,42 @@ function parseSchedulePart(schedulePartStr) {
 
   const daysComponent = rawParts[0]; // e.g., "F/SAT" or "MWF"
 
-
   const timesComponent = rawParts[1]; // e.g., "10:30AM-11:30AM/7:00PM-9:00PM" or "9:00AM-10:00AM"
 
   // Get room component if available (could be "Room#FIELD" or "Room#online/ACAD309")
-  const roomComponent = rawParts.length >= 3 ? rawParts[2] : "";
+  const roomComponent = rawParts.length >= 3 ? rawParts[2] : '';
 
   // Parse room information - extract rooms for each day if multiple are provided
   let roomsArray = [];
-  if (roomComponent && roomComponent.toLowerCase().startsWith("room#")) {
+  if (roomComponent && roomComponent.toLowerCase().startsWith('room#')) {
     const roomsSection = roomComponent.substring(5); // Remove "Room#" prefix
-    roomsArray = roomsSection.split("/").map((room) => room.trim());
+    roomsArray = roomsSection.split('/').map((room) => room.trim());
   } else if (roomComponent) {
     // Also support comma-separated rooms (common in WITS hybrid pastes)
-    if (roomComponent.includes(",")) {
-        roomsArray = roomComponent.split(",").map(r => r.trim());
+    if (roomComponent.includes(',')) {
+      roomsArray = roomComponent.split(',').map((r) => r.trim());
     } else {
-        roomsArray = [roomComponent.trim()];
+      roomsArray = [roomComponent.trim()];
     }
   }
 
+  const daySegmentsStrs = daysComponent.split('/').map((s) => s.trim()); // ["F", "SAT"]
 
-  const daySegmentsStrs = daysComponent.split("/").map((s) => s.trim()); // ["F", "SAT"]
-  
   // Handle comma-separated times or days in the components (e.g. "M, TH | 08:00 AM - 10:00 AM, 07:30 AM - 10:30 AM")
   // For hybrid schedules, comma-separated lists often correspond to each other.
   // If we have "M, W" (2 groups) and "Time1, Time2" (2 groups), we should pair them.
-  
+
   let effectiveDaySegments = daySegmentsStrs;
-  if (daySegmentsStrs.length === 1 && daySegmentsStrs[0].includes(",")) {
-      // Split "M, TH" into ["M", "TH"]
-      effectiveDaySegments = daySegmentsStrs[0].split(",").map(s => s.trim());
+  if (daySegmentsStrs.length === 1 && daySegmentsStrs[0].includes(',')) {
+    // Split "M, TH" into ["M", "TH"]
+    effectiveDaySegments = daySegmentsStrs[0].split(',').map((s) => s.trim());
   }
 
   let timeSegmentsStrs = [];
-  if (timesComponent.includes(",") && !timesComponent.includes("/")) {
-      timeSegmentsStrs = timesComponent.split(",").map(s => s.trim());
+  if (timesComponent.includes(',') && !timesComponent.includes('/')) {
+    timeSegmentsStrs = timesComponent.split(',').map((s) => s.trim());
   } else {
-      timeSegmentsStrs = timesComponent.split("/").map((s) => s.trim());
+    timeSegmentsStrs = timesComponent.split('/').map((s) => s.trim());
   }
 
   const parsedDaySegments = effectiveDaySegments.map(parseDaySegment); // [["F"], ["S"]]
@@ -316,7 +308,7 @@ function parseSchedulePart(schedulePartStr) {
     for (let i = 0; i < nDaySegments; i++) {
       if (parsedDaySegments[i].length > 0 && parsedTimeSegments[i]) {
         const roomForDaySegment =
-          i < nRooms ? effectiveRooms[i] : nRooms > 0 ? effectiveRooms[0] : "";
+          i < nRooms ? effectiveRooms[i] : nRooms > 0 ? effectiveRooms[0] : '';
         resultingTimeSlots.push({
           days: parsedDaySegments[i],
           startTime: parsedTimeSegments[i].startTime,
@@ -331,7 +323,7 @@ function parseSchedulePart(schedulePartStr) {
       const timeIdx = i < nTimeSegments ? i : nTimeSegments - 1;
       if (parsedDaySegments[i].length > 0 && parsedTimeSegments[timeIdx]) {
         const roomForDaySegment =
-          i < nRooms ? effectiveRooms[i] : nRooms > 0 ? effectiveRooms[0] : "";
+          i < nRooms ? effectiveRooms[i] : nRooms > 0 ? effectiveRooms[0] : '';
         resultingTimeSlots.push({
           days: parsedDaySegments[i],
           startTime: parsedTimeSegments[timeIdx].startTime,
@@ -346,7 +338,7 @@ function parseSchedulePart(schedulePartStr) {
       const dayIdx = i < nDaySegments ? i : nDaySegments - 1;
       if (parsedDaySegments[dayIdx].length > 0 && parsedTimeSegments[i]) {
         const roomForTimeSegment =
-          i < nRooms ? effectiveRooms[i] : nRooms > 0 ? effectiveRooms[0] : "";
+          i < nRooms ? effectiveRooms[i] : nRooms > 0 ? effectiveRooms[0] : '';
         resultingTimeSlots.push({
           days: parsedDaySegments[dayIdx],
           startTime: parsedTimeSegments[i].startTime,
@@ -362,11 +354,7 @@ function parseSchedulePart(schedulePartStr) {
       parsedTimeSegments.forEach((timeSlot, index) => {
         if (timeSlot) {
           const roomForTimeSlot =
-            index < nRooms
-              ? effectiveRooms[index]
-              : nRooms > 0
-              ? effectiveRooms[0]
-              : "";
+            index < nRooms ? effectiveRooms[index] : nRooms > 0 ? effectiveRooms[0] : '';
           resultingTimeSlots.push({
             days: days,
             startTime: timeSlot.startTime,
@@ -383,11 +371,7 @@ function parseSchedulePart(schedulePartStr) {
       parsedDaySegments.forEach((daysArray, index) => {
         if (daysArray.length > 0) {
           const roomForDayGroup =
-            index < nRooms
-              ? effectiveRooms[index]
-              : nRooms > 0
-              ? effectiveRooms[0]
-              : "";
+            index < nRooms ? effectiveRooms[index] : nRooms > 0 ? effectiveRooms[0] : '';
           resultingTimeSlots.push({
             days: daysArray,
             startTime: timeSlot.startTime,
@@ -406,8 +390,7 @@ function parseSchedulePart(schedulePartStr) {
     const minLen = Math.min(nDaySegments, nTimeSegments);
     for (let i = 0; i < minLen; i++) {
       if (parsedDaySegments[i].length > 0 && parsedTimeSegments[i]) {
-        const roomForSegment =
-          i < nRooms ? effectiveRooms[i] : nRooms > 0 ? effectiveRooms[0] : "";
+        const roomForSegment = i < nRooms ? effectiveRooms[i] : nRooms > 0 ? effectiveRooms[0] : '';
         resultingTimeSlots.push({
           days: parsedDaySegments[i],
           startTime: parsedTimeSegments[i].startTime,

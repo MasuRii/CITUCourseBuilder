@@ -1,7 +1,7 @@
 ---
 /**
  * Main Index Page
- * 
+ *
  * Entry point for the CITU Course Builder application.
  * Contains test islands for React hydration and theme verification.
  */
@@ -11,133 +11,162 @@ import '../styles/global.css';
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content="Plan, Filter, and Optimize Your Class Schedules with Ease!" />
-		<title>CITU Course Builder - Astro</title>
-		
-		<!-- Theme Flash Prevention: Apply theme before page renders -->
-		<script is:inline>
-			(function() {
-				const theme = localStorage.getItem('courseBuilder_theme') || 'dark';
-				const palette = localStorage.getItem('courseBuilder_palette') || 'original';
-				document.documentElement.setAttribute('data-theme', theme);
-				document.documentElement.setAttribute('data-palette', palette);
-			})();
-		</script>
-	</head>
-	<body class="min-h-screen transition-theme">
-		<main class="container-main py-8">
-			<!-- Header with Theme Toggle -->
-			<header class="flex items-center justify-between mb-8 p-4 rounded-lg bg-surface-header">
-				<div>
-					<h1 class="text-2xl font-bold text-content-header m-0">CITU Course Builder</h1>
-					<p class="text-content-header text-opacity-80 m-0">Astro 5.x + React 19.x + Tailwind 4.x</p>
-				</div>
-				<ThemeToggle client:load />
-			</header>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="Plan, Filter, and Optimize Your Class Schedules with Ease!" />
+    <title>CITU Course Builder - Astro</title>
 
-			<!-- Theme Test Section -->
-			<section class="p-6 mb-8 rounded-lg bg-surface-secondary border border-default">
-				<h2 class="text-xl font-semibold text-content-primary mb-4">Theme System Test</h2>
-				<p class="text-content-secondary mb-4">
-					Use the theme toggle buttons above to test the 6 theme combinations.
-					The colors below should change based on the selected theme and palette.
-				</p>
-				
-				<div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-					<div class="p-4 rounded-md bg-surface-primary border border-default">
-						<p class="text-sm text-content-secondary mb-1">Surface Primary</p>
-						<p class="text-content-primary font-medium">Background</p>
-					</div>
-					<div class="p-4 rounded-md bg-surface-elevated border border-default">
-						<p class="text-sm text-content-secondary mb-1">Surface Elevated</p>
-						<p class="text-content-primary font-medium">Card/Section</p>
-					</div>
-					<div class="p-4 rounded-md bg-surface-header">
-						<p class="text-sm text-content-header text-opacity-80 mb-1">Surface Header</p>
-						<p class="text-content-header font-medium">Header BG</p>
-					</div>
-					<div class="p-4 rounded-md bg-success text-white">
-						<p class="text-sm text-white text-opacity-80 mb-1">Success</p>
-						<p class="font-medium">Semantic Color</p>
-					</div>
-					<div class="p-4 rounded-md bg-warning text-black">
-						<p class="text-sm text-black text-opacity-80 mb-1">Warning</p>
-						<p class="font-medium">Semantic Color</p>
-					</div>
-					<div class="p-4 rounded-md bg-danger text-white">
-						<p class="text-sm text-white text-opacity-80 mb-1">Danger</p>
-						<p class="font-medium">Semantic Color</p>
-					</div>
-				</div>
+    <!-- Theme Flash Prevention: Apply theme before page renders -->
+    <script is:inline>
+      (function () {
+        const theme = localStorage.getItem('courseBuilder_theme') || 'dark';
+        const palette = localStorage.getItem('courseBuilder_palette') || 'original';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.setAttribute('data-palette', palette);
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen transition-theme">
+    <main class="container-main py-8">
+      <!-- Header with Theme Toggle -->
+      <header class="flex items-center justify-between mb-8 p-4 rounded-lg bg-surface-header">
+        <div>
+          <h1 class="text-2xl font-bold text-content-header m-0">CITU Course Builder</h1>
+          <p class="text-content-header text-opacity-80 m-0">
+            Astro 5.x + React 19.x + Tailwind 4.x
+          </p>
+        </div>
+        <ThemeToggle client:load />
+      </header>
 
-				<h3 class="text-lg font-medium text-content-primary mb-3">Button Styles</h3>
-				<div class="flex flex-wrap gap-3">
-					<button class="btn-primary px-4 py-2 rounded-md">Primary Button</button>
-					<button class="btn-danger px-4 py-2 rounded-md">Danger Button</button>
-					<button class="px-4 py-2 rounded-md bg-interactive-primary text-white hover:bg-interactive-primary-hover transition-colors">
-						Accent Button
-					</button>
-				</div>
-			</section>
-			
-			<!-- React Island Test Section -->
-			<section class="p-6 mb-8 rounded-lg bg-surface-secondary border border-default">
-				<h2 class="text-xl font-semibold text-content-primary mb-2">React Island Test (client:load)</h2>
-				<p class="text-content-secondary mb-4">
-					This component tests React hydration with <code class="px-2 py-1 rounded bg-surface-elevated text-content-primary">client:load</code> directive.
-					If the buttons work, React hydration is working correctly.
-				</p>
-				<TestIsland client:load />
-			</section>
+      <!-- Theme Test Section -->
+      <section class="p-6 mb-8 rounded-lg bg-surface-secondary border border-default">
+        <h2 class="text-xl font-semibold text-content-primary mb-4">Theme System Test</h2>
+        <p class="text-content-secondary mb-4">
+          Use the theme toggle buttons above to test the 6 theme combinations. The colors below
+          should change based on the selected theme and palette.
+        </p>
 
-			<!-- Hydration Strategy Table -->
-			<section class="p-6 rounded-lg bg-surface-secondary border border-default">
-				<h2 class="text-xl font-semibold text-content-primary mb-4">Hydration Strategy (from ADR-001)</h2>
-				<div class="overflow-x-auto">
-					<table class="w-full border-collapse">
-						<thead>
-							<tr class="border-b border-default">
-								<th class="p-3 text-left text-content-primary font-semibold">Component</th>
-								<th class="p-3 text-left text-content-primary font-semibold">Directive</th>
-								<th class="p-3 text-left text-content-primary font-semibold">Rationale</th>
-							</tr>
-						</thead>
-						<tbody class="text-content-secondary">
-							<tr class="border-b border-default row-odd">
-								<td class="p-3">RawDataInput</td>
-								<td class="p-3"><code class="px-2 py-1 rounded bg-surface-elevated text-content-primary">client:load</code></td>
-								<td class="p-3">Critical for user input, must be interactive immediately</td>
-							</tr>
-							<tr class="border-b border-default row-even">
-								<td class="p-3">CourseTable</td>
-								<td class="p-3"><code class="px-2 py-1 rounded bg-surface-elevated text-content-primary">client:load</code></td>
-								<td class="p-3">Central feature, user interacts immediately</td>
-							</tr>
-							<tr class="border-b border-default row-odd">
-								<td class="p-3">TimeFilter</td>
-								<td class="p-3"><code class="px-2 py-1 rounded bg-surface-elevated text-content-primary">client:visible</code></td>
-								<td class="p-3">Can wait until user scrolls to filter section</td>
-							</tr>
-							<tr class="border-b border-default row-even">
-								<td class="p-3">TimetableView</td>
-								<td class="p-3"><code class="px-2 py-1 rounded bg-surface-elevated text-content-primary">client:visible</code></td>
-								<td class="p-3">Heavy component with export libraries, lazy load</td>
-							</tr>
-							<tr class="row-odd">
-								<td class="p-3">ConfirmDialog</td>
-								<td class="p-3"><code class="px-2 py-1 rounded bg-surface-elevated text-content-primary">client:load</code></td>
-								<td class="p-3">May appear on initial interaction</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</section>
-		</main>
-	</body>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+          <div class="p-4 rounded-md bg-surface-primary border border-default">
+            <p class="text-sm text-content-secondary mb-1">Surface Primary</p>
+            <p class="text-content-primary font-medium">Background</p>
+          </div>
+          <div class="p-4 rounded-md bg-surface-elevated border border-default">
+            <p class="text-sm text-content-secondary mb-1">Surface Elevated</p>
+            <p class="text-content-primary font-medium">Card/Section</p>
+          </div>
+          <div class="p-4 rounded-md bg-surface-header">
+            <p class="text-sm text-content-header text-opacity-80 mb-1">Surface Header</p>
+            <p class="text-content-header font-medium">Header BG</p>
+          </div>
+          <div class="p-4 rounded-md bg-success text-white">
+            <p class="text-sm text-white text-opacity-80 mb-1">Success</p>
+            <p class="font-medium">Semantic Color</p>
+          </div>
+          <div class="p-4 rounded-md bg-warning text-black">
+            <p class="text-sm text-black text-opacity-80 mb-1">Warning</p>
+            <p class="font-medium">Semantic Color</p>
+          </div>
+          <div class="p-4 rounded-md bg-danger text-white">
+            <p class="text-sm text-white text-opacity-80 mb-1">Danger</p>
+            <p class="font-medium">Semantic Color</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium text-content-primary mb-3">Button Styles</h3>
+        <div class="flex flex-wrap gap-3">
+          <button class="btn-primary px-4 py-2 rounded-md">Primary Button</button>
+          <button class="btn-danger px-4 py-2 rounded-md">Danger Button</button>
+          <button
+            class="px-4 py-2 rounded-md bg-interactive-primary text-white hover:bg-interactive-primary-hover transition-colors"
+          >
+            Accent Button
+          </button>
+        </div>
+      </section>
+
+      <!-- React Island Test Section -->
+      <section class="p-6 mb-8 rounded-lg bg-surface-secondary border border-default">
+        <h2 class="text-xl font-semibold text-content-primary mb-2">
+          React Island Test (client:load)
+        </h2>
+        <p class="text-content-secondary mb-4">
+          This component tests React hydration with <code
+            class="px-2 py-1 rounded bg-surface-elevated text-content-primary">client:load</code
+          > directive. If the buttons work, React hydration is working correctly.
+        </p>
+        <TestIsland client:load />
+      </section>
+
+      <!-- Hydration Strategy Table -->
+      <section class="p-6 rounded-lg bg-surface-secondary border border-default">
+        <h2 class="text-xl font-semibold text-content-primary mb-4">
+          Hydration Strategy (from ADR-001)
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b border-default">
+                <th class="p-3 text-left text-content-primary font-semibold">Component</th>
+                <th class="p-3 text-left text-content-primary font-semibold">Directive</th>
+                <th class="p-3 text-left text-content-primary font-semibold">Rationale</th>
+              </tr>
+            </thead>
+            <tbody class="text-content-secondary">
+              <tr class="border-b border-default row-odd">
+                <td class="p-3">RawDataInput</td>
+                <td class="p-3"
+                  ><code class="px-2 py-1 rounded bg-surface-elevated text-content-primary"
+                    >client:load</code
+                  ></td
+                >
+                <td class="p-3">Critical for user input, must be interactive immediately</td>
+              </tr>
+              <tr class="border-b border-default row-even">
+                <td class="p-3">CourseTable</td>
+                <td class="p-3"
+                  ><code class="px-2 py-1 rounded bg-surface-elevated text-content-primary"
+                    >client:load</code
+                  ></td
+                >
+                <td class="p-3">Central feature, user interacts immediately</td>
+              </tr>
+              <tr class="border-b border-default row-odd">
+                <td class="p-3">TimeFilter</td>
+                <td class="p-3"
+                  ><code class="px-2 py-1 rounded bg-surface-elevated text-content-primary"
+                    >client:visible</code
+                  ></td
+                >
+                <td class="p-3">Can wait until user scrolls to filter section</td>
+              </tr>
+              <tr class="border-b border-default row-even">
+                <td class="p-3">TimetableView</td>
+                <td class="p-3"
+                  ><code class="px-2 py-1 rounded bg-surface-elevated text-content-primary"
+                    >client:visible</code
+                  ></td
+                >
+                <td class="p-3">Heavy component with export libraries, lazy load</td>
+              </tr>
+              <tr class="row-odd">
+                <td class="p-3">ConfirmDialog</td>
+                <td class="p-3"
+                  ><code class="px-2 py-1 rounded bg-surface-elevated text-content-primary"
+                    >client:load</code
+                  ></td
+                >
+                <td class="p-3">May appear on initial interaction</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
 </html>

@@ -30,50 +30,50 @@ This plan outlines the migration of the CITUCourseBuilder application from React
 
 ### CRITICAL Constraints (Non-Negotiable)
 
-| ID | Assumption | Impact if Violated |
-|----|------------|-------------------|
-| C1 | All functions in parseSchedule.js preserved exactly | Schedule parsing breaks, conflicts with existing data |
-| C2 | All functions in parseRawData.js preserved exactly | Data import fails, incompatibility with WITS/AIMS data |
-| C3 | All functions in generateIcs.js preserved exactly | Calendar export breaks |
-| C4 | All functions in convertToRawData.js preserved exactly | Data export format changes |
-| C5 | All scheduling algorithms in App.jsx preserved exactly | Schedule generation produces different results |
-| C6 | No manual human intervention required | Project cannot be completed autonomously |
-| C7 | All JavaScript files converted to TypeScript with strict mode | Type safety failures, runtime errors from missing type checking |
+| ID  | Assumption                                                    | Impact if Violated                                              |
+| --- | ------------------------------------------------------------- | --------------------------------------------------------------- |
+| C1  | All functions in parseSchedule.js preserved exactly           | Schedule parsing breaks, conflicts with existing data           |
+| C2  | All functions in parseRawData.js preserved exactly            | Data import fails, incompatibility with WITS/AIMS data          |
+| C3  | All functions in generateIcs.js preserved exactly             | Calendar export breaks                                          |
+| C4  | All functions in convertToRawData.js preserved exactly        | Data export format changes                                      |
+| C5  | All scheduling algorithms in App.jsx preserved exactly        | Schedule generation produces different results                  |
+| C6  | No manual human intervention required                         | Project cannot be completed autonomously                        |
+| C7  | All JavaScript files converted to TypeScript with strict mode | Type safety failures, runtime errors from missing type checking |
 
 ### Technical Assumptions
 
-| ID | Assumption | Justification |
-|----|------------|---------------|
-| T1 | Bun remains package manager | Existing CI/CD uses Bun; faster than npm |
-| T2 | GitHub Pages deployment unchanged | No infrastructure changes requested |
-| T3 | React islands approach valid | Astro supports React integration |
-| T4 | Tailwind can replicate all CSS | CSS custom properties map to Tailwind theme |
-| T5 | Vitest remains test framework | Existing tests use Vitest |
+| ID  | Assumption                        | Justification                               |
+| --- | --------------------------------- | ------------------------------------------- |
+| T1  | Bun remains package manager       | Existing CI/CD uses Bun; faster than npm    |
+| T2  | GitHub Pages deployment unchanged | No infrastructure changes requested         |
+| T3  | React islands approach valid      | Astro supports React integration            |
+| T4  | Tailwind can replicate all CSS    | CSS custom properties map to Tailwind theme |
+| T5  | Vitest remains test framework     | Existing tests use Vitest                   |
 
 ### UI/UX Assumptions
 
-| ID | Assumption | Design Direction |
-|----|------------|------------------|
-| U1 | "Hobby student" aesthetic means approachable, playful | Rounded corners, fun colors, casual typography |
-| U2 | Light/dark theme support required | Existing feature, must be preserved |
-| U3 | Mobile responsiveness maintained | Existing feature, must be preserved |
-| U4 | MUI icons can be replaced with Lucide or Heroicons | Modern icon library, smaller bundle |
+| ID  | Assumption                                            | Design Direction                               |
+| --- | ----------------------------------------------------- | ---------------------------------------------- |
+| U1  | "Hobby student" aesthetic means approachable, playful | Rounded corners, fun colors, casual typography |
+| U2  | Light/dark theme support required                     | Existing feature, must be preserved            |
+| U3  | Mobile responsiveness maintained                      | Existing feature, must be preserved            |
+| U4  | MUI icons can be replaced with Lucide or Heroicons    | Modern icon library, smaller bundle            |
 
 ## Risks
 
-| Risk ID | Description | Likelihood | Impact | Mitigation |
-|---------|-------------|------------|--------|------------|
-| R1 | Schedule generation algorithm produces different results after migration | M | H | Create comprehensive test suite before migration; compare outputs |
-| R2 | Complex CSS theming (light/dark, palettes) difficult to replicate in Tailwind | M | M | Create Tailwind theme with CSS variables; incremental migration |
-| R3 | React-datepicker integration with Astro islands problematic | L | M | Evaluate alternatives; may need custom component |
-| R4 | MUI components have no direct Tailwind equivalents | M | M | Build custom components with same UX |
-| R5 | html-to-image/jspdf compatibility with SSR | L | M | Ensure client-side only rendering for export features |
-| R6 | localStorage persistence in Astro context | L | L | Astro islands have full client-side access |
-| R7 | Performance regression during migration | L | M | Establish baseline metrics; measure each phase |
-| R8 | Bundle size increases with dual React + Astro | M | L | Tree-shaking; remove unused MUI components |
-| R9 | Type inference complexity for dynamic parsing functions | M | M | Create precise TypeScript interfaces for all data structures, use discriminated unions for schedule types |
-| R10 | Third-party library type definitions missing | L | M | Install @types/* packages, create custom declaration files for untyped libraries |
-| R11 | TypeScript strict mode revealing latent bugs | M | L | Fix type errors incrementally, use // @ts-expect-error temporarily with TODO comments |
+| Risk ID | Description                                                                   | Likelihood | Impact | Mitigation                                                                                                |
+| ------- | ----------------------------------------------------------------------------- | ---------- | ------ | --------------------------------------------------------------------------------------------------------- |
+| R1      | Schedule generation algorithm produces different results after migration      | M          | H      | Create comprehensive test suite before migration; compare outputs                                         |
+| R2      | Complex CSS theming (light/dark, palettes) difficult to replicate in Tailwind | M          | M      | Create Tailwind theme with CSS variables; incremental migration                                           |
+| R3      | React-datepicker integration with Astro islands problematic                   | L          | M      | Evaluate alternatives; may need custom component                                                          |
+| R4      | MUI components have no direct Tailwind equivalents                            | M          | M      | Build custom components with same UX                                                                      |
+| R5      | html-to-image/jspdf compatibility with SSR                                    | L          | M      | Ensure client-side only rendering for export features                                                     |
+| R6      | localStorage persistence in Astro context                                     | L          | L      | Astro islands have full client-side access                                                                |
+| R7      | Performance regression during migration                                       | L          | M      | Establish baseline metrics; measure each phase                                                            |
+| R8      | Bundle size increases with dual React + Astro                                 | M          | L      | Tree-shaking; remove unused MUI components                                                                |
+| R9      | Type inference complexity for dynamic parsing functions                       | M          | M      | Create precise TypeScript interfaces for all data structures, use discriminated unions for schedule types |
+| R10     | Third-party library type definitions missing                                  | L          | M      | Install @types/\* packages, create custom declaration files for untyped libraries                         |
+| R11     | TypeScript strict mode revealing latent bugs                                  | M          | L      | Fix type errors incrementally, use // @ts-expect-error temporarily with TODO comments                     |
 
 ---
 
@@ -222,7 +222,7 @@ This plan outlines the migration of the CITUCourseBuilder application from React
   - Add type-check script to package.json: "typecheck": "tsc --noEmit"
   - Acceptance criteria:
     - TypeScript compiles with zero errors (exit code 0)
-    - All @types/* packages installed and resolved
+    - All @types/\* packages installed and resolved
     - typecheck script added and passing
     - Update AGENTS.md with learnings
 
@@ -238,6 +238,7 @@ This plan outlines the migration of the CITUCourseBuilder application from React
     - Update AGENTS.md with learnings
 
 - [ ] **T2.1.5**: Set up project structure [effort: S] [risk: L]
+
   ```
   course-scheduler-astro/
   ├── src/
@@ -252,6 +253,7 @@ This plan outlines the migration of the CITUCourseBuilder application from React
   ├── public/                # Static files
   └── tests/                 # Test files
   ```
+
   - Acceptance criteria:
     - Directory structure created
     - TypeScript config paths set up
@@ -668,7 +670,7 @@ This plan outlines the migration of the CITUCourseBuilder application from React
     - Update AGENTS.md with learnings
 
 - [ ] **T4.1.3**: Define spacing and layout tokens [effort: S] [risk: L]
-  - Map existing --space-* variables to Tailwind
+  - Map existing --space-\* variables to Tailwind
   - Define container widths
   - Define responsive breakpoints
   - Acceptance criteria:
@@ -1103,27 +1105,27 @@ This plan outlines the migration of the CITUCourseBuilder application from React
 
 ### Critical File Reference
 
-| File | Purpose | Lines | Preservation Status |
-|------|---------|-------|---------------------|
-| parseSchedule.js | Schedule string parsing | 427 | PRESERVE EXACTLY |
-| parseRawData.js | Course data parsing | 375 | PRESERVE EXACTLY |
-| generateIcs.js | ICS calendar generation | 111 | PRESERVE EXACTLY |
-| convertToRawData.js | Raw data conversion | 29 | PRESERVE EXACTLY |
-| App.jsx algorithms | Schedule generation | ~400 (extracted) | PRESERVE EXACTLY |
+| File                | Purpose                 | Lines            | Preservation Status |
+| ------------------- | ----------------------- | ---------------- | ------------------- |
+| parseSchedule.js    | Schedule string parsing | 427              | PRESERVE EXACTLY    |
+| parseRawData.js     | Course data parsing     | 375              | PRESERVE EXACTLY    |
+| generateIcs.js      | ICS calendar generation | 111              | PRESERVE EXACTLY    |
+| convertToRawData.js | Raw data conversion     | 29               | PRESERVE EXACTLY    |
+| App.jsx algorithms  | Schedule generation     | ~400 (extracted) | PRESERVE EXACTLY    |
 
 ### Success Metrics
 
-| Metric | Baseline | Target | Verification |
-|--------|----------|--------|--------------|
-| Test Coverage | ~40% (utils only) | ≥ 80% | `bun test --coverage` |
-| Bundle Size | TBD | ≤ 500KB gzipped | Build analysis |
-| Build Time | TBD | ≤ 30 seconds | CI timing |
-| Lighthouse Performance | TBD | ≥ 90 | Lighthouse audit |
-| Lighthouse Accessibility | TBD | ≥ 90 | Lighthouse audit |
-| WCAG Compliance | N/A | AA | Accessibility audit |
-| TypeScript Strict Mode | N/A | Zero compilation errors with strict: true | `tsc --noEmit` |
-| TypeScript Coverage | N/A | Zero `any` types in codebase | grep -r ': any' |
-| Type Safety | N/A | All functions have explicit parameter/return types | Code review |
+| Metric                   | Baseline          | Target                                             | Verification          |
+| ------------------------ | ----------------- | -------------------------------------------------- | --------------------- |
+| Test Coverage            | ~40% (utils only) | ≥ 80%                                              | `bun test --coverage` |
+| Bundle Size              | TBD               | ≤ 500KB gzipped                                    | Build analysis        |
+| Build Time               | TBD               | ≤ 30 seconds                                       | CI timing             |
+| Lighthouse Performance   | TBD               | ≥ 90                                               | Lighthouse audit      |
+| Lighthouse Accessibility | TBD               | ≥ 90                                               | Lighthouse audit      |
+| WCAG Compliance          | N/A               | AA                                                 | Accessibility audit   |
+| TypeScript Strict Mode   | N/A               | Zero compilation errors with strict: true          | `tsc --noEmit`        |
+| TypeScript Coverage      | N/A               | Zero `any` types in codebase                       | grep -r ': any'       |
+| Type Safety              | N/A               | All functions have explicit parameter/return types | Code review           |
 
 ### UI/UX Design Principles
 
@@ -1158,4 +1160,4 @@ This plan outlines the migration of the CITUCourseBuilder application from React
 
 ---
 
-*Plan generated by ralph-plan-command. Execute tasks sequentially within phases. Mark tasks complete as they are finished. Update AGENTS.md after each task.*
+_Plan generated by ralph-plan-command. Execute tasks sequentially within phases. Mark tasks complete as they are finished. Update AGENTS.md after each task._

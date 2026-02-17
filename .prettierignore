@@ -1,0 +1,31 @@
+# Build artifacts
+dist/
+.astro/
+*.min.js
+*.min.css
+
+# Lock files
+package-lock.json
+bun.lockb
+yarn.lock
+
+# Generated files
+*.d.ts
+*.mjs
+
+# Node modules
+node_modules/
+
+# Coverage
+coverage/
+
+# Test artifacts
+test-results/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.*

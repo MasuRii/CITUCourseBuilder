@@ -1,7 +1,7 @@
 /* Import fonts - must be first */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ============================================
    TAILWIND V4 THEME CONFIGURATION
@@ -21,9 +21,11 @@
 
 @theme {
   /* Font Families */
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-sans:
+    'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  
+
   /* Font Sizes */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -33,19 +35,19 @@
   --text-2xl: 1.5rem;
   --text-3xl: 1.875rem;
   --text-4xl: 2.25rem;
-  
+
   /* Font Weights */
   --font-light: 300;
   --font-normal: 400;
   --font-medium: 500;
   --font-semibold: 600;
   --font-bold: 700;
-  
+
   /* Line Heights */
   --leading-normal: 1.5;
   --leading-relaxed: 1.625;
   --leading-loose: 2;
-  
+
   /* Spacing */
   --spacing-1: 4px;
   --spacing-2: 8px;
@@ -57,37 +59,37 @@
   --spacing-8: 48px;
   --spacing-18: 4.5rem;
   --spacing-22: 5.5rem;
-  
+
   /* Border Radius */
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-pill: 9999px;
-  
+
   /* Transition Durations */
   --duration-fast: 150ms;
   --duration-normal: 250ms;
   --duration-slow: 400ms;
-  
+
   /* Transition Timing */
   --ease-default: ease;
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   /* Container Widths */
   --container-sm: 640px;
   --container-md: 768px;
   --container-lg: 1024px;
   --container-xl: 1200px;
-  
+
   /* Box Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  
+
   /* Z-Index Scale */
   --z-dropdown: 1000;
   --z-sticky: 1020;
@@ -97,18 +99,18 @@
   --z-popover: 1060;
   --z-tooltip: 1070;
   --z-toast: 9999;
-  
+
   /* Breakpoints (reference from existing CSS) */
   --breakpoint-sm: 480px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  
+
   /* 
    * Semantic Colors - using CSS custom properties for theme support
    * These map to CSS variables defined in the theme sections below
    */
-  
+
   /* Surface Colors (backgrounds) */
   --color-surface-primary: var(--bg-color);
   --color-surface-secondary: var(--section-bg);
@@ -116,41 +118,41 @@
   --color-surface-header: var(--header-bg);
   --color-surface-hover: var(--row-hover-bg);
   --color-surface-input: var(--input-bg);
-  
+
   /* Content Colors (text) */
   --color-content-primary: var(--text-color);
   --color-content-secondary: var(--text-muted-color);
   --color-content-link: var(--link-color);
   --color-content-header: var(--header-text);
   --color-content-input: var(--input-text);
-  
+
   /* Border Colors */
   --color-border-default: var(--border-color);
   --color-border-input: var(--input-border);
   --color-border-focus: var(--focus-outline-color);
-  
+
   /* Interactive Colors */
   --color-interactive-primary: var(--accent);
   --color-interactive-primary-hover: var(--accent-hover);
   --color-interactive-primary-light: var(--accent-light);
-  
+
   /* Semantic Status Colors */
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
-  
+
   /* Button Colors */
   --color-button-bg: var(--button-bg);
   --color-button-text: var(--button-text);
   --color-button-hover-bg: var(--button-hover-bg);
   --color-button-border: var(--button-border);
-  
+
   /* Danger Button Colors */
   --color-danger-button-bg: var(--danger-button-bg);
   --color-danger-button-text: var(--danger-button-text);
   --color-danger-button-hover-bg: var(--danger-button-hover-bg);
   --color-danger-button-border: var(--danger-button-border);
-  
+
   /* Lock Button Colors */
   --color-lock-locked-bg: var(--lock-button-locked-bg);
   --color-lock-locked-text: var(--lock-button-locked-text);
@@ -158,14 +160,14 @@
   --color-lock-unlocked-bg: var(--lock-button-unlocked-bg);
   --color-lock-unlocked-text: var(--lock-button-unlocked-text);
   --color-lock-unlocked-border: var(--lock-button-unlocked-border);
-  
+
   /* Row Colors */
   --color-row-even: var(--row-even-bg);
   --color-row-odd: var(--row-odd-bg);
   --color-row-locked: var(--locked-row-bg);
   --color-row-locked-text: var(--locked-row-text);
   --color-row-group-header: var(--group-header-bg);
-  
+
   /* Filter Colors */
   --color-filter-bg: var(--filter-bg);
   --color-filter-border: var(--filter-border);
@@ -187,7 +189,9 @@
   --space-8: 48px;
 
   /* Typography */
-  --font-family-base: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-family-base:
+    'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --font-family-monospace: 'JetBrains Mono', 'Fira Code', monospace;
   --font-size-base: 16px;
   --font-size-sm: 0.875rem;
@@ -215,10 +219,10 @@
   --transition-fast: 0.15s ease;
   --transition-normal: 0.25s ease;
   --transition-slow: 0.4s ease;
-  
+
   /* Box Shadow */
   --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  
+
   /* HR Color */
   --hr-color: #333;
 
@@ -271,7 +275,7 @@
    LIGHT THEME - ORIGINAL PALETTE
    ============================================ */
 
-[data-theme="light"] {
+[data-theme='light'] {
   --bg-color: #f8fafc;
   --text-color: #1e293b;
   --text-muted-color: #64748b;
@@ -322,7 +326,7 @@
    DARK THEME - ORIGINAL PALETTE
    ============================================ */
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --bg-color: #0f172a;
   --text-color: #f1f5f9;
   --text-muted-color: #94a3b8;
@@ -373,10 +377,10 @@
    DARK THEME - COMFORT PALETTE
    ============================================ */
 
-[data-theme="dark"][data-palette="comfort"] {
+[data-theme='dark'][data-palette='comfort'] {
   --bg-color: #121212;
-  --text-color: #E0E0E0;
-  --text-muted-color: #B0B0B0;
+  --text-color: #e0e0e0;
+  --text-muted-color: #b0b0b0;
   --border-color: #444444;
   --header-bg: #1a1a1a;
   --header-text: #ffffff;
@@ -387,7 +391,7 @@
   --locked-row-bg: #422006;
   --locked-row-text: #fef08a;
   --button-bg: #1e1e1e;
-  --button-text: #E0E0E0;
+  --button-text: #e0e0e0;
   --button-hover-bg: #242424;
   --button-border: #444444;
   --danger-button-bg: #dc3545;
@@ -403,7 +407,7 @@
   --filter-bg: #1e1e1e;
   --filter-border: #444;
   --input-bg: #1e1e1e;
-  --input-text: #E0E0E0;
+  --input-text: #e0e0e0;
   --input-border: #444;
   --hr-color: #444444;
   --link-color: #888888;
@@ -424,11 +428,11 @@
    LIGHT THEME - COMFORT PALETTE
    ============================================ */
 
-[data-theme="light"][data-palette="comfort"] {
-  --bg-color: #C5D5EA;
-  --text-color: #0A1128;
+[data-theme='light'][data-palette='comfort'] {
+  --bg-color: #c5d5ea;
+  --text-color: #0a1128;
   --text-muted-color: #010e54;
-  --border-color: #0A1128;
+  --border-color: #0a1128;
   --header-bg: #010e54;
   --header-text: #daeaf7;
   --group-header-bg: #4fa5d8;
@@ -475,7 +479,7 @@
    LIGHT THEME - SPACE PALETTE
    ============================================ */
 
-[data-theme="light"][data-palette="space"] {
+[data-theme='light'][data-palette='space'] {
   --bg-color: #ffffff;
   --text-color: #264653;
   --text-muted-color: #2a9d8f;
@@ -526,7 +530,7 @@
    DARK THEME - SPACE PALETTE
    ============================================ */
 
-[data-theme="dark"][data-palette="space"] {
+[data-theme='dark'][data-palette='space'] {
   --bg-color: #1a1a1a;
   --text-color: #e9c46a;
   --text-muted-color: #2a9d8f;
@@ -595,7 +599,9 @@ body {
   padding: 0;
   background-color: var(--bg-color);
   color: var(--text-color);
-  transition: background-color var(--transition-normal), color var(--transition-normal);
+  transition:
+    background-color var(--transition-normal),
+    color var(--transition-normal);
 }
 
 /* Focus styles */
@@ -609,43 +615,89 @@ body {
    ============================================ */
 
 /* Background utilities */
-.bg-surface-primary { background-color: var(--bg-color); }
-.bg-surface-secondary { background-color: var(--section-bg); }
-.bg-surface-elevated { background-color: var(--card-bg); }
-.bg-surface-header { background-color: var(--header-bg); }
-.bg-surface-hover { background-color: var(--row-hover-bg); }
-.bg-surface-input { background-color: var(--input-bg); }
+.bg-surface-primary {
+  background-color: var(--bg-color);
+}
+.bg-surface-secondary {
+  background-color: var(--section-bg);
+}
+.bg-surface-elevated {
+  background-color: var(--card-bg);
+}
+.bg-surface-header {
+  background-color: var(--header-bg);
+}
+.bg-surface-hover {
+  background-color: var(--row-hover-bg);
+}
+.bg-surface-input {
+  background-color: var(--input-bg);
+}
 
 /* Text utilities */
-.text-content-primary { color: var(--text-color); }
-.text-content-secondary { color: var(--text-muted-color); }
-.text-content-link { color: var(--link-color); }
-.text-content-header { color: var(--header-text); }
+.text-content-primary {
+  color: var(--text-color);
+}
+.text-content-secondary {
+  color: var(--text-muted-color);
+}
+.text-content-link {
+  color: var(--link-color);
+}
+.text-content-header {
+  color: var(--header-text);
+}
 
 /* Border utilities */
-.border-default { border-color: var(--border-color); }
-.border-input { border-color: var(--input-border); }
-.border-focus:focus { border-color: var(--focus-outline-color); }
+.border-default {
+  border-color: var(--border-color);
+}
+.border-input {
+  border-color: var(--input-border);
+}
+.border-focus:focus {
+  border-color: var(--focus-outline-color);
+}
 
 /* Interactive utilities */
-.bg-interactive-primary { background-color: var(--accent); }
-.bg-interactive-primary-hover:hover { background-color: var(--accent-hover); }
-.text-interactive-primary { color: var(--accent); }
+.bg-interactive-primary {
+  background-color: var(--accent);
+}
+.bg-interactive-primary-hover:hover {
+  background-color: var(--accent-hover);
+}
+.text-interactive-primary {
+  color: var(--accent);
+}
 
 /* Status utilities */
-.bg-success { background-color: var(--success); }
-.bg-warning { background-color: var(--warning); }
-.bg-danger { background-color: var(--danger); }
-.text-success { color: var(--success); }
-.text-warning { color: var(--warning); }
-.text-danger { color: var(--danger); }
+.bg-success {
+  background-color: var(--success);
+}
+.bg-warning {
+  background-color: var(--warning);
+}
+.bg-danger {
+  background-color: var(--danger);
+}
+.text-success {
+  color: var(--success);
+}
+.text-warning {
+  color: var(--warning);
+}
+.text-danger {
+  color: var(--danger);
+}
 
 /* Button utilities */
 .btn-primary {
   background-color: var(--button-bg);
   color: var(--button-text);
   border: 1px solid var(--button-border);
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .btn-primary:hover {
@@ -657,7 +709,9 @@ body {
   background-color: var(--danger-button-bg);
   color: var(--danger-button-text);
   border: 1px solid var(--danger-button-border);
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .btn-danger:hover {
@@ -666,19 +720,25 @@ body {
 }
 
 /* Row utilities */
-.row-even { background-color: var(--row-even-bg); }
-.row-odd { background-color: var(--row-odd-bg); }
-.row-locked { 
-  background-color: var(--locked-row-bg); 
+.row-even {
+  background-color: var(--row-even-bg);
+}
+.row-odd {
+  background-color: var(--row-odd-bg);
+}
+.row-locked {
+  background-color: var(--locked-row-bg);
   color: var(--locked-row-text);
 }
-.row-group-header { background-color: var(--group-header-bg); }
+.row-group-header {
+  background-color: var(--group-header-bg);
+}
 
 /* Transition utilities */
 .transition-theme {
-  transition: 
-    background-color var(--transition-normal), 
-    color var(--transition-normal), 
+  transition:
+    background-color var(--transition-normal),
+    color var(--transition-normal),
     border-color var(--transition-normal);
 }
 

@@ -24,20 +24,20 @@ export default defineConfig({
   base: '/CITUCourseBuilder/',
   integrations: [react()],
   vite: {
-    plugins: [tailwindcss()]
-  }
+    plugins: [tailwindcss()],
+  },
 });
 ```
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@astrojs/react` | ^4.4.2 | React integration for Astro |
-| `react` | ^19.2.4 | React library |
-| `react-dom` | ^19.2.4 | React DOM renderer |
-| `@types/react` | ^19.2.14 | TypeScript types for React |
-| `@types/react-dom` | ^19.2.3 | TypeScript types for React DOM |
+| Package            | Version  | Purpose                        |
+| ------------------ | -------- | ------------------------------ |
+| `@astrojs/react`   | ^4.4.2   | React integration for Astro    |
+| `react`            | ^19.2.4  | React library                  |
+| `react-dom`        | ^19.2.4  | React DOM renderer             |
+| `@types/react`     | ^19.2.14 | TypeScript types for React     |
+| `@types/react-dom` | ^19.2.3  | TypeScript types for React DOM |
 
 ---
 
@@ -50,6 +50,7 @@ Astro provides several hydration directives to control when components become in
 **Behavior:** Hydrates the component immediately when the page loads.
 
 **Use Cases:**
+
 - Critical interactive components visible immediately
 - Components that users interact with on first render
 - Time-sensitive functionality
@@ -61,6 +62,7 @@ Astro provides several hydration directives to control when components become in
 **Behavior:** Hydrates the component when it enters the viewport.
 
 **Use Cases:**
+
 - Components below the fold
 - Heavy components with large dependencies
 - Optional/secondary functionality
@@ -72,6 +74,7 @@ Astro provides several hydration directives to control when components become in
 **Behavior:** Hydrates the component when the browser is idle (after initial load).
 
 **Use Cases:**
+
 - Non-critical interactive components
 - Components that can wait for main content to load
 
@@ -80,6 +83,7 @@ Astro provides several hydration directives to control when components become in
 **Behavior:** Hydrates when a CSS media query is met.
 
 **Use Cases:**
+
 - Responsive components
 - Components only needed on certain screen sizes
 
@@ -88,6 +92,7 @@ Astro provides several hydration directives to control when components become in
 **Behavior:** Skips server rendering, renders only on the client.
 
 **Use Cases:**
+
 - Components that depend on browser APIs
 - Components that can't be server-rendered
 
@@ -97,13 +102,13 @@ Astro provides several hydration directives to control when components become in
 
 Based on ADR-001, the following hydration strategy is used:
 
-| Component       | Directive      | Rationale                                                |
-|-----------------|----------------|----------------------------------------------------------|
-| RawDataInput    | `client:load`  | Critical for user input, must be interactive immediately |
-| CourseTable     | `client:load`  | Central feature, user interacts immediately              |
-| TimeFilter      | `client:visible` | Can wait until user scrolls to filter section            |
-| TimetableView   | `client:visible` | Heavy component with export libraries, lazy load         |
-| ConfirmDialog   | `client:load`  | May appear on initial interaction                        |
+| Component     | Directive        | Rationale                                                |
+| ------------- | ---------------- | -------------------------------------------------------- |
+| RawDataInput  | `client:load`    | Critical for user input, must be interactive immediately |
+| CourseTable   | `client:load`    | Central feature, user interacts immediately              |
+| TimeFilter    | `client:visible` | Can wait until user scrolls to filter section            |
+| TimetableView | `client:visible` | Heavy component with export libraries, lazy load         |
+| ConfirmDialog | `client:load`    | May appear on initial interaction                        |
 
 ---
 
@@ -123,11 +128,11 @@ interface CounterProps {
 
 export default function Counter({ initialCount = 0 }: CounterProps) {
   const [count, setCount] = useState(initialCount);
-  
+
   return (
     <div>
       <span>Count: {count}</span>
-      <button onClick={() => setCount(c => c + 1)}>+1</button>
+      <button onClick={() => setCount((c) => c + 1)}>+1</button>
     </div>
   );
 }
@@ -149,11 +154,11 @@ import Counter from '../components/Counter';
 
 ### Current Build Output (Test Island)
 
-| Chunk | Size | Gzipped |
-|-------|------|---------|
-| client.*.js (React runtime) | 186.62 kB | 58.54 kB |
-| index.*.js (Page scripts) | 7.85 kB | 3.05 kB |
-| TestIsland.*.js (Island) | 1.60 kB | 0.78 kB |
+| Chunk                        | Size      | Gzipped  |
+| ---------------------------- | --------- | -------- |
+| client.\*.js (React runtime) | 186.62 kB | 58.54 kB |
+| index.\*.js (Page scripts)   | 7.85 kB   | 3.05 kB  |
+| TestIsland.\*.js (Island)    | 1.60 kB   | 0.78 kB  |
 
 ### Key Insights
 
@@ -180,7 +185,8 @@ export default function MyComponent({ title, count = 0, onUpdate }: MyComponentP
 }
 
 // Bad: Using 'any'
-export default function MyComponent(props: any) { // DON'T DO THIS
+export default function MyComponent(props: any) {
+  // DON'T DO THIS
   // ...
 }
 ```

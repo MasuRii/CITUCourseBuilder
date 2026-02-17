@@ -34,7 +34,6 @@ A modern web application that helps students at Cebu Institute of Technology - U
         </details>
 -->
 
-
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -48,72 +47,70 @@ A modern web application that helps students at Cebu Institute of Technology - U
 - [Contributing](#contributing)
 - [License](#license)
 
-
 ## About The Project
 
 The CITU Course Builder is a completed, stable web application designed to assist students at Cebu Institute of Technology - University (and compatible institutions) in efficiently creating optimal, conflict-free class schedules. It simplifies academic planning by providing smart import/export capabilities, intelligent scheduling algorithms, and a responsive visual interface. The project has achieved all its goals including intuitive scheduling tools, reliable data persistence, and comprehensive export functionality.
 
-
 ## Key Features
 
-*   **📚 Smart Data Import:**
-    *   Paste data from both modern **WITS** and legacy **AIMS** platforms.
-    *   Intelligent parser handles HTML tables, compact text formats, multi-line entries, and complex hybrid schedules with comma-separated days/times.
-    *   Seamless toggle between **WITS (New)** and **AIMS (Legacy)** import modes.
+- **📚 Smart Data Import:**
+  - Paste data from both modern **WITS** and legacy **AIMS** platforms.
+  - Intelligent parser handles HTML tables, compact text formats, multi-line entries, and complex hybrid schedules with comma-separated days/times.
+  - Seamless toggle between **WITS (New)** and **AIMS (Legacy)** import modes.
 
-*   **📊 Dynamic Course Management:**
-    *   View courses in a sortable, filterable table.
-    *   Group by subject, department, or view all.
-    *   Manage individual courses or clear all data.
-*   **🔒 Course Prioritization (Locking):**
-    *   Lock essential course sections.
-    *   Immediate visual conflict highlighting for overlapping locked courses.
-    *   Confirmation prompts for conflict-inducing locks.
-*   **⚙️ Advanced Filtering:**
-    *   Exclude courses by specific days or time ranges.
-    *   Filter by section type (Online, Face-to-Face, Hybrid).
-    *   Filter by course status (Open/Closed/All).
-*   **🛠️ Customizable User Preferences:**
-    *   Set maximum total units.
-    *   Define maximum allowed break time between classes.
-    *   Drag-and-drop preferred time of day order (Morning, Afternoon, Evening, Any).
-    *   Minimize days on campus preference (excluding online classes).
-    *   All preferences and filters are saved automatically to `localStorage`.
-*   **🧠 Intelligent Schedule Generation:**
-    *   Multiple search modes:
-        *   **Recommended (Flexible, Best Fit):** Maximizes subjects and units.
-        *   **Full Coverage (All Subjects, Strict):** Ensures all subjects fit.
-        *   **Quick (Fast, May Miss Best):** Rapidly finds a viable schedule.
-    *   Generated schedules respect all locked courses, filters, and preferences.
-*   **🗓️ Clear Timetable Visualization:**
-    *   View locked courses in a weekly timetable (7 AM - 10 PM).
-    *   Responsive design adapts to various screen sizes.
-    *   Toggle between full timetable and summary view.
-*   **📤 Comprehensive Export Options:**
-    *   **Course List:** Copy to clipboard or download as `.txt` (tab-separated format for re-import).
-    *   **Timetable View:** Export as a PNG image or a PDF document.
-    *   **iCalendar Export:** Generate `.ics` file for easy import to Google Calendar, Outlook, or Apple Calendar.
-*   **🎨 Modern & Responsive UI/UX:**
-    *   Light and Dark mode themes with instant switching and automatic palette pairing
-    *   'Original' and 'Comfort' color palettes with improved text contrast and element visibility
-    *   Palette persistence between sessions for consistent theming
-    *   Built with accessibility and mobile-friendliness in mind
+- **📊 Dynamic Course Management:**
+  - View courses in a sortable, filterable table.
+  - Group by subject, department, or view all.
+  - Manage individual courses or clear all data.
+- **🔒 Course Prioritization (Locking):**
+  - Lock essential course sections.
+  - Immediate visual conflict highlighting for overlapping locked courses.
+  - Confirmation prompts for conflict-inducing locks.
+- **⚙️ Advanced Filtering:**
+  - Exclude courses by specific days or time ranges.
+  - Filter by section type (Online, Face-to-Face, Hybrid).
+  - Filter by course status (Open/Closed/All).
+- **🛠️ Customizable User Preferences:**
+  - Set maximum total units.
+  - Define maximum allowed break time between classes.
+  - Drag-and-drop preferred time of day order (Morning, Afternoon, Evening, Any).
+  - Minimize days on campus preference (excluding online classes).
+  - All preferences and filters are saved automatically to `localStorage`.
+- **🧠 Intelligent Schedule Generation:**
+  - Multiple search modes:
+    - **Recommended (Flexible, Best Fit):** Maximizes subjects and units.
+    - **Full Coverage (All Subjects, Strict):** Ensures all subjects fit.
+    - **Quick (Fast, May Miss Best):** Rapidly finds a viable schedule.
+  - Generated schedules respect all locked courses, filters, and preferences.
+- **🗓️ Clear Timetable Visualization:**
+  - View locked courses in a weekly timetable (7 AM - 10 PM).
+  - Responsive design adapts to various screen sizes.
+  - Toggle between full timetable and summary view.
+- **📤 Comprehensive Export Options:**
+  - **Course List:** Copy to clipboard or download as `.txt` (tab-separated format for re-import).
+  - **Timetable View:** Export as a PNG image or a PDF document.
+  - **iCalendar Export:** Generate `.ics` file for easy import to Google Calendar, Outlook, or Apple Calendar.
+- **🎨 Modern & Responsive UI/UX:**
+  - Light and Dark mode themes with instant switching and automatic palette pairing
+  - 'Original' and 'Comfort' color palettes with improved text contrast and element visibility
+  - Palette persistence between sessions for consistent theming
+  - Built with accessibility and mobile-friendliness in mind
 
 ## Built With
 
 This project leverages a modern frontend stack:
 
-*   [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
-*   [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling.
-*   [Bun](https://bun.sh/) - Fast all-in-one JavaScript runtime, package manager, and test runner.
-*   [Material-UI (MUI)](https://mui.com/) - React UI framework for faster and easier web development.
+- [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
+- [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling.
+- [Bun](https://bun.sh/) - Fast all-in-one JavaScript runtime, package manager, and test runner.
+- [Material-UI (MUI)](https://mui.com/) - React UI framework for faster and easier web development.
 
-*   [React Toastify](https://fkhadra.github.io/react-toastify/) - For notifications.
-*   [React Datepicker](https://reactdatepicker.com/) - For time selection.
-*   [html-to-image](https://github.com/bubkoo/html-to-image) - For capturing HTML to image (PNG export).
-*   [jsPDF](https://github.com/parallax/jsPDF) - For generating PDFs (Timetable PDF export).
-*   CSS with CSS Variables - For theming and styling.
-*   Browser `localStorage` - For client-side data persistence.
+- [React Toastify](https://fkhadra.github.io/react-toastify/) - For notifications.
+- [React Datepicker](https://reactdatepicker.com/) - For time selection.
+- [html-to-image](https://github.com/bubkoo/html-to-image) - For capturing HTML to image (PNG export).
+- [jsPDF](https://github.com/parallax/jsPDF) - For generating PDFs (Timetable PDF export).
+- CSS with CSS Variables - For theming and styling.
+- Browser `localStorage` - For client-side data persistence.
 
 ---
 
@@ -124,15 +121,16 @@ To get a local copy up and running, follow these simple steps.
 ### Prerequisites
 
 Ensure you have Node.js and npm (or Bun) installed on your system.
-*   Node.js (v14+ recommended) or [Bun](https://bun.sh/)
-*   npm
-    ```sh
-    npm install npm@latest -g
-    ```
-    or Bun (Recommended)
-    ```sh
-    curl -fsSL https://bun.sh/install | bash
-    ```
+
+- Node.js (v14+ recommended) or [Bun](https://bun.sh/)
+- npm
+  ```sh
+  npm install npm@latest -g
+  ```
+  or Bun (Recommended)
+  ```sh
+  curl -fsSL https://bun.sh/install | bash
+  ```
 
 ### Installation
 
@@ -163,7 +161,6 @@ Ensure you have Node.js and npm (or Bun) installed on your system.
 
 The application will typically be available at `http://localhost:12000`.
 
-
 ## Usage
 
 Once the application is running:
@@ -175,13 +172,12 @@ Once the application is running:
 5.  **Generate Schedule:** Choose a schedule generation mode ("Recommended," "Full Coverage," or "Quick") and click "Generate Best Schedule." The application will attempt to find an optimal, conflict-free schedule based on your settings.
 6.  **View Timetable:** Locked courses (either manually locked or from a generated schedule) will appear in the weekly timetable.
 7.  **Export:** Use the hamburger menus in the course list and timetable sections to:
-    * Export course data as `.txt` or to clipboard (tab-separated format for re-import)
-    * Export timetable view as high-fidelity PNG or PDF files
-    * Export timetable as iCalendar (.ics) file for calendar applications
+    - Export course data as `.txt` or to clipboard (tab-separated format for re-import)
+    - Export timetable view as high-fidelity PNG or PDF files
+    - Export timetable as iCalendar (.ics) file for calendar applications
 8.  **Customize Theme:** Switch between Light/Dark modes and choose between 'Original'/'Comfort' color palettes. The system remembers your palette choices between sessions.
 
 All your settings, imported courses, and locked courses are automatically saved in your browser's local storage, so you can close the tab and resume later.
-
 
 ## Contributing
 

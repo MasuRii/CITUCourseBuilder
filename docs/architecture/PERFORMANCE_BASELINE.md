@@ -8,14 +8,14 @@
 
 ## Executive Summary
 
-| Metric | Value | Target | Status |
-|--------|-------|--------|--------|
-| Bundle Size (gzipped) | ~457 KB | ≤ 500 KB | ✅ Within target |
-| Build Time | 4.13s | ≤ 30s | ✅ Within target |
-| Lighthouse Performance | 75 | ≥ 90 | ⚠️ Below target |
-| Lighthouse Accessibility | 90 | ≥ 90 | ✅ Meets target |
-| Lighthouse Best Practices | 100 | ≥ 90 | ✅ Exceeds target |
-| Lighthouse SEO | 91 | ≥ 90 | ✅ Meets target |
+| Metric                    | Value   | Target   | Status            |
+| ------------------------- | ------- | -------- | ----------------- |
+| Bundle Size (gzipped)     | ~457 KB | ≤ 500 KB | ✅ Within target  |
+| Build Time                | 4.13s   | ≤ 30s    | ✅ Within target  |
+| Lighthouse Performance    | 75      | ≥ 90     | ⚠️ Below target   |
+| Lighthouse Accessibility  | 90      | ≥ 90     | ✅ Meets target   |
+| Lighthouse Best Practices | 100     | ≥ 90     | ✅ Exceeds target |
+| Lighthouse SEO            | 91      | ≥ 90     | ✅ Meets target   |
 
 ---
 
@@ -23,28 +23,28 @@
 
 ### Uncompressed Sizes
 
-| Asset | Size |
-|-------|------|
-| index.js (main bundle) | 1,070.36 KB |
-| html2canvas.esm.js | 202.38 KB |
-| index.es.js (jspdf) | 159.35 KB |
-| purify.es.js | 22.64 KB |
-| **Total JS** | **1,454.72 KB** |
-| index.css | 85.83 KB |
-| favicon.ico | 15.09 KB |
-| **Total dist/** | **1,556.36 KB (1.5 MB)** |
+| Asset                  | Size                     |
+| ---------------------- | ------------------------ |
+| index.js (main bundle) | 1,070.36 KB              |
+| html2canvas.esm.js     | 202.38 KB                |
+| index.es.js (jspdf)    | 159.35 KB                |
+| purify.es.js           | 22.64 KB                 |
+| **Total JS**           | **1,454.72 KB**          |
+| index.css              | 85.83 KB                 |
+| favicon.ico            | 15.09 KB                 |
+| **Total dist/**        | **1,556.36 KB (1.5 MB)** |
 
 ### Gzipped Sizes
 
-| Asset | Size (gzip) |
-|-------|-------------|
-| index.js (main bundle) | 333.78 KB |
-| html2canvas.esm.js | 48.04 KB |
-| index.es.js (jspdf) | 53.40 KB |
-| purify.es.js | 8.75 KB |
-| **Total JS (gzip)** | **~444 KB** |
-| index.css (gzip) | 13.10 KB |
-| **Total (gzip)** | **~457 KB** |
+| Asset                  | Size (gzip) |
+| ---------------------- | ----------- |
+| index.js (main bundle) | 333.78 KB   |
+| html2canvas.esm.js     | 48.04 KB    |
+| index.es.js (jspdf)    | 53.40 KB    |
+| purify.es.js           | 8.75 KB     |
+| **Total JS (gzip)**    | **~444 KB** |
+| index.css (gzip)       | 13.10 KB    |
+| **Total (gzip)**       | **~457 KB** |
 
 ### Build Warnings
 
@@ -61,11 +61,11 @@ Consider:
 
 ## Build Performance
 
-| Metric | Value |
-|--------|-------|
-| Build Time | 4.13s |
+| Metric                         | Value |
+| ------------------------------ | ----- |
+| Build Time                     | 4.13s |
 | Real Time (including overhead) | 4.51s |
-| Modules Transformed | 1,092 |
+| Modules Transformed            | 1,092 |
 
 **Analysis:** Build performance is excellent. Vite's esbuild-based bundling is highly efficient.
 
@@ -75,22 +75,22 @@ Consider:
 
 ### Category Scores
 
-| Category | Score | Rating |
-|----------|-------|--------|
-| Performance | 75/100 | ⚠️ Needs improvement |
-| Accessibility | 90/100 | ✅ Good |
-| Best Practices | 100/100 | ✅ Excellent |
-| SEO | 91/100 | ✅ Good |
+| Category       | Score   | Rating               |
+| -------------- | ------- | -------------------- |
+| Performance    | 75/100  | ⚠️ Needs improvement |
+| Accessibility  | 90/100  | ✅ Good              |
+| Best Practices | 100/100 | ✅ Excellent         |
+| SEO            | 91/100  | ✅ Good              |
 
 ### Core Web Vitals
 
-| Metric | Value | Rating | Threshold |
-|--------|-------|--------|-----------|
-| First Contentful Paint (FCP) | 4.0s | ⚠️ Needs improvement | < 1.8s (good) |
-| Largest Contentful Paint (LCP) | 4.4s | ⚠️ Needs improvement | < 2.5s (good) |
-| Total Blocking Time (TBT) | 70ms | ✅ Good | < 200ms (good) |
-| Cumulative Layout Shift (CLS) | 0 | ✅ Excellent | < 0.1 (good) |
-| Speed Index | 4.1s | ⚠️ Needs improvement | < 3.4s (good) |
+| Metric                         | Value | Rating               | Threshold      |
+| ------------------------------ | ----- | -------------------- | -------------- |
+| First Contentful Paint (FCP)   | 4.0s  | ⚠️ Needs improvement | < 1.8s (good)  |
+| Largest Contentful Paint (LCP) | 4.4s  | ⚠️ Needs improvement | < 2.5s (good)  |
+| Total Blocking Time (TBT)      | 70ms  | ✅ Good              | < 200ms (good) |
+| Cumulative Layout Shift (CLS)  | 0     | ✅ Excellent         | < 0.1 (good)   |
+| Speed Index                    | 4.1s  | ⚠️ Needs improvement | < 3.4s (good)  |
 
 ### Performance Issues Identified
 
@@ -140,14 +140,14 @@ Based on code analysis:
 
 ### Browser Memory Estimate
 
-| Component | Estimated Memory |
-|-----------|------------------|
-| React Virtual DOM | ~5-20 MB |
-| MUI Component Tree | ~10-30 MB |
-| Course Data (typical) | ~1-5 MB |
-| Generated Schedules | ~0.5-2 MB |
-| Export Buffers | ~5-15 MB |
-| **Estimated Total** | **~20-70 MB** |
+| Component             | Estimated Memory |
+| --------------------- | ---------------- |
+| React Virtual DOM     | ~5-20 MB         |
+| MUI Component Tree    | ~10-30 MB        |
+| Course Data (typical) | ~1-5 MB          |
+| Generated Schedules   | ~0.5-2 MB        |
+| Export Buffers        | ~5-15 MB         |
+| **Estimated Total**   | **~20-70 MB**    |
 
 ---
 
@@ -155,16 +155,16 @@ Based on code analysis:
 
 ### Production Dependencies
 
-| Package | Version | Bundle Impact |
-|---------|---------|---------------|
-| react | 19.2.3 | Core framework |
-| react-dom | 19.2.3 | DOM rendering |
-| @mui/material | 7.3.7 | ~200 KB (tree-shaken) |
-| @mui/icons-material | 7.3.7 | ~100 KB (partial) |
-| react-toastify | 11.0.5 | ~15 KB |
-| react-datepicker | 8.10.0 | ~25 KB |
-| html-to-image | 1.11.13 | ~50 KB |
-| jspdf | 4.1.0 | ~150 KB |
+| Package             | Version | Bundle Impact         |
+| ------------------- | ------- | --------------------- |
+| react               | 19.2.3  | Core framework        |
+| react-dom           | 19.2.3  | DOM rendering         |
+| @mui/material       | 7.3.7   | ~200 KB (tree-shaken) |
+| @mui/icons-material | 7.3.7   | ~100 KB (partial)     |
+| react-toastify      | 11.0.5  | ~15 KB                |
+| react-datepicker    | 8.10.0  | ~25 KB                |
+| html-to-image       | 1.11.13 | ~50 KB                |
+| jspdf               | 4.1.0   | ~150 KB               |
 
 ### Potential Bundle Optimizations
 
@@ -192,12 +192,12 @@ Based on code analysis:
 
 ### Post-Migration Targets
 
-| Metric | Current | Target | Improvement |
-|--------|---------|--------|-------------|
-| Bundle Size (gzip) | ~457 KB | < 300 KB | -34% |
-| Lighthouse Performance | 75 | ≥ 90 | +20% |
-| FCP | 4.0s | < 2.0s | -50% |
-| LCP | 4.4s | < 2.5s | -43% |
+| Metric                 | Current | Target   | Improvement |
+| ---------------------- | ------- | -------- | ----------- |
+| Bundle Size (gzip)     | ~457 KB | < 300 KB | -34%        |
+| Lighthouse Performance | 75      | ≥ 90     | +20%        |
+| FCP                    | 4.0s    | < 2.0s   | -50%        |
+| LCP                    | 4.4s    | < 2.5s   | -43%        |
 
 ### Expected Improvements from Astro Migration
 
@@ -270,4 +270,4 @@ dist/assets/index-DwiAtaJF.js        1,070.36 kB │ gzip: 333.78 kB
 
 ---
 
-*Report generated for Task T1.1.5 - Document current performance metrics*
+_Report generated for Task T1.1.5 - Document current performance metrics_

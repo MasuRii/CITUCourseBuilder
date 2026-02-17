@@ -1,9 +1,9 @@
 /**
  * TypeScript Interface Definitions for CITU Course Builder
- * 
+ *
  * This file contains all TypeScript interfaces needed for the application.
  * These interfaces will be used when migrating to the Astro project.
- * 
+ *
  * @module types
  * @generated 2026-02-17
  * @task T1.1.2 - Catalog all scheduling algorithms and their dependencies
@@ -82,7 +82,7 @@ export type SectionTypeSuffix = 'AP3' | 'AP4' | 'AP5';
 
 /**
  * Represents a single time slot in a parsed schedule
- * 
+ *
  * @example
  * // A class on Monday/Wednesday/Friday from 9:00 AM to 10:30 AM
  * const slot: TimeSlot = {
@@ -106,7 +106,7 @@ export interface TimeSlot {
 /**
  * Result of parsing a schedule string
  * Can represent TBA schedules, single slots, or multi-slot schedules
- * 
+ *
  * @example
  * // TBA schedule
  * const tbaSchedule: ParsedSchedule = {
@@ -117,7 +117,7 @@ export interface TimeSlot {
  *   startTime: null,
  *   endTime: null
  * };
- * 
+ *
  * @example
  * // Multi-slot schedule (e.g., hybrid class)
  * const hybridSchedule: ParsedSchedule = {
@@ -155,7 +155,7 @@ export interface ParsedSchedule {
  * Discriminated union for schedule types
  * Use this for type-safe schedule handling
  */
-export type ScheduleType = 
+export type ScheduleType =
   | { type: 'tba' }
   | { type: 'single'; slot: TimeSlot }
   | { type: 'multi'; slots: TimeSlot[] };
@@ -194,7 +194,7 @@ export interface CourseIdentity {
 
 /**
  * Represents a single course offering
- * 
+ *
  * @example
  * const course: Course = {
  *   id: '1708123456789-0',
@@ -394,21 +394,21 @@ export interface AppState {
   processedCourses: Course[] | GroupedCourse[];
   /** Raw input text for import */
   rawData: string;
-  
+
   // Theme
   /** Current theme mode */
   theme: ThemeMode;
   /** Palette preferences per theme */
   themePalette: ThemePaletteState;
-  
+
   // Filters
   /** Current filter state */
   filterState: FilterState;
-  
+
   // Preferences
   /** Schedule generation preferences */
   preferences: SchedulePreferences;
-  
+
   // UI State
   /** IDs of courses with schedule conflicts */
   conflictingLockedCourseIds: Set<string>;
@@ -449,7 +449,7 @@ export const LOCAL_STORAGE_KEYS = {
   MINIMIZE_DAYS_ON_CAMPUS: 'courseBuilder_minimizeDaysOnCampus',
 } as const;
 
-export type LocalStorageKey = typeof LOCAL_STORAGE_KEYS[keyof typeof LOCAL_STORAGE_KEYS];
+export type LocalStorageKey = (typeof LOCAL_STORAGE_KEYS)[keyof typeof LOCAL_STORAGE_KEYS];
 
 // ============================================================================
 // Constants

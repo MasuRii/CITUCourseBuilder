@@ -31,48 +31,49 @@ We will use Astro as the primary framework with React components loaded as "isla
 
 ### Next.js
 
-| Aspect | Pros | Cons |
-|--------|------|------|
-| **React ecosystem** | First-class React support, large community | Full React bundle shipped to client |
-| **SSR/SSG** | Excellent SSR and SSG capabilities | Overkill for mostly client-side interactivity |
-| **Bundle size** | Good code-splitting | Still ships full React runtime |
-| **Learning curve** | Well-documented | Requires understanding of server/client boundaries |
-| **Deployment** | Vercel optimized, GitHub Pages possible | Config complexity for static export |
+| Aspect              | Pros                                       | Cons                                               |
+| ------------------- | ------------------------------------------ | -------------------------------------------------- |
+| **React ecosystem** | First-class React support, large community | Full React bundle shipped to client                |
+| **SSR/SSG**         | Excellent SSR and SSG capabilities         | Overkill for mostly client-side interactivity      |
+| **Bundle size**     | Good code-splitting                        | Still ships full React runtime                     |
+| **Learning curve**  | Well-documented                            | Requires understanding of server/client boundaries |
+| **Deployment**      | Vercel optimized, GitHub Pages possible    | Config complexity for static export                |
 
 **Verdict**: Not chosen because the application doesn't benefit significantly from SSR. The schedule generation and filtering logic is entirely client-side, making Next.js's primary advantage (SSR) less valuable.
 
 ### Pure Vite (Stay Current)
 
-| Aspect | Pros | Cons |
-|--------|------|------|
+| Aspect             | Pros                                  | Cons                                                 |
+| ------------------ | ------------------------------------- | ---------------------------------------------------- |
 | **Zero migration** | No changes needed, already using Vite | No bundle size improvement without major refactoring |
-| **Familiarity** | Team knows the setup | Doesn't solve performance issues |
-| **Flexibility** | Full control over architecture | Requires manual optimization |
+| **Familiarity**    | Team knows the setup                  | Doesn't solve performance issues                     |
+| **Flexibility**    | Full control over architecture        | Requires manual optimization                         |
 
 **Verdict**: Not chosen because it doesn't address the core problems (bundle size, MUI dependency, performance). Staying with the current setup would require significant manual optimization work that Astro provides out of the box.
 
 ### Remix
 
-| Aspect | Pros | Cons |
-|--------|------|------|
-| **Modern React** | Uses React Router, progressive enhancement | Full React bundle required |
-| **Data loading** | Excellent data loading patterns | Overkill for client-side-only data |
-| **Performance** | Good Core Web Vitals focus | Not optimized for static + islands pattern |
+| Aspect           | Pros                                       | Cons                                       |
+| ---------------- | ------------------------------------------ | ------------------------------------------ |
+| **Modern React** | Uses React Router, progressive enhancement | Full React bundle required                 |
+| **Data loading** | Excellent data loading patterns            | Overkill for client-side-only data         |
+| **Performance**  | Good Core Web Vitals focus                 | Not optimized for static + islands pattern |
 
 **Verdict**: Not chosen because Remix is optimized for applications with server-side data needs. Our application processes all data client-side (localStorage, user input), making Remix's strengths less applicable.
 
 ### Astro with React Islands
 
-| Aspect | Pros | Cons |
-|--------|------|------|
-| **Bundle size** | Zero JS by default, React only for interactive parts | Requires thinking in "islands" pattern |
-| **Performance** | Best possible initial load, partial hydration | Slightly more complex component architecture |
-| **React compatibility** | Full React support via @astrojs/react | Need to identify hydration boundaries |
-| **Tailwind support** | First-class Tailwind integration | Requires CSS migration from App.css |
-| **Static deployment** | Perfect fit for GitHub Pages | None significant |
-| **TypeScript** | Excellent TypeScript support | None significant |
+| Aspect                  | Pros                                                 | Cons                                         |
+| ----------------------- | ---------------------------------------------------- | -------------------------------------------- |
+| **Bundle size**         | Zero JS by default, React only for interactive parts | Requires thinking in "islands" pattern       |
+| **Performance**         | Best possible initial load, partial hydration        | Slightly more complex component architecture |
+| **React compatibility** | Full React support via @astrojs/react                | Need to identify hydration boundaries        |
+| **Tailwind support**    | First-class Tailwind integration                     | Requires CSS migration from App.css          |
+| **Static deployment**   | Perfect fit for GitHub Pages                         | None significant                             |
+| **TypeScript**          | Excellent TypeScript support                         | None significant                             |
 
 **Verdict**: **Chosen** because it directly addresses all our requirements:
+
 - Reduces bundle size by shipping zero JS for static content
 - Preserves React components as islands for interactive features
 - Supports Tailwind CSS out of the box
@@ -89,13 +90,13 @@ We will use Astro as the primary framework with React components loaded as "isla
 
 ### Hydration Strategy
 
-| Component | Hydration Directive | Rationale |
-|-----------|---------------------|-----------|
-| RawDataInput | `client:load` | Critical for user input, must be interactive immediately |
-| CourseTable | `client:load` | Central feature, user interacts immediately |
-| TimeFilter | `client:visible` | Can wait until user scrolls to filter section |
-| TimetableView | `client:visible` | Heavy component with export libraries, lazy load |
-| ConfirmDialog | `client:load` | May appear on initial interaction |
+| Component     | Hydration Directive | Rationale                                                |
+| ------------- | ------------------- | -------------------------------------------------------- |
+| RawDataInput  | `client:load`       | Critical for user input, must be interactive immediately |
+| CourseTable   | `client:load`       | Central feature, user interacts immediately              |
+| TimeFilter    | `client:visible`    | Can wait until user scrolls to filter section            |
+| TimetableView | `client:visible`    | Heavy component with export libraries, lazy load         |
+| ConfirmDialog | `client:load`       | May appear on initial interaction                        |
 
 ## Consequences
 

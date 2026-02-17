@@ -21,6 +21,7 @@ This file contains critical operational details that AI agents should know when 
 ### Preserved Logic Files (DO NOT MODIFY LOGIC)
 
 These files contain critical parsing and scheduling logic that MUST be preserved exactly:
+
 - `course-scheduler-web/src/utils/parseSchedule.js` - Schedule string parsing (427 lines)
 - `course-scheduler-web/src/utils/parseRawData.js` - Course data parsing (375 lines)
 - `course-scheduler-web/src/utils/generateIcs.js` - ICS calendar generation (111 lines)
@@ -30,33 +31,39 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 ### Scheduling Algorithms (13 Functions)
 
 **Core Utility Functions:**
+
 - `loadFromLocalStorage(key, defaultValue)` - Load persisted state with validation (~72 lines)
 - `getSectionTypeSuffix(sectionString)` - Extract AP3/AP4/AP5 from section string (~5 lines)
 
 **Time & Conflict Detection:**
+
 - `checkTimeOverlap(start1, end1, start2, end2)` - Check if two time ranges overlap (~6 lines)
 - `isScheduleConflictFree(schedule, parseFn, overlapFn)` - Verify schedule has no conflicts (~31 lines)
 - `getTimeOfDayBucket(time)` - Categorize time as morning/afternoon/evening (~7 lines)
 
 **Constraint Validation:**
+
 - `scoreScheduleByTimePreference(schedule, prefOrder)` - Score schedule by time preferences (~15 lines)
 - `exceedsMaxUnits(schedule, maxUnits)` - Check if exceeds unit limit (~7 lines)
 - `exceedsMaxGap(schedule, maxGapHours)` - Check if gaps exceed threshold (~30 lines)
 - `countCampusDays(schedule)` - Count unique on-campus days (~16 lines)
 
 **Schedule Generation:**
+
 - `getAllSubsets(arr)` - Generate power set (~9 lines)
 - `generateExhaustiveBestSchedule(...)` - Exhaustive search algorithm (~83 lines)
 - `generateBestPartialSchedule_Heuristic(...)` - Heuristic-based generator (~121 lines)
 - `generateBestPartialSchedule(...)` - Main partial schedule entry point (~64 lines)
 
 **Critical Dependencies:**
+
 - All schedule analysis functions depend on `parseSchedule` from utils
 - `SMALL_N_THRESHOLD_PARTIAL = 12` - Threshold for switching from exhaustive to heuristic
 - Score formula: `totalCourses * 100 + totalUnits` (higher is better)
 - Time preference score: lower is better (based on preference order index)
 
 ### Code Style & Conventions
+
 - Use TypeScript strict mode for all new code
 - Prefer functional components in React
 - No `any` types allowed
@@ -66,6 +73,7 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 ### Architecture Notes
 
 **Current React Architecture (course-scheduler-web/):**
+
 - Single root component (App.jsx) with 22 useState hooks
 - Flat component hierarchy (max 1 level prop drilling)
 - 13 localStorage keys for persistence
@@ -75,12 +83,14 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 - react-datepicker for time selection
 
 **TypeScript Interfaces (docs/architecture/types/index.ts):**
+
 - Core types: DayCode, TimeOfDayBucket, ScheduleSearchMode, GroupingMode
 - Data types: TimeSlot, ParsedSchedule, Course, GroupedCourse, CoursesBySubject
 - State types: FilterState, SchedulePreferences, AppState
 - 25+ interfaces defined for migration
 
 **State Categories:**
+
 1. Core Data: allCourses, processedCourses, rawData
 2. Theme: theme, themePalette
 3. Filters: excludedDays, excludedTimeRanges, sectionTypes, statusFilter
@@ -89,6 +99,7 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 6. Generated: generatedSchedules, currentScheduleIndex
 
 **Component Dependencies:**
+
 - App.jsx imports all child components directly
 - TimeFilter uses react-datepicker
 - CourseTable uses MUI Menu, MenuItem, IconButton, Tooltip
@@ -96,6 +107,7 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 - ConfirmDialog uses MUI Dialog components
 
 ### Environment Setup
+
 - Node.js 18+ required
 - Bun as package manager
 - No environment variables required for local development
@@ -126,7 +138,7 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 10. **Test coverage baseline established**: Current coverage is 81.25% line coverage, 94.32% function coverage. Critical gaps exist in scheduling algorithms (0% coverage) and export functions (generateIcs.js, convertToRawData.js - 0% coverage). See docs/architecture/TEST_COVERAGE_BASELINE.md for detailed analysis.
 
-11. **Untested critical paths**: 
+11. **Untested critical paths**:
     - Scheduling algorithms (~461 lines in App.jsx) - must add tests before migration
     - ICS calendar generation (generateIcs.js, 111 lines)
     - Raw data export (convertToRawData.js, 29 lines)
@@ -166,6 +178,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
     - Conventional commit types: feat, fix, build, chore, ci, docs, style, refactor, perf, test
 
 21. **ESLint flat config at monorepo root**: ESLint v10.0.0 is configured at the monorepo root with flat config (`eslint.config.js`). The configuration supports JavaScript (.js, .jsx), TypeScript (.ts, .tsx), and Astro (.astro) files. Key packages: `eslint`, `@eslint/js`, `eslint-plugin-astro`, `eslint-plugin-react`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`, `typescript-eslint`, `globals`. Preserved logic files (parseSchedule.js, parseRawData.js, generateIcs.js, convertToRawData.js) are explicitly ignored via the `ignores` property in the config. Nested ESLint configs (like the one that was in `course-scheduler-web/`) should be removed to avoid conflicts - the root config handles all files. Use `bun run lint` to check all files and `bun run lint:fix` to auto-fix issues.
+
+22. **Prettier configuration at monorepo root**: Prettier v3.8.1 is configured at the monorepo root with `prettier-plugin-astro` v0.14.1 for Astro file support. Configuration is in `.prettierrc` with formatting rules: semicolons, single quotes, 2-space tabs, trailing commas (ES5), 100-char print width. The `.prettierignore` file excludes build artifacts (`dist/`, `.astro/`), lock files (`package-lock.json`), and generated files (`*.d.ts`, `*.mjs`). Lint-staged runs Prettier after ESLint on pre-commit for `*.{js,jsx,ts,tsx,astro,json,md,css}` files. Use `bun run format` to format all files and `bun run format:check` to verify formatting in CI.
 
 ## Protected Files
 

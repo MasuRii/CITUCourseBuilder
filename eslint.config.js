@@ -60,16 +60,13 @@ export default [
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
 
   // TypeScript files - spread recommended configs
   ...tseslint.configs.recommended,
-  
+
   // TypeScript-specific overrides
   {
     files: ['**/*.ts', '**/*.tsx'],
@@ -80,7 +77,10 @@ export default [
       },
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
@@ -94,16 +94,13 @@ export default [
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
 
   // Astro files - spread recommended configs
   ...eslintPluginAstro.configs['flat/recommended'],
-  
+
   // Astro-specific overrides
   {
     files: ['**/*.astro'],
