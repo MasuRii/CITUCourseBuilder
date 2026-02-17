@@ -107,5 +107,22 @@ Self-Review:
   - All interfaces have JSDoc comments with usage examples
   - Existing tests still pass (19 tests, 0 fail)
   - Added typecheck script to package.json for CI integration
-Unblocked: T1.2.1, T1.2.2, T1.2.3, T1.2.4 (Phase 1.2 discovery tasks, no dependencies)
+ Unblocked: T1.2.1, T1.2.2, T1.2.3, T1.2.4 (Phase 1.2 discovery tasks, no dependencies)
+
+## 2026-02-18 01:45
+Task: T1.2.1 - Create ADR for framework migration approach
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created Architecture Decision Record for framework migration
+  - docs/architecture/decisions/ADR-001-framework-migration-approach.md: Comprehensive ADR with framework comparison, decision rationale, hydration strategy
+  - Updated AGENTS.md with ADR reference in References section
+Reason: First ADR task in Phase 1.2 - documents architectural decisions for migration
+Self-Review:
+  - Documented decision: Astro with React islands
+  - Analyzed 4 alternatives (Next.js, pure Vite, Remix, Astro) with pros/cons tables
+  - Defined hydration strategy for each React component (client:load, client:visible)
+  - Expected benefits: ~30-40% bundle reduction, improved FCP/LCP
+  - All acceptance criteria met: alternatives considered, tables with pros/cons, clear rationale, AGENTS.md updated
+Unblocked: T1.2.2, T1.2.3, T1.2.4 (Phase 1.2 discovery tasks, no dependencies)
+
 

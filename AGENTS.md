@@ -153,6 +153,8 @@ The following files are protected by the Ralph write-guardrail plugin and should
 ## References
 
 - Project Documentation: docs/architecture/ (state analysis, component graphs, algorithm docs)
+- Architecture Decisions: docs/architecture/decisions/ (ADRs)
+- ADR-001: Framework Migration Approach (Astro + React islands)
 - Architecture Analysis: docs/architecture/APP_STATE_ANALYSIS.md
 - Component Graphs: docs/architecture/COMPONENT_DEPENDENCY_GRAPH.md
 - Algorithm Documentation: docs/architecture/SCHEDULING_ALGORITHMS.md

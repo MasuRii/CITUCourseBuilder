@@ -288,9 +288,10 @@
       "sectionId": "1.2",
       "category": "discovery",
       "description": "Create ADR for framework migration approach",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created ADR-001-framework-migration-approach.md with comprehensive framework comparison. Documented Astro with React islands as chosen approach. Analyzed alternatives (Next.js, pure Vite, Remix) with pros/cons tables. Defined hydration strategy for each component. Updated AGENTS.md with ADR reference.",
       "acceptanceCriteria": [
         "Document decision: Astro with React islands",
         "Consider alternatives: Next.js, pure Vite, Remix",
