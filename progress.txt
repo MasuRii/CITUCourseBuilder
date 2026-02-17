@@ -999,3 +999,31 @@ Self-Review:
   - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (435 pass), format, build (3.85s)
   - No AGENTS.md update needed - standard design token patterns
 Unblocked: T4.1.4 (Phase 4.1 Design System Implementation task)
+
+## 2026-02-18 04:00
+Task: T4.1.4 - Create component style variants
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created comprehensive component style variants in global.css
+  - course-scheduler-astro/src/styles/global.css: Added ~500 lines of component style variants
+Reason: Fourth Design System Implementation task in Phase 4.1 - establishes reusable component styles for the "hobby student" aesthetic
+Self-Review:
+  - Button variants: primary (accent color), secondary (neutral), danger (red), ghost (transparent) with hover/active states
+  - Button sizes: default, sm, lg, icon, icon-only with consistent padding and transitions
+  - Input styles: text input, textarea (monospace), select (with chevron icon), checkbox
+  - Input features: placeholder styling, focus states (accent border + shadow), disabled states, sizes (sm/lg)
+  - Card styles: base card with border, elevated variant with shadow, interactive variant with hover effects
+  - Card structure: card-header, card-title, card-body, card-footer sections
+  - Section styles: section container with header, title, consistent padding
+  - Status badge styles: success, warning, danger, info variants with outline variants
+  - Badge sizes: default, sm, lg with icon support
+  - Course status badges: badge-open (green), badge-closed (red), badge-warning-status (yellow)
+  - Toggle buttons: base toggle with aria-pressed state, toggle group for connected buttons
+  - Dropdown menu: dropdown-menu, dropdown-item, dropdown-divider with fade-in animation
+  - Tooltip: tooltip-content with arrow, hover/focus trigger
+  - Animation utilities: fade-in, slide-up, pulse (loading), spin, bounce
+  - All variants use theme-aware CSS custom properties for consistent theming across 6 combinations
+  - All 435 tests pass
+  - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (435 pass), format, build (3.81s)
+  - No AGENTS.md update needed - standard component style patterns documented inline in CSS
+Unblocked: T4.2.1, T4.2.2, T4.2.3, T4.2.4, T4.2.5, T4.2.6, T4.2.7, T4.3.1, T4.3.2, T4.4.1, T4.4.2 (Phase 4 UI/UX Modernization tasks)
