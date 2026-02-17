@@ -233,3 +233,24 @@ Self-Review:
   - Typecheck script includes both Astro diagnostics and TypeScript compiler
   - All acceptance criteria verified complete
  Unblocked: T2.1.4, T2.1.5, T2.2.1 (Phase 2 setup tasks, no dependencies between them)
+
+## 2026-02-18 23:20
+Task: T2.1.4 - Configure Tailwind CSS with custom theme
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created comprehensive Tailwind v4 CSS-based theme configuration
+  - course-scheduler-astro/src/styles/global.css: ~600 lines with @theme directive, all 6 theme combinations, semantic color utilities
+  - course-scheduler-astro/src/components/ThemeToggle.tsx: React island for testing theme/palette switching
+  - course-scheduler-astro/src/pages/index.astro: Updated with theme test section and flash prevention script
+  - AGENTS.md: Added lesson #17 about Tailwind v4 CSS-based configuration
+Reason: Fourth setup task in Phase 2 - enables Tailwind CSS with theme support for the migrated application
+Self-Review:
+  - Tailwind v4 uses CSS-based configuration with @theme directive (no JS config file)
+  - All 6 theme combinations implemented: light/dark × original/comfort/space
+  - Semantic color utilities created: bg-surface-*, text-content-*, border-*, btn-*, row-*
+  - Theme flash prevention script added with is:inline directive for immediate execution
+  - Google Fonts @import moved to top of file to avoid CSS warnings
+  - Build passes with 0 errors, 0 warnings
+  - Typecheck passes with 0 errors
+  - All acceptance criteria verified complete
+ Unblocked: T2.1.5, T2.2.1, T2.2.2, T2.2.3, T2.2.4, T2.3.1, T2.3.2 (Phase 2 setup tasks, no dependencies between them)

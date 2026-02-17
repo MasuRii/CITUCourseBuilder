@@ -431,9 +431,10 @@
       "sectionId": "2.1",
       "category": "setup",
       "description": "Configure Tailwind CSS with custom theme",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "M",
+      "notes": "Configured Tailwind v4 with CSS-based theme configuration using @theme directive. Created comprehensive global.css with all 6 theme combinations (light/dark × original/comfort/space). Implemented CSS custom properties for semantic colors. Created ThemeToggle React island component for testing theme switching. Theme flash prevention script added to index.astro with is:inline directive. All design tokens defined: spacing, typography, colors, shadows, transitions, z-index, breakpoints. Build passes with 0 errors, 0 warnings. Updated AGENTS.md with lesson #17 about Tailwind v4 CSS-based configuration.",
       "acceptanceCriteria": [
         "Create tailwind.config.mjs with design tokens",
         "Define color palette matching existing themes",

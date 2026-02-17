@@ -152,6 +152,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 16. **TypeScript configuration in Astro**: The `astro/tsconfigs/strict` preset enables all required strict options (`strict: true`, `noImplicitAny`, `strictNullChecks`, `strictFunctionTypes`, etc.). Typecheck script is `astro check && tsc --noEmit` which runs both Astro-specific diagnostics and TypeScript compiler. The `@astrojs/check` package provides Astro file diagnostics. All `@types/*` packages are installed as dependencies (not devDependencies) in Astro projects.
 
+17. **Tailwind v4 CSS-based configuration**: Tailwind v4 uses CSS-based configuration with `@theme` directive instead of JavaScript config files. The `@tailwindcss/vite` plugin is used (not `@astrojs/tailwind`). Theme switching uses CSS custom properties with `data-theme` and `data-palette` attributes on `document.documentElement`. The theme flash prevention script must be inline in `<head>` (using `is:inline`) to apply theme before page renders. The `@import` statement for Google Fonts must come before other CSS rules to avoid warnings. See `course-scheduler-astro/src/styles/global.css` for the complete theme configuration with 6 theme combinations (light/dark × original/comfort/space palettes).
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:
