@@ -998,9 +998,10 @@
       "sectionId": "3.2",
       "category": "impl",
       "description": "Create main index page",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created production-ready index.astro that mounts the main App React island with client:load directive. Replaced test sections with integrated App component. Page uses BaseLayout with proper title and description. Build completes in 3.46s. All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format. App chunk: 486.50 kB (gzip: 157.67 kB). No AGENTS.md update needed - standard Astro page pattern with React island.",
       "acceptanceCriteria": [
         "Create src/pages/index.astro",
         "Import BaseLayout",
