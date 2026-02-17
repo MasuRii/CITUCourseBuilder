@@ -1099,9 +1099,10 @@
       "sectionId": "3.3",
       "category": "impl",
       "description": "Verify schedule generation",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "M",
+      "notes": "Created comprehensive schedule generation verification tests (tests/scheduleGeneration.test.ts, 48 tests, 800+ expect() calls). Verified all three generation modes: Exhaustive (Full Coverage) - tries all combinations for optimal schedule; Partial (Recommended) - uses exhaustive for <=12 courses, heuristic for larger sets; Fast - random sampling with 1000 attempts. All modes generate valid conflict-free schedules. Preferences respected: max units, max gap, time preference ordering, minimize campus days. Cross-mode consistency verified for small sets. Edge cases tested: empty input, single course, all-conflicting, TBA/online, malformed schedules, creditedUnits field. Total tests: 329 pass. No AGENTS.md update needed - algorithm behavior unchanged from original.",
       "acceptanceCriteria": [
         "Test \"Recommended\" mode (partial)",
         "Test \"Full Coverage\" mode (exhaustive)",
