@@ -452,9 +452,10 @@
       "sectionId": "2.1",
       "category": "setup",
       "description": "Set up project structure",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created directory structure: src/layouts/, src/utils/, src/hooks/, src/types/, src/assets/, tests/. Added TypeScript path aliases in tsconfig.json with baseUrl and paths mapping for @/*, @components/*, @layouts/*, @pages/*, @styles/*, @utils/*, @hooks/*, @types/*, @assets/*. Typecheck passes with 0 errors. Build completes in ~1.47s. Updated AGENTS.md with lesson #18 about Astro project structure with path aliases.",
       "acceptanceCriteria": [
         "Directory structure created",
         "TypeScript config paths set up",

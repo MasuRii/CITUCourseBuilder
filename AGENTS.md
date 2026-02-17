@@ -154,6 +154,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 17. **Tailwind v4 CSS-based configuration**: Tailwind v4 uses CSS-based configuration with `@theme` directive instead of JavaScript config files. The `@tailwindcss/vite` plugin is used (not `@astrojs/tailwind`). Theme switching uses CSS custom properties with `data-theme` and `data-palette` attributes on `document.documentElement`. The theme flash prevention script must be inline in `<head>` (using `is:inline`) to apply theme before page renders. The `@import` statement for Google Fonts must come before other CSS rules to avoid warnings. See `course-scheduler-astro/src/styles/global.css` for the complete theme configuration with 6 theme combinations (light/dark × original/comfort/space palettes).
 
+18. **Astro project structure with path aliases**: The `course-scheduler-astro/src/` directory follows a standard Astro + React islands architecture with directories for components (React islands), layouts (Astro layouts), pages (Astro pages), styles (global CSS), utils (preserved logic), hooks (custom React hooks), types (TypeScript definitions), and assets (static assets). TypeScript path aliases are configured in `tsconfig.json` with `baseUrl: "."` and `paths` mapping `@/*`, `@components/*`, `@layouts/*`, etc. to their respective directories for clean imports. A separate `tests/` directory exists at the project root for test files.
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:

@@ -254,3 +254,25 @@ Self-Review:
   - Typecheck passes with 0 errors
   - All acceptance criteria verified complete
  Unblocked: T2.1.5, T2.2.1, T2.2.2, T2.2.3, T2.2.4, T2.3.1, T2.3.2 (Phase 2 setup tasks, no dependencies between them)
+
+## 2026-02-18 23:21
+Task: T2.1.5 - Set up project structure
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created complete directory structure and TypeScript path aliases
+  - course-scheduler-astro/src/layouts/: Astro layouts directory
+  - course-scheduler-astro/src/utils/: Preserved utility functions directory
+  - course-scheduler-astro/src/hooks/: Custom React hooks directory
+  - course-scheduler-astro/src/types/: TypeScript definitions directory
+  - course-scheduler-astro/src/assets/: Static assets directory
+  - course-scheduler-astro/tests/: Test files directory
+  - course-scheduler-astro/tsconfig.json: Added baseUrl and paths for @/*, @components/*, @layouts/*, @pages/*, @styles/*, @utils/*, @hooks/*, @types/*, @assets/*
+  - AGENTS.md: Added lesson #18 about Astro project structure with path aliases
+Reason: Fifth setup task in Phase 2.1 - establishes the directory structure and import aliases for the migrated application
+Self-Review:
+  - All 6 directories created (layouts, utils, hooks, types, assets, tests)
+  - TypeScript path aliases configured for clean imports
+  - Typecheck passes with 0 errors, 0 warnings
+  - Build completes in ~1.47s
+  - All acceptance criteria verified complete
+Unblocked: T2.2.1, T2.2.2, T2.2.3, T2.2.4, T2.3.1, T2.3.2 (Phase 2 setup tasks, no dependencies between them)
