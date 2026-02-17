@@ -401,3 +401,7 @@ memory-bank
 
 # JetBrains Rider
 *.sln.iml
+
+# Ralph - AI agent loop files
+.ralph*
+.opencode/plugin/ralph-write-guardrail.ts

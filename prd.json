@@ -1,0 +1,1845 @@
+{
+  "metadata": {
+    "generated": true,
+    "generator": "ralph-plan-command",
+    "createdAt": "2026-02-17T13:09:54.025Z",
+    "sourceFile": "plan.md",
+    "title": "CITUCourseBuilder React to Astro Migration",
+    "summary": "Migrate existing React course scheduler to Astro framework with modernized UI/UX while preserving all computation logic",
+    "assumptions": [
+      {
+        "assumptionId": "C1",
+        "assumption": "All functions in parseSchedule.js preserved exactly"
+      },
+      {
+        "assumptionId": "C2",
+        "assumption": "All functions in parseRawData.js preserved exactly"
+      },
+      {
+        "assumptionId": "C3",
+        "assumption": "All functions in generateIcs.js preserved exactly"
+      },
+      {
+        "assumptionId": "C4",
+        "assumption": "All functions in convertToRawData.js preserved exactly"
+      },
+      {
+        "assumptionId": "C5",
+        "assumption": "All scheduling algorithms in App.jsx preserved exactly"
+      },
+      {
+        "assumptionId": "C6",
+        "assumption": "No manual human intervention required"
+      },
+      {
+        "assumptionId": "C7",
+        "assumption": "All JavaScript files converted to TypeScript with strict mode"
+      },
+      {
+        "assumptionId": "T1",
+        "assumption": "Bun remains package manager"
+      },
+      {
+        "assumptionId": "T2",
+        "assumption": "GitHub Pages deployment unchanged"
+      },
+      {
+        "assumptionId": "T3",
+        "assumption": "React islands approach valid"
+      },
+      {
+        "assumptionId": "T4",
+        "assumption": "Tailwind can replicate all CSS"
+      },
+      {
+        "assumptionId": "T5",
+        "assumption": "Vitest remains test framework"
+      },
+      {
+        "assumptionId": "U1",
+        "assumption": "\"Hobby student\" aesthetic means approachable, playful"
+      },
+      {
+        "assumptionId": "U2",
+        "assumption": "Light/dark theme support required"
+      },
+      {
+        "assumptionId": "U3",
+        "assumption": "Mobile responsiveness maintained"
+      },
+      {
+        "assumptionId": "U4",
+        "assumption": "MUI icons can be replaced with Lucide or Heroicons"
+      }
+    ],
+    "approach": "Incremental migration preserving logic, modernizing UI layer by layer",
+    "risks": [
+      {
+        "riskId": "R1",
+        "risk": "Schedule generation algorithm produces different results after migration",
+        "likelihood": "M",
+        "impact": "H",
+        "mitigation": "Create comprehensive test suite before migration; compare outputs"
+      },
+      {
+        "riskId": "R2",
+        "risk": "Complex CSS theming (light/dark, palettes) difficult to replicate in Tailwind",
+        "likelihood": "M",
+        "impact": "M",
+        "mitigation": "Create Tailwind theme with CSS variables; incremental migration"
+      },
+      {
+        "riskId": "R3",
+        "risk": "React-datepicker integration with Astro islands problematic",
+        "likelihood": "L",
+        "impact": "M",
+        "mitigation": "Evaluate alternatives; may need custom component"
+      },
+      {
+        "riskId": "R4",
+        "risk": "MUI components have no direct Tailwind equivalents",
+        "likelihood": "M",
+        "impact": "M",
+        "mitigation": "Build custom components with same UX"
+      },
+      {
+        "riskId": "R5",
+        "risk": "html-to-image/jspdf compatibility with SSR",
+        "likelihood": "L",
+        "impact": "M",
+        "mitigation": "Ensure client-side only rendering for export features"
+      },
+      {
+        "riskId": "R6",
+        "risk": "localStorage persistence in Astro context",
+        "likelihood": "L",
+        "impact": "L",
+        "mitigation": "Astro islands have full client-side access"
+      },
+      {
+        "riskId": "R7",
+        "risk": "Performance regression during migration",
+        "likelihood": "L",
+        "impact": "M",
+        "mitigation": "Establish baseline metrics; measure each phase"
+      },
+      {
+        "riskId": "R8",
+        "risk": "Bundle size increases with dual React + Astro",
+        "likelihood": "M",
+        "impact": "L",
+        "mitigation": "Tree-shaking; remove unused MUI components"
+      },
+      {
+        "riskId": "R9",
+        "risk": "Type inference complexity for dynamic parsing functions",
+        "likelihood": "M",
+        "impact": "M",
+        "mitigation": "Create precise TypeScript interfaces for all data structures, use discriminated unions for schedule types"
+      },
+      {
+        "riskId": "R10",
+        "risk": "Third-party library type definitions missing",
+        "likelihood": "L",
+        "impact": "M",
+        "mitigation": "Install @types/* packages, create custom declaration files for untyped libraries"
+      },
+      {
+        "riskId": "R11",
+        "risk": "TypeScript strict mode revealing latent bugs",
+        "likelihood": "M",
+        "impact": "L",
+        "mitigation": "Fix type errors incrementally, use // @ts-expect-error temporarily with TODO comments"
+      }
+    ],
+    "estimatedEffort": "7-10 days",
+    "totalTasks": 81
+  },
+  "items": [
+    {
+      "id": "T1.1.1",
+      "phaseId": "1",
+      "sectionId": "1.1",
+      "category": "discovery",
+      "description": "Analyze App.jsx component structure and extract state management patterns",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Document all useState hooks with their purposes",
+        "Map prop drilling patterns between components",
+        "Identify side effects and their dependencies",
+        "Create component hierarchy diagram",
+        "Complete list of 15+ useState hooks documented with types",
+        "Component dependency graph created",
+        "Data flow diagram saved to docs/architecture/",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T1.1.2",
+      "phaseId": "1",
+      "sectionId": "1.1",
+      "category": "discovery",
+      "description": "Catalog all scheduling algorithms and their dependencies",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Document: checkTimeOverlap, isScheduleConflictFree, getTimeOfDayBucket, scoreScheduleByTimePreference, exceedsMaxUnits, exceedsMaxGap, countCampusDays, generateExhaustiveBestSchedule, getAllSubsets, generateBestPartialSchedule_Heuristic, generateBestPartialSchedule, loadFromLocalStorage",
+        "Create function signature documentation with TypeScript interfaces",
+        "Map algorithm dependencies and call graphs",
+        "All 12+ algorithm functions documented",
+        "TypeScript interface definitions created",
+        "Call graph diagram saved to docs/architecture/",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T1.1.3",
+      "phaseId": "1",
+      "sectionId": "1.1",
+      "category": "discovery",
+      "description": "Analyze CSS architecture and theming system",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Document CSS custom properties structure",
+        "Map theme variables (light/dark palettes)",
+        "Identify component-specific styles vs global styles",
+        "Calculate CSS specificity patterns",
+        "Complete inventory of 100+ CSS custom properties",
+        "Theme switcher logic documented",
+        "Tailwind migration mapping created",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T1.1.4",
+      "phaseId": "1",
+      "sectionId": "1.1",
+      "category": "discovery",
+      "description": "Audit existing test coverage",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Run existing test suite: `bun test`",
+        "Document current coverage percentage",
+        "Identify untested critical paths",
+        "Create coverage baseline report",
+        "Coverage report generated (target: baseline documented)",
+        "List of untested utility functions",
+        "Test gaps identified for scheduling algorithms",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T1.1.5",
+      "phaseId": "1",
+      "sectionId": "1.1",
+      "category": "discovery",
+      "description": "Document current performance metrics",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Measure current bundle size",
+        "Measure build time",
+        "Measure Lighthouse scores (performance, accessibility, best practices, SEO)",
+        "Document memory usage patterns",
+        "Baseline bundle size ≤ 500KB gzipped (measure actual)",
+        "Build time baseline documented",
+        "Lighthouse scores captured (4 categories)",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T1.1.6",
+      "phaseId": "1",
+      "sectionId": "1.1",
+      "title": "[discovery] TypeScript Interface Design",
+      "category": "discovery",
+      "description": "Design TypeScript interfaces for all data structures before conversion begins",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Create interfaces for: Course, TimeSlot, Schedule, ParsedSchedule, DayCode, TimeRange, FilterState, AppState",
+        "Document all function signatures with parameter and return types",
+        "Create discriminated unions for schedule types (SingleSlot, MultiSlot, TBASchedule)",
+        "Create types file at src/types/index.ts with all interfaces exported",
+        "All interfaces documented with JSDoc comments",
+        "Interfaces compile without errors",
+        "Interfaces cover all existing data structures",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T1.2.1",
+      "phaseId": "1",
+      "sectionId": "1.2",
+      "category": "discovery",
+      "description": "Create ADR for framework migration approach",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Document decision: Astro with React islands",
+        "Consider alternatives: Next.js, pure Vite, Remix",
+        "Justify choice based on project requirements",
+        "ADR-001 saved to docs/architecture/decisions/",
+        "Alternatives table with pros/cons",
+        "Clear recommendation rationale",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T1.2.2",
+      "phaseId": "1",
+      "sectionId": "1.2",
+      "category": "discovery",
+      "description": "Create ADR for UI component strategy",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Document decision: Custom Tailwind components replacing MUI",
+        "Consider alternatives: shadcn/ui, Headless UI, Radix",
+        "Address icon library replacement (Lucide/Heroicons)",
+        "ADR-002 saved to docs/architecture/decisions/",
+        "Component mapping table (MUI → Custom)",
+        "Icon replacement strategy documented",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T1.2.3",
+      "phaseId": "1",
+      "sectionId": "1.2",
+      "category": "discovery",
+      "description": "Create ADR for state management approach",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Document decision: React state via islands + localStorage",
+        "Consider alternatives: Zustand, Jotai, Nanostores",
+        "Address SSR/CSR boundary for state",
+        "ADR-003 saved to docs/architecture/decisions/",
+        "State persistence strategy documented",
+        "SSR compatibility addressed",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T1.2.4",
+      "phaseId": "1",
+      "sectionId": "1.2",
+      "category": "discovery",
+      "description": "Create AGENTS.md file",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Create docs/AGENTS.md with project context",
+        "Include critical file references",
+        "Document coding conventions",
+        "Add \"gotchas\" and important patterns",
+        "File exists at docs/AGENTS.md",
+        "Contains all critical file paths",
+        "Documents preserved logic files",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.1.1",
+      "phaseId": "2",
+      "sectionId": "2.1",
+      "category": "setup",
+      "description": "Initialize Astro project in parallel directory",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Run: `bun create astro@latest course-scheduler-astro`",
+        "Select: React integration, Tailwind integration, TypeScript strict",
+        "Configure base path: /CITUCourseBuilder/",
+        "Project created at course-scheduler-astro/",
+        "package.json with Astro 5.x, React 19, Tailwind 4.x",
+        "astro.config.mjs configured with correct base",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.1.2",
+      "phaseId": "2",
+      "sectionId": "2.1",
+      "category": "setup",
+      "description": "Configure Astro for React islands",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Add @astrojs/react integration",
+        "Configure client:load, client:visible directives",
+        "Set up hydration strategies per component",
+        "React integration working",
+        "Test island renders correctly",
+        "Hydration config documented",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.1.3",
+      "phaseId": "2",
+      "sectionId": "2.1",
+      "title": "[setup] TypeScript Configuration",
+      "category": "setup",
+      "description": "Configure TypeScript with strict mode for the entire project",
+      "passes": false,
+      "effort": "S",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Install TypeScript and @types packages for React, React-DOM, and other dependencies",
+        "Create tsconfig.json with strict: true, noImplicitAny: true, strictNullChecks: true",
+        "Configure Astro's TypeScript integration",
+        "Add type-check script to package.json: \"typecheck\": \"tsc --noEmit\"",
+        "TypeScript compiles with zero errors (exit code 0)",
+        "All @types/* packages installed and resolved",
+        "typecheck script added and passing",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.1.4",
+      "phaseId": "2",
+      "sectionId": "2.1",
+      "category": "setup",
+      "description": "Configure Tailwind CSS with custom theme",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Create tailwind.config.mjs with design tokens",
+        "Define color palette matching existing themes",
+        "Configure dark mode with class strategy",
+        "Set up custom utilities for existing patterns",
+        "Tailwind config with all design tokens",
+        "Dark mode toggle working",
+        "Color palette matches existing CSS variables",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.1.5",
+      "phaseId": "2",
+      "sectionId": "2.1",
+      "category": "setup",
+      "description": "Set up project structure",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Directory structure created",
+        "TypeScript config paths set up",
+        "Import aliases configured",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.2.1",
+      "phaseId": "2",
+      "sectionId": "2.2",
+      "category": "setup",
+      "description": "Install and configure lint-staged",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Install: `bun add -d lint-staged`",
+        "Configure package.json with lint-staged rules",
+        "Set up file patterns for .js, .jsx, .ts, .tsx, .astro",
+        "lint-staged installed and configured",
+        "Runs on .js, .jsx, .ts, .tsx, .astro files",
+        "Configuration in package.json",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.2.2",
+      "phaseId": "2",
+      "sectionId": "2.2",
+      "category": "setup",
+      "description": "Install and configure husky",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Install: `bun add -d husky`",
+        "Initialize: `bunx husky init`",
+        "Add pre-commit hook running lint-staged",
+        "Add commit-msg hook for conventional commits",
+        ".husky/pre-commit runs lint-staged",
+        ".husky/commit-msg validates format",
+        "Hooks execute on git commit",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.2.3",
+      "phaseId": "2",
+      "sectionId": "2.2",
+      "category": "setup",
+      "description": "Configure ESLint for Astro + React",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Install: `bun add -d eslint @eslint/js eslint-plugin-astro eslint-plugin-react`",
+        "Create eslint.config.js with Astro + React rules",
+        "Configure React hooks rules",
+        "ESLint configured for .astro, .jsx, .tsx",
+        "No linting errors on initial setup",
+        "Rules match existing project style",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.2.4",
+      "phaseId": "2",
+      "sectionId": "2.2",
+      "category": "setup",
+      "description": "Configure Prettier with Astro plugin",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Install: `bun add -d prettier prettier-plugin-astro`",
+        "Create .prettierrc with formatting rules",
+        "Add format script to package.json",
+        "Prettier formats .astro files correctly",
+        "Consistent formatting across all files",
+        "Format script works: `bun run format`",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.3.1",
+      "phaseId": "2",
+      "sectionId": "2.3",
+      "category": "setup",
+      "description": "Update GitHub Actions workflow for Astro",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Modify .github/workflows/deploy.yml",
+        "Update build command for Astro",
+        "Update artifact path to Astro dist/",
+        "Add test step to CI pipeline",
+        "Workflow builds Astro project",
+        "Tests run in CI",
+        "Deployment to GitHub Pages works",
+        "Build completes in ≤ 30 seconds",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T2.3.2",
+      "phaseId": "2",
+      "sectionId": "2.3",
+      "category": "setup",
+      "description": "Add CI status checks",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Configure branch protection rules (document for manual setup)",
+        "Add lint check to CI",
+        "Add test check to CI",
+        "Add build check to CI",
+        "All 3 checks defined in workflow",
+        "Documentation for branch protection",
+        "CI fails on test/lint/build failure",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.1.1",
+      "phaseId": "3",
+      "sectionId": "3.1",
+      "title": "[impl] Migrate parseSchedule.js to TypeScript",
+      "category": "impl",
+      "description": "Convert parseSchedule.js to parseSchedule.ts with full type safety while preserving ALL logic exactly",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Copy course-scheduler-web/src/utils/parseSchedule.js to course-scheduler-astro/src/utils/parseSchedule.ts",
+        "Add explicit parameter and return types to all functions",
+        "Preserve ALL logic exactly with no modifications",
+        "Use interfaces from T1.1.6 for data structures",
+        "File renamed to .ts extension",
+        "All functions have explicit parameter and return types",
+        "No `any` types used (strict mode compliant)",
+        "TypeScript compiles with zero errors",
+        "Logic identical to original",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.1.2",
+      "phaseId": "3",
+      "sectionId": "3.1",
+      "title": "[impl] Migrate parseRawData.js to TypeScript",
+      "category": "impl",
+      "description": "Convert parseRawData.js to parseRawData.ts with full type safety while preserving ALL logic exactly",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Copy course-scheduler-web/src/utils/parseRawData.js to course-scheduler-astro/src/utils/parseRawData.ts",
+        "Add explicit parameter and return types to all functions",
+        "Preserve ALL logic exactly with no modifications",
+        "Use interfaces from T1.1.6 for data structures",
+        "File renamed to .ts extension",
+        "All functions have explicit parameter and return types",
+        "No `any` types used (strict mode compliant)",
+        "TypeScript compiles with zero errors",
+        "Logic identical to original",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.1.3",
+      "phaseId": "3",
+      "sectionId": "3.1",
+      "title": "[impl] Migrate generateIcs.js to TypeScript",
+      "category": "impl",
+      "description": "Convert generateIcs.js to generateIcs.ts with full type safety while preserving ALL logic exactly",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Copy course-scheduler-web/src/utils/generateIcs.js to course-scheduler-astro/src/utils/generateIcs.ts",
+        "Add explicit parameter and return types to all functions",
+        "Preserve ALL logic exactly with no modifications",
+        "Use interfaces from T1.1.6 for data structures",
+        "File renamed to .ts extension",
+        "All functions have explicit parameter and return types",
+        "No `any` types used (strict mode compliant)",
+        "TypeScript compiles with zero errors",
+        "Logic identical to original",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.1.4",
+      "phaseId": "3",
+      "sectionId": "3.1",
+      "title": "[impl] Migrate convertToRawData.js to TypeScript",
+      "category": "impl",
+      "description": "Convert convertToRawData.js to convertToRawData.ts with full type safety while preserving ALL logic exactly",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Copy course-scheduler-web/src/utils/convertToRawData.js to course-scheduler-astro/src/utils/convertToRawData.ts",
+        "Add explicit parameter and return types to all functions",
+        "Preserve ALL logic exactly with no modifications",
+        "Use interfaces from T1.1.6 for data structures",
+        "File renamed to .ts extension",
+        "All functions have explicit parameter and return types",
+        "No `any` types used (strict mode compliant)",
+        "TypeScript compiles with zero errors",
+        "Logic identical to original",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.1.5",
+      "phaseId": "3",
+      "sectionId": "3.1",
+      "category": "impl",
+      "description": "Extract scheduling algorithms from App.jsx to TypeScript",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Create src/utils/scheduleAlgorithms.ts",
+        "Extract: checkTimeOverlap, isScheduleConflictFree, getTimeOfDayBucket, scoreScheduleByTimePreference, exceedsMaxUnits, exceedsMaxGap, countCampusDays, generateExhaustiveBestSchedule, getAllSubsets, generateBestPartialSchedule_Heuristic, generateBestPartialSchedule",
+        "Copy EXACTLY with no modifications to logic",
+        "Add explicit TypeScript types using interfaces from T1.1.6",
+        "All 12 functions extracted with explicit types",
+        "Logic identical to original",
+        "No `any` types used",
+        "Unit tests pass for all functions",
+        "Export statement added",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.1.6",
+      "phaseId": "3",
+      "sectionId": "3.1",
+      "category": "impl",
+      "description": "Copy existing tests for utilities and convert to TypeScript",
+      "passes": false,
+      "effort": "XS",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Copy parseSchedule.test.js to new project as parseSchedule.test.ts",
+        "Copy parseRawData.test.js to new project as parseRawData.test.ts",
+        "Verify tests pass: `bun test`",
+        "Both test files copied and converted to .ts",
+        "All existing tests pass",
+        "Coverage matches baseline",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.1.7",
+      "phaseId": "3",
+      "sectionId": "3.1",
+      "category": "impl",
+      "description": "Create comprehensive test suite for scheduling algorithms",
+      "passes": false,
+      "effort": "L",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Create scheduleAlgorithms.test.ts",
+        "Test checkTimeOverlap with edge cases",
+        "Test isScheduleConflictFree with various schedules",
+        "Test generateExhaustiveBestSchedule with known inputs",
+        "Test generateBestPartialSchedule with heuristic scenarios",
+        "Test exceedsMaxUnits and exceedsMaxGap",
+        "Test coverage ≥ 80% for all scheduling functions",
+        "All edge cases covered (TBA, multi-slot, hybrid)",
+        "Tests pass: `bun test`",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.1.8",
+      "phaseId": "3",
+      "sectionId": "3.1",
+      "title": "[impl] Extract and Type Scheduling Algorithms",
+      "category": "impl",
+      "description": "Extract all scheduling algorithms from App.jsx to TypeScript modules with strict typing",
+      "passes": false,
+      "effort": "L",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Create src/algorithms/scheduleGeneration.ts",
+        "Extract: checkTimeOverlap, isScheduleConflictFree, getTimeOfDayBucket, scoreScheduleByTimePreference, exceedsMaxUnits, exceedsMaxGap, countCampusDays, generateExhaustiveBestSchedule, getAllSubsets, generateBestPartialSchedule_Heuristic, generateBestPartialSchedule",
+        "All functions have explicit parameter and return types",
+        "Create ScheduleAlgorithmOptions interface for generation parameters",
+        "All algorithms compile with strict mode (zero errors)",
+        "All existing tests pass after extraction",
+        "No `any` types used",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.2.1",
+      "phaseId": "3",
+      "sectionId": "3.2",
+      "category": "impl",
+      "description": "Create Astro base layout",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Create src/layouts/BaseLayout.astro",
+        "Include HTML head with meta tags",
+        "Include theme initialization script",
+        "Include global styles",
+        "Layout renders correctly",
+        "Theme toggle works",
+        "All meta tags present",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.2.2",
+      "phaseId": "3",
+      "sectionId": "3.2",
+      "category": "impl",
+      "description": "Create Header component (Astro)",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Create src/components/Header.astro",
+        "Include logo, title, theme toggle",
+        "Responsive navigation",
+        "Header renders in layout",
+        "Theme toggle functional",
+        "Mobile responsive",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.2.3",
+      "phaseId": "3",
+      "sectionId": "3.2",
+      "category": "impl",
+      "description": "Migrate RawDataInput as React island",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Create src/components/RawDataInput.tsx",
+        "Convert to TypeScript with explicit prop types",
+        "Use Tailwind styling",
+        "Remove MUI dependencies",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Component renders in Astro page",
+        "All functionality preserved",
+        "Tailwind styled, no MUI",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.2.4",
+      "phaseId": "3",
+      "sectionId": "3.2",
+      "category": "impl",
+      "description": "Migrate ConfirmDialog as React island",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Create src/components/ConfirmDialog.tsx",
+        "Convert to TypeScript with explicit prop types",
+        "Use Tailwind styling",
+        "Add keyboard accessibility (Escape to close)",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Dialog renders correctly",
+        "Keyboard accessible",
+        "Tailwind styled",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.2.5",
+      "phaseId": "3",
+      "sectionId": "3.2",
+      "category": "impl",
+      "description": "Migrate TimeFilter as React island",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Create src/components/TimeFilter.tsx",
+        "Convert to TypeScript with explicit prop types",
+        "Replace react-datepicker with custom Tailwind time picker",
+        "Use Tailwind styling",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Day exclusion checkboxes work",
+        "Time range picker functional",
+        "Tailwind styled, no react-datepicker",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.2.6",
+      "phaseId": "3",
+      "sectionId": "3.2",
+      "category": "impl",
+      "description": "Migrate CourseTable as React island",
+      "passes": false,
+      "effort": "L",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Create src/components/CourseTable.tsx",
+        "Convert to TypeScript with explicit prop types",
+        "Use Tailwind styling",
+        "Remove MUI Menu, MenuItem, IconButton, Tooltip",
+        "Replace with custom dropdown and icons",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Table renders with all columns",
+        "Grouping functionality preserved",
+        "Status filter buttons work",
+        "Export menu functional",
+        "Lock/unlock buttons work",
+        "Tailwind styled, no MUI",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.2.7",
+      "phaseId": "3",
+      "sectionId": "3.2",
+      "category": "impl",
+      "description": "Migrate TimetableView as React island",
+      "passes": false,
+      "effort": "L",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Create src/components/TimetableView.tsx",
+        "Convert to TypeScript with explicit prop types",
+        "Use Tailwind styling",
+        "Remove MUI dependencies",
+        "Ensure html-to-image and jspdf work client-side only",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Timetable grid renders correctly",
+        "Time slots display properly",
+        "Export as PNG works",
+        "Export as PDF works",
+        "Export as ICS works",
+        "Tailwind styled, no MUI",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.2.8",
+      "phaseId": "3",
+      "sectionId": "3.2",
+      "category": "impl",
+      "description": "Extract state management from App.jsx",
+      "passes": false,
+      "effort": "L",
+      "risk": "H",
+      "acceptanceCriteria": [
+        "Create src/hooks/useCourseState.ts hook",
+        "Extract all useState hooks to custom hook",
+        "Create src/hooks/useLocalStorage.ts hook",
+        "Create src/hooks/useTheme.ts hook",
+        "All state extracted to hooks",
+        "LocalStorage persistence works",
+        "Theme switching works",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.2.9",
+      "phaseId": "3",
+      "sectionId": "3.2",
+      "category": "impl",
+      "description": "Create main App island",
+      "passes": false,
+      "effort": "L",
+      "risk": "H",
+      "acceptanceCriteria": [
+        "Create src/components/App.tsx",
+        "Integrate all child components",
+        "Connect state hooks",
+        "Implement all event handlers",
+        "App component converted to .tsx",
+        "All state variables have explicit types",
+        "All event handlers have explicit parameter types",
+        "No `any` types used",
+        "All components integrated",
+        "All features functional",
+        "State management working",
+        "Schedule generation working",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.2.10",
+      "phaseId": "3",
+      "sectionId": "3.2",
+      "category": "impl",
+      "description": "Create main index page",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Create src/pages/index.astro",
+        "Import BaseLayout",
+        "Mount App island with client:load",
+        "Page renders correctly",
+        "App island hydrates",
+        "All features accessible",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.3.1",
+      "phaseId": "3",
+      "sectionId": "3.3",
+      "category": "impl",
+      "description": "Verify smart data import",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Test WITS HTML table import",
+        "Test AIMS tab-separated import",
+        "Test compact variation import",
+        "Test space-separated import",
+        "All import formats work identically to original",
+        "Course data parsed correctly",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.3.2",
+      "phaseId": "3",
+      "sectionId": "3.3",
+      "category": "impl",
+      "description": "Verify course management",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Test grouping by subject/department/none",
+        "Test status filtering (all/open/closed)",
+        "Test course deletion (single/all)",
+        "All grouping modes work",
+        "Status filtering correct",
+        "Deletion works",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.3.3",
+      "phaseId": "3",
+      "sectionId": "3.3",
+      "category": "impl",
+      "description": "Verify course locking",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Test lock/unlock toggle",
+        "Test conflict detection",
+        "Test conflict warning dialog",
+        "Test available slots check",
+        "Locking works correctly",
+        "Conflicts detected and highlighted",
+        "Warning dialog shows conflicts",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.3.4",
+      "phaseId": "3",
+      "sectionId": "3.3",
+      "category": "impl",
+      "description": "Verify filtering system",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Test day exclusion",
+        "Test time range exclusion",
+        "Test section type filtering",
+        "Test preference persistence",
+        "All filters work correctly",
+        "Preferences persist to localStorage",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.3.5",
+      "phaseId": "3",
+      "sectionId": "3.3",
+      "category": "impl",
+      "description": "Verify schedule generation",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Test \"Recommended\" mode (partial)",
+        "Test \"Full Coverage\" mode (exhaustive)",
+        "Test \"Quick\" mode (fast random)",
+        "Verify algorithm outputs match original",
+        "All modes generate valid schedules",
+        "Outputs match original implementation",
+        "Preferences respected",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T3.3.6",
+      "phaseId": "3",
+      "sectionId": "3.3",
+      "category": "impl",
+      "description": "Verify export functionality",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Test course list copy to clipboard",
+        "Test course list download as .txt",
+        "Test timetable export as PNG",
+        "Test timetable export as PDF",
+        "Test timetable export as .ics",
+        "All export formats work",
+        "Generated files are valid",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.1.1",
+      "phaseId": "4",
+      "sectionId": "4.1",
+      "category": "impl",
+      "description": "Define Tailwind color palette for \"hobby student\" aesthetic",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Create playful, approachable color scheme",
+        "Define primary, secondary, accent colors",
+        "Create semantic colors (success, warning, error, info)",
+        "Define light/dark mode variants",
+        "Color palette defined in tailwind.config.mjs",
+        "Light and dark variants",
+        "Accessible contrast ratios (WCAG AA)",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.1.2",
+      "phaseId": "4",
+      "sectionId": "4.1",
+      "category": "impl",
+      "description": "Define typography scale",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Choose playful but readable font family",
+        "Define heading scale (h1-h6)",
+        "Define body text sizes",
+        "Define monospace for schedule data",
+        "Font family loaded (Google Fonts or local)",
+        "Type scale in Tailwind config",
+        "Consistent across all components",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.1.3",
+      "phaseId": "4",
+      "sectionId": "4.1",
+      "category": "impl",
+      "description": "Define spacing and layout tokens",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Map existing --space-* variables to Tailwind",
+        "Define container widths",
+        "Define responsive breakpoints",
+        "Spacing matches original",
+        "Responsive breakpoints defined",
+        "Container max-width set",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.1.4",
+      "phaseId": "4",
+      "sectionId": "4.1",
+      "category": "impl",
+      "description": "Create component style variants",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Define button variants (primary, secondary, danger, ghost)",
+        "Define input styles",
+        "Define card/section styles",
+        "Define status badge styles",
+        "All variants in Tailwind config",
+        "Consistent across components",
+        "Documented in storybook or docs",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.2.1",
+      "phaseId": "4",
+      "sectionId": "4.2",
+      "category": "impl",
+      "description": "Redesign Header component",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Add playful branding elements",
+        "Create smooth theme toggle animation",
+        "Add subtle hover effects",
+        "Convert to TypeScript with explicit types",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Header includes: logo (verified by presence), title text, theme toggle button (verified by DOM query)",
+        "No accessibility violations in header (axe-core audit: 0 violations)",
+        "Lighthouse Accessibility score ≥ 90 for header region",
+        "Smooth transitions",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.2.2",
+      "phaseId": "4",
+      "sectionId": "4.2",
+      "category": "impl",
+      "description": "Redesign RawDataInput component",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Create welcoming input area",
+        "Add helpful placeholder text",
+        "Style mode selector with visual feedback",
+        "Add loading/import animations",
+        "Ensure TypeScript compliance",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Navigation items have hover states (verified by CSS :hover class presence)",
+        "Active state visually distinct (color contrast ratio ≥ 3:1)",
+        "All navigation items keyboard accessible (Tab navigation verified)",
+        "Clear instructions",
+        "Visual feedback on import",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.2.3",
+      "phaseId": "4",
+      "sectionId": "4.2",
+      "category": "impl",
+      "description": "Redesign CourseTable component",
+      "passes": false,
+      "effort": "L",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Modern table styling with Tailwind",
+        "Hover effects on rows",
+        "Animated lock/unlock buttons",
+        "Status badges with icons",
+        "Smooth grouping transitions",
+        "Ensure TypeScript compliance",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Table rows have :hover pseudo-class defined",
+        "Sort indicators visible on sortable columns (verified by presence)",
+        "Row striping applied for readability (even/odd class distinction)",
+        "Smooth animations",
+        "Clear visual hierarchy",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.2.4",
+      "phaseId": "4",
+      "sectionId": "4.2",
+      "category": "impl",
+      "description": "Redesign TimetableView component",
+      "passes": false,
+      "effort": "L",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Modern grid styling",
+        "Course cards with rounded corners",
+        "Color coding for different subjects",
+        "Hover tooltips with course details",
+        "Animated export buttons",
+        "Ensure TypeScript compliance",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Visually appealing timetable",
+        "Clear time/slot visualization",
+        "Fun color coding",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.2.5",
+      "phaseId": "4",
+      "sectionId": "4.2",
+      "category": "impl",
+      "description": "Redesign TimeFilter component",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Modern checkbox styling",
+        "Custom time picker with Tailwind",
+        "Drag-to-reorder time preferences (optional)",
+        "Visual feedback on filter changes",
+        "Ensure TypeScript compliance",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Modern filter UI",
+        "Time picker works correctly",
+        "Clear visual feedback",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.2.6",
+      "phaseId": "4",
+      "sectionId": "4.2",
+      "category": "impl",
+      "description": "Create new Toast notification system",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Replace react-toastify with custom Tailwind toasts",
+        "Add playful animations",
+        "Position notifications appropriately",
+        "Ensure TypeScript compliance",
+        "Component file uses .tsx extension",
+        "All props have TypeScript interface with JSDoc comments",
+        "No `any` types in component",
+        "Component type-checks with zero errors",
+        "Custom toast component",
+        "All toast types (success, error, warning, info)",
+        "Playful animations",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.2.7",
+      "phaseId": "4",
+      "sectionId": "4.2",
+      "category": "impl",
+      "description": "Create custom icons",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Install Lucide icons: `bun add lucide-react`",
+        "Map all MUI icons to Lucide equivalents",
+        "Create custom icons where needed",
+        "Lucide icons installed",
+        "All MUI icons replaced",
+        "Consistent icon style",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.3.1",
+      "phaseId": "4",
+      "sectionId": "4.3",
+      "category": "impl",
+      "description": "Implement dark/light theme toggle",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Use Tailwind dark: variant with class strategy",
+        "Create theme toggle button",
+        "Persist preference to localStorage",
+        "Add smooth transition between themes",
+        "Toggle switches themes",
+        "Preference persists",
+        "Smooth transition animation",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.3.2",
+      "phaseId": "4",
+      "sectionId": "4.3",
+      "category": "impl",
+      "description": "Implement palette variants",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Create \"Original\" palette (current default)",
+        "Create \"Comfort\" palette (softer colors)",
+        "Create \"Space\" palette (cosmic theme)",
+        "Allow per-theme palette selection",
+        "3 palette options",
+        "Palette persists per theme",
+        "Smooth palette transitions",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.4.1",
+      "phaseId": "4",
+      "sectionId": "4.4",
+      "category": "impl",
+      "description": "Implement mobile-first responsive layouts",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Course table horizontal scroll on mobile",
+        "Collapsible filter sections",
+        "Responsive timetable grid",
+        "Touch-friendly button sizes",
+        "All components usable on 320px+ screens",
+        "Touch targets ≥ 44px",
+        "Horizontal scroll for tables",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T4.4.2",
+      "phaseId": "4",
+      "sectionId": "4.4",
+      "category": "impl",
+      "description": "Optimize for tablet view",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Adjust layouts for 768px breakpoint",
+        "Optimize course table columns",
+        "Adjust timetable scaling",
+        "Optimal layout at 768px",
+        "No layout issues",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.1.1",
+      "phaseId": "5",
+      "sectionId": "5.1",
+      "category": "test",
+      "description": "Achieve ≥ 80% coverage for utility functions",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Add tests for parseSchedule edge cases",
+        "Add tests for parseRawData variations",
+        "Add tests for generateIcs output format",
+        "Add tests for convertToRawData roundtrip",
+        "Test files converted to .ts extension",
+        "Test utilities have proper types",
+        "Coverage ≥ 80% for all utils",
+        "All edge cases covered",
+        "Tests for invalid input formats (malformed WITS/AIMS data) with expected error handling",
+        "Tests for empty/null/undefined inputs return appropriate empty/default values",
+        "Tests for boundary conditions (empty string, single character, max length string)",
+        "Tests pass: `bun test`",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.1.2",
+      "phaseId": "5",
+      "sectionId": "5.1",
+      "category": "test",
+      "description": "Create integration tests for components",
+      "passes": false,
+      "effort": "L",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Set up Testing Library for React",
+        "Test RawDataInput import flow",
+        "Test CourseTable interactions",
+        "Test TimetableView rendering",
+        "Test schedule generation flow",
+        "Integration test files use .ts extension",
+        "Testing Library configured",
+        "Key user flows tested",
+        "Test error state rendering when import fails",
+        "Test toast notifications display for user errors",
+        "Test graceful degradation when schedule generation fails",
+        "Tests pass: `bun test`",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.1.3",
+      "phaseId": "5",
+      "sectionId": "5.1",
+      "category": "test",
+      "description": "Create E2E smoke tests",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Set up Playwright or similar",
+        "Test complete user journey: import → filter → generate → export",
+        "Test all export formats",
+        "Test theme switching",
+        "Playwright configured",
+        "3+ E2E test scenarios",
+        "Tests pass in CI",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.1.4",
+      "phaseId": "5",
+      "sectionId": "5.1",
+      "title": "[setup] Visual Regression Testing",
+      "category": "test",
+      "description": "Set up visual regression testing to make UI changes measurable and catch unintended visual changes",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Install Playwright for visual comparison",
+        "Create baseline screenshots for: header, course table, timetable, filters, dialogs",
+        "Configure CI to run visual tests on every PR",
+        "Visual regression tests for 10+ component states (header, table, timetable, dialogs, filters, dark/light themes)",
+        "Baseline screenshots captured and committed to repository",
+        "Tests pass in CI (exit code 0)",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.2.1",
+      "phaseId": "5",
+      "sectionId": "5.2",
+      "category": "test",
+      "description": "Run automated accessibility tests",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Install axe-core or similar",
+        "Run accessibility audit on all pages",
+        "Fix all critical violations",
+        "Zero critical accessibility violations",
+        "Zero serious violations",
+        "Report documented",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.2.2",
+      "phaseId": "5",
+      "sectionId": "5.2",
+      "category": "test",
+      "description": "Manual keyboard navigation test",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Test Tab navigation through all interactive elements",
+        "Test Enter/Space activation",
+        "Test Escape for dialogs",
+        "Test arrow keys for custom controls",
+        "All interactive elements focusable",
+        "Logical focus order",
+        "No keyboard traps",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.2.3",
+      "phaseId": "5",
+      "sectionId": "5.2",
+      "category": "test",
+      "description": "Screen reader compatibility test",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Test with NVDA (Windows) or VoiceOver (Mac)",
+        "Verify all elements have appropriate labels",
+        "Test dynamic content announcements",
+        "Verify toast notifications announced",
+        "All elements have aria-labels",
+        "Dynamic content announced",
+        "No confusing announcements",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.2.4",
+      "phaseId": "5",
+      "sectionId": "5.2",
+      "category": "test",
+      "description": "Color contrast verification",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Verify all text meets WCAG AA contrast ratio (4.5:1)",
+        "Verify large text meets 3:1 ratio",
+        "Test all theme/palette combinations",
+        "All text passes contrast requirements",
+        "All themes/palettes compliant",
+        "Report documented",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.3.1",
+      "phaseId": "5",
+      "sectionId": "5.3",
+      "category": "test",
+      "description": "Measure and optimize bundle size",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Run bundle analysis",
+        "Remove unused dependencies",
+        "Code split React islands",
+        "Target: ≤ 500KB gzipped total",
+        "Bundle ≤ 500KB gzipped",
+        "No unused dependencies",
+        "Code splitting implemented",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.3.2",
+      "phaseId": "5",
+      "sectionId": "5.3",
+      "category": "test",
+      "description": "Optimize build time",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Measure build time",
+        "Optimize Tailwind CSS generation",
+        "Enable Astro build caching",
+        "Target: ≤ 30 seconds",
+        "Build completes in ≤ 30 seconds",
+        "Caching enabled",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T5.3.3",
+      "phaseId": "5",
+      "sectionId": "5.3",
+      "category": "test",
+      "description": "Achieve Lighthouse score ≥ 90",
+      "passes": false,
+      "effort": "M",
+      "risk": "M",
+      "acceptanceCriteria": [
+        "Run Lighthouse audit",
+        "Fix performance issues",
+        "Fix accessibility issues",
+        "Fix best practices issues",
+        "Fix SEO issues",
+        "Performance score ≥ 90",
+        "Accessibility score ≥ 90",
+        "Best practices score ≥ 90",
+        "SEO score ≥ 90",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T6.1.1",
+      "phaseId": "6",
+      "sectionId": "6.1",
+      "category": "docs",
+      "description": "Update README.md",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Update tech stack section",
+        "Update installation instructions",
+        "Update build commands",
+        "Add Astro-specific notes",
+        "README reflects new architecture",
+        "Installation steps correct",
+        "Build commands documented",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T6.1.2",
+      "phaseId": "6",
+      "sectionId": "6.1",
+      "category": "docs",
+      "description": "Create architecture documentation",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Document Astro + React islands architecture",
+        "Document state management approach",
+        "Document theme system",
+        "Document export system",
+        "Architecture diagram in docs/",
+        "All major systems documented",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T6.1.3",
+      "phaseId": "6",
+      "sectionId": "6.1",
+      "category": "docs",
+      "description": "Create developer guide",
+      "passes": false,
+      "effort": "M",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Document local development setup",
+        "Document testing approach",
+        "Document component structure",
+        "Document utility functions",
+        "Developer guide in docs/",
+        "Covers all development tasks",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T6.1.4",
+      "phaseId": "6",
+      "sectionId": "6.1",
+      "category": "docs",
+      "description": "Update AGENTS.md with final learnings",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Document all discovered patterns",
+        "Document all gotchas encountered",
+        "Document best practices",
+        "Document common issues and solutions",
+        "AGENTS.md comprehensive",
+        "All learnings documented",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T6.2.1",
+      "phaseId": "6",
+      "sectionId": "6.2",
+      "category": "impl",
+      "description": "Update CI/CD pipeline",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Update GitHub Actions workflow",
+        "Add test step before deployment",
+        "Add build caching",
+        "CI/CD workflow updated",
+        "Tests run before deploy",
+        "Caching implemented",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T6.2.2",
+      "phaseId": "6",
+      "sectionId": "6.2",
+      "category": "impl",
+      "description": "Deploy to staging environment",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Deploy to GitHub Pages preview",
+        "Run smoke tests on deployed version",
+        "Verify all features work",
+        "Staging deployment successful",
+        "All smoke tests pass",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T6.2.3",
+      "phaseId": "6",
+      "sectionId": "6.2",
+      "category": "impl",
+      "description": "Production deployment",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Merge to main branch",
+        "Verify deployment completes",
+        "Run final smoke tests",
+        "Production deployment successful",
+        "All features functional",
+        "URL: https://masurii.github.io/CITUCourseBuilder/",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T6.3.1",
+      "phaseId": "6",
+      "sectionId": "6.3",
+      "category": "cleanup",
+      "description": "Remove old React project",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Archive course-scheduler-web/ directory",
+        "Update repository structure",
+        "Update any absolute paths",
+        "Old project archived or removed",
+        "Repository clean",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T6.3.2",
+      "phaseId": "6",
+      "sectionId": "6.3",
+      "category": "cleanup",
+      "description": "Final dependency audit",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Run `bun audit`",
+        "Fix any security vulnerabilities",
+        "Update outdated dependencies",
+        "Zero security vulnerabilities",
+        "Dependencies up to date",
+        "Update AGENTS.md with learnings"
+      ]
+    },
+    {
+      "id": "T6.3.3",
+      "phaseId": "6",
+      "sectionId": "6.3",
+      "category": "cleanup",
+      "description": "Final test run",
+      "passes": false,
+      "effort": "S",
+      "risk": "L",
+      "acceptanceCriteria": [
+        "Run all tests: `bun test`",
+        "Run all E2E tests",
+        "Run Lighthouse audit",
+        "Run TypeScript type check: `bun run typecheck`",
+        "All tests pass",
+        "TypeScript compilation: `bun run typecheck` passes (exit code 0)",
+        "Zero `any` types in codebase (grep -r ': any' returns empty)",
+        "Lighthouse scores ≥ 90",
+        "Zero linting errors",
+        "Update AGENTS.md with learnings"
+      ]
+    }
+  ]
+}
