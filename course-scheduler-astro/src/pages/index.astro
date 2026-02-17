@@ -7,6 +7,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TestIsland from '../components/TestIsland';
+import RawDataInput from '../components/RawDataInput';
 ---
 
 <BaseLayout title="CIT-U Course Builder - Astro">
@@ -69,6 +70,25 @@ import TestIsland from '../components/TestIsland';
         > directive. If the buttons work, React hydration is working correctly.
       </p>
       <TestIsland client:load />
+    </section>
+
+    <!-- RawDataInput Test Section -->
+    <section class="p-6 mb-8 rounded-lg bg-surface-secondary border border-default">
+      <h2 class="text-xl font-semibold text-content-primary mb-2">
+        RawDataInput Component (client:load)
+      </h2>
+      <p class="text-content-secondary mb-4">
+        This component provides import functionality for WITS and AIMS course data. Test the mode
+        toggle buttons and textarea input below.
+      </p>
+      <div class="bg-surface-elevated p-4 rounded-lg">
+        <RawDataInput
+          value=""
+          onChange={() => {}}
+          onSubmit={(mode) => console.log(`Import submitted with mode: ${mode}`)}
+          client:load
+        />
+      </div>
     </section>
 
     <!-- Hydration Strategy Table -->

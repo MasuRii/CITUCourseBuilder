@@ -818,9 +818,10 @@
       "sectionId": "3.2",
       "category": "impl",
       "description": "Migrate RawDataInput as React island",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "L",
+      "notes": "Created RawDataInput.tsx (166 lines) with TypeScript strict mode compliance. Component uses Tailwind styling with theme-aware utilities (bg-surface-secondary, text-content-secondary, bg-accent, etc.). Props interface with JSDoc comments for value, onChange, and onSubmit. No 'any' types used. ImportMode type for WITS/AIMS modes. Mode toggle buttons with aria-pressed accessibility. Textarea with monospace font and focus states. Import button with hover animation. Added test section to index.astro. Build completes in 1.71s. All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format.",
       "acceptanceCriteria": [
         "Create src/components/RawDataInput.tsx",
         "Convert to TypeScript with explicit prop types",
