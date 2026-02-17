@@ -7,7 +7,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "typecheck": "astro check && tsc --noEmit"
+    "typecheck": "astro check && tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }

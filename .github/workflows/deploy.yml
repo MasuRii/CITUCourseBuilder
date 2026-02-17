@@ -1,4 +1,4 @@
-name: Deploy React App to GitHub Pages
+name: Deploy Astro App to GitHub Pages
 
 on:
   push:
@@ -27,13 +27,27 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: bun install --frozen-lockfile
-        working-directory: ./course-scheduler-web
+
+      - name: Install Astro dependencies
+        run: bun install --frozen-lockfile
+        working-directory: ./course-scheduler-astro
+
+      - name: Run lint
+        run: bun run lint
+
+      - name: Run typecheck
+        run: bun run typecheck
+        working-directory: ./course-scheduler-astro
+
+      - name: Run tests
+        run: bun run test
+        working-directory: ./course-scheduler-astro
 
       - name: Build project
         run: bun run build
-        working-directory: ./course-scheduler-web
+        working-directory: ./course-scheduler-astro
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -41,7 +55,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./course-scheduler-web/dist
+          path: ./course-scheduler-astro/dist
 
   deploy:
     needs: build

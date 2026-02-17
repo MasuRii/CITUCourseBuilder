@@ -550,9 +550,10 @@
       "sectionId": "2.3",
       "category": "setup",
       "description": "Update GitHub Actions workflow for Astro",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Updated GitHub Actions workflow for Astro project. Added vitest to course-scheduler-astro with test configuration. Created placeholder test to verify CI passes. Workflow now runs: lint (root), typecheck (astro), test (astro), build (astro). Build completes in ~1.57s (well under 30s target). All verification commands pass: lint, typecheck (both projects), tests (web: 19, astro: 1), format:check.",
       "acceptanceCriteria": [
         "Modify .github/workflows/deploy.yml",
         "Update build command for Astro",

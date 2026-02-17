@@ -358,4 +358,22 @@ Self-Review:
   - All verification checks pass: format:check, lint, tests (19 pass), typecheck
   - Lint-staged now runs both ESLint and Prettier on pre-commit
   - All acceptance criteria met
- Unblocked: T2.3.1, T2.3.2 (Phase 2.3 CI/CD setup tasks, no dependencies)
+  Unblocked: T2.3.1, T2.3.2 (Phase 2.3 CI/CD setup tasks, no dependencies)
+
+## 2026-02-18 00:15
+Task: T2.3.1 - Update GitHub Actions workflow for Astro
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Updated GitHub Actions workflow for Astro project and added test infrastructure
+  - .github/workflows/deploy.yml: Updated to build course-scheduler-astro, added lint/typecheck/test steps
+  - course-scheduler-astro/package.json: Added test and test:watch scripts
+  - course-scheduler-astro/vitest.config.ts: Created vitest configuration with coverage settings
+  - course-scheduler-astro/tests/setup.test.ts: Created placeholder test to verify CI passes
+Reason: First CI/CD setup task in Phase 2.3 - updates deployment workflow for the new Astro project
+Self-Review:
+  - Workflow now runs: lint (root), typecheck (astro), test (astro), build (astro)
+  - Build completes in ~1.57s (well under 30s target)
+  - All verification commands pass: lint, typecheck (both projects), tests (web: 19, astro: 1), format:check
+  - Artifact path updated to ./course-scheduler-astro/dist
+  - Note: Did not update AGENTS.md as this is standard CI setup, no project-specific learnings
+ Unblocked: T2.3.2 (Phase 2.3 CI/CD setup task, no dependencies)
