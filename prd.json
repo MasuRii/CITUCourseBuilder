@@ -618,9 +618,10 @@
       "title": "[impl] Migrate parseRawData.js to TypeScript",
       "category": "impl",
       "description": "Convert parseRawData.js to parseRawData.ts with full type safety while preserving ALL logic exactly",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "M",
+      "notes": "Converted parseRawData.js (377 lines) to parseRawData.ts (398 lines) with full TypeScript strict mode compliance. Created ParsedCourse interface that matches actual output (creditedUnits as number, id as string). All 7 functions have explicit parameter and return types. No 'any' types used. All 10 existing tests pass (logic preserved). Used null checks for regex match groups instead of type assertions for type safety.",
       "acceptanceCriteria": [
         "Copy course-scheduler-web/src/utils/parseRawData.js to course-scheduler-astro/src/utils/parseRawData.ts",
         "Add explicit parameter and return types to all functions",
