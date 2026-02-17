@@ -183,6 +183,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 23. **CI status checks in GitHub Actions**: The GitHub Actions workflow (`.github/workflows/deploy.yml`) includes four CI checks: lint (ESLint), typecheck (TypeScript), test (Vitest), and build (Astro). These checks run on every push to `main` branch. Branch protection rules must be manually configured in GitHub repository settings to require these checks to pass before merging. See `docs/BRANCH_PROTECTION.md` for manual setup instructions. The workflow fails fast - any failing step prevents deployment.
 
+24. **TypeScript path alias conflict with @types**: The path alias `@types/*` configured in `tsconfig.json` conflicts with TypeScript's built-in `@types/*` package convention (used for DefinitelyTyped packages). This causes import errors like "Cannot import type declaration files." Solution: Use `@/types/*` instead of `@types/*` for local type imports. Example: `import type { DayCode } from '@/types/index'` instead of `import type { DayCode } from '@types/index'`.
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:

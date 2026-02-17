@@ -594,9 +594,10 @@
       "title": "[impl] Migrate parseSchedule.js to TypeScript",
       "category": "impl",
       "description": "Convert parseSchedule.js to parseSchedule.ts with full type safety while preserving ALL logic exactly",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "M",
+      "notes": "Converted parseSchedule.js (409 lines) to parseSchedule.ts (467 lines) with full TypeScript strict mode compliance. All 6 functions have explicit parameter and return types. Used DayCode, ParsedSchedule, and TimeSlot interfaces from @/types/index. No 'any' types used. All 9 existing tests pass. Types also copied to course-scheduler-astro/src/types/index.ts. Key finding: @types/* path alias conflicts with TypeScript's @types package convention - use @/types/* instead.",
       "acceptanceCriteria": [
         "Copy course-scheduler-web/src/utils/parseSchedule.js to course-scheduler-astro/src/utils/parseSchedule.ts",
         "Add explicit parameter and return types to all functions",
