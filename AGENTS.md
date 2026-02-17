@@ -185,6 +185,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 
 24. **TypeScript path alias conflict with @types**: The path alias `@types/*` configured in `tsconfig.json` conflicts with TypeScript's built-in `@types/*` package convention (used for DefinitelyTyped packages). This causes import errors like "Cannot import type declaration files." Solution: Use `@/types/*` instead of `@types/*` for local type imports. Example: `import type { DayCode } from '@/types/index'` instead of `import type { DayCode } from '@types/index'`.
 
+25. **Type definitions must match actual function signatures**: When creating type definitions for existing functions, ensure the types match the actual implementation. Example: `parseSchedule()` returns `ParsedSchedule | null` (can fail), so `ParseScheduleFunction` must return `ParsedSchedule | null`, not just `ParsedSchedule`. Similarly, `GetTimeOfDayBucketFunction` must accept `string | null | undefined` because `TimeSlot.startTime` can be null. Type mismatches between definitions and implementations cause type errors when using the functions in strict mode.
+
 ## Protected Files
 
 The following files are protected by the Ralph write-guardrail plugin and should not be directly modified by AI:

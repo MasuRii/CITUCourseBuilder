@@ -462,3 +462,24 @@ Self-Review:
   - Logic preserved exactly - same tab-separated output with 12 fields
   - All verification checks pass: lint, typecheck, tests (1 pass), format:check
  Unblocked: T3.1.5, T3.1.6, T3.1.7, T3.1.8 (Phase 3.1 utility migration tasks)
+
+## 2026-02-18 01:20
+Task: T3.1.5 - Extract scheduling algorithms from App.jsx to TypeScript
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Extracted scheduling algorithms to TypeScript with comprehensive tests
+  - course-scheduler-astro/src/utils/scheduleAlgorithms.ts: 11 functions extracted (~640 lines)
+  - course-scheduler-astro/tests/scheduleAlgorithms.test.ts: 42 tests covering all functions
+  - course-scheduler-astro/src/types/index.ts: Fixed ParseScheduleFunction (returns null) and GetTimeOfDayBucketFunction (accepts null)
+Reason: Fifth core migration task in Phase 3 - extracts critical scheduling algorithms for reuse while preserving logic exactly
+Self-Review:
+  - All 11 functions have explicit parameter and return types
+  - No `any` types used (verified with grep)
+  - TypeScript compiles with zero errors (astro check && tsc --noEmit)
+  - Created comprehensive test suite: 42 tests pass
+  - Fixed type definitions to match actual implementations
+  - Logic preserved exactly from original App.jsx
+  - Score formula: totalCourses * 100 + totalUnits
+  - SMALL_N_THRESHOLD_PARTIAL = 12 for heuristic switching
+  - All verification checks pass: lint, typecheck, tests (42 pass), format:check
+ Unblocked: T3.1.6, T3.1.7, T3.1.8 (Phase 3.1 utility migration tasks)

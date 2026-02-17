@@ -550,9 +550,9 @@ export const SMALL_N_THRESHOLD_PARTIAL = 12;
 /**
  * Parse function signature for schedule strings
  * @param scheduleString - The raw schedule string to parse
- * @returns Parsed schedule with time slots and metadata
+ * @returns Parsed schedule with time slots and metadata, or null if parsing fails
  */
-export type ParseScheduleFunction = (scheduleString: string) => ParsedSchedule;
+export type ParseScheduleFunction = (scheduleString: string) => ParsedSchedule | null;
 
 /**
  * Time overlap check function signature
@@ -584,10 +584,10 @@ export type IsScheduleConflictFreeFunction = (
 
 /**
  * Time of day bucket function signature
- * @param time - Time string in HH:mm format
+ * @param time - Time string in HH:mm format (can be null/undefined)
  * @returns The time bucket category
  */
-export type GetTimeOfDayBucketFunction = (time: string) => TimeOfDayBucket;
+export type GetTimeOfDayBucketFunction = (time: string | null | undefined) => TimeOfDayBucket;
 
 /**
  * Schedule scoring function signature

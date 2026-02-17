@@ -689,9 +689,10 @@
       "sectionId": "3.1",
       "category": "impl",
       "description": "Extract scheduling algorithms from App.jsx to TypeScript",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "M",
+      "notes": "Extracted 11 scheduling algorithm functions from App.jsx to scheduleAlgorithms.ts with full TypeScript strict mode compliance. All functions have explicit parameter and return types. Created comprehensive test suite (42 tests) covering all extracted functions. Fixed type definitions in types/index.ts: ParseScheduleFunction now returns ParsedSchedule | null, GetTimeOfDayBucketFunction accepts nullable string. No 'any' types used. Logic preserved exactly. Score formula: totalCourses * 100 + totalUnits. SMALL_N_THRESHOLD_PARTIAL = 12.",
       "acceptanceCriteria": [
         "Create src/utils/scheduleAlgorithms.ts",
         "Extract: checkTimeOverlap, isScheduleConflictFree, getTimeOfDayBucket, scoreScheduleByTimePreference, exceedsMaxUnits, exceedsMaxGap, countCampusDays, generateExhaustiveBestSchedule, getAllSubsets, generateBestPartialSchedule_Heuristic, generateBestPartialSchedule",
