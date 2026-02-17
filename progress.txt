@@ -735,3 +735,29 @@ Self-Review:
   - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format
   - No AGENTS.md update needed - standard React island pattern with export functionality
 Unblocked: T3.2.8, T3.2.9, T3.2.10 (Phase 3.2 React Components Migration tasks)
+
+## 2026-02-18 02:15
+Task: T3.2.8 - Extract state management from App.jsx
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created 6 custom hooks extracting all 22 useState hooks from App.jsx
+  - course-scheduler-astro/src/hooks/useLocalStorage.ts: Generic localStorage persistence with validation (298 lines)
+  - course-scheduler-astro/src/hooks/useTheme.ts: Theme/palette state with DOM sync (125 lines)
+  - course-scheduler-astro/src/hooks/useCourseState.ts: Course data, grouping, filtering, locking, conflict detection (415 lines)
+  - course-scheduler-astro/src/hooks/useFilterState.ts: Day/time exclusion filters (167 lines)
+  - course-scheduler-astro/src/hooks/useSchedulePreferences.ts: Time preference, search mode, minimize days (131 lines)
+  - course-scheduler-astro/src/hooks/useScheduleGeneration.ts: Transient state for schedule generation (145 lines)
+  - course-scheduler-astro/src/hooks/index.ts: Export barrel file (24 lines)
+Reason: Eighth React Components Migration task - extracts state management from App.jsx to custom hooks per ADR-003
+Self-Review:
+  - All 22 useState hooks from App.jsx extracted across 6 hooks
+  - useLocalStorage provides type-safe persistence with LocalStorageValueMap
+  - All 13 localStorage keys handled with validation
+  - Theme switching applies data-theme/data-palette via useEffect
+  - Conflict detection in useCourseState uses parseSchedule and checkTimeOverlap
+  - Derived state (lockedCourses, totalUnits, uniqueSubjects) properly memoized
+  - All hooks use TypeScript strict mode with explicit types
+  - No 'any' types used (verified with typecheck)
+  - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format
+  - No AGENTS.md update needed - standard React hooks pattern per ADR-003
+Unblocked: T3.2.9, T3.2.10 (Phase 3.2 React Components Migration tasks)

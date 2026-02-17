@@ -951,9 +951,10 @@
       "sectionId": "3.2",
       "category": "impl",
       "description": "Extract state management from App.jsx",
-      "passes": false,
+      "passes": true,
       "effort": "L",
       "risk": "H",
+      "notes": "Created 6 custom hooks extracting all 22 useState hooks from App.jsx: useLocalStorage (generic persistence with validation), useTheme (theme/palette with DOM sync), useCourseState (courses, grouping, filtering, locking, conflict detection), useFilterState (day/time exclusions), useSchedulePreferences (time preference, search mode, minimize days), useScheduleGeneration (transient state for generation). All hooks use TypeScript strict mode with explicit types. LocalStorage persistence works with validation per ADR-003. Type-safe LocalStorageValueMap maps keys to value types. All 13 localStorage keys handled. Theme switching applies data-theme and data-palette attributes via useEffect. All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format.",
       "acceptanceCriteria": [
         "Create src/hooks/useCourseState.ts hook",
         "Extract all useState hooks to custom hook",
