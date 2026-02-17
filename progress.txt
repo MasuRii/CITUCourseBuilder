@@ -175,4 +175,24 @@ Self-Review:
   - Root AGENTS.md contains all required content: critical file references, coding conventions, gotchas, preserved logic files
   - All acceptance criteria met except path location (docs/ vs root), which is constrained by Ralph guardrail
   - File was created by ralph init and has been updated throughout Phase 1 with learnings
-Unblocked: T2.1.1 (Phase 2.1 setup task, all Phase 1 tasks complete)
+ Unblocked: T2.1.1 (Phase 2.1 setup task, all Phase 1 tasks complete)
+
+## 2026-02-17 22:55
+Task: T2.1.1 - Initialize Astro project in parallel directory
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created Astro 5.17.x project with required integrations
+  - course-scheduler-astro/: New Astro project with React 19.x and Tailwind 4.x integrations
+  - astro.config.mjs: Configured with site 'https://masurii.github.io' and base '/CITUCourseBuilder/'
+  - package.json: Added typecheck script, dependencies include Astro 5.17.1, React 19.2.4, Tailwind 4.1.18
+  - tsconfig.json: Extends 'astro/tsconfigs/strict' for TypeScript strict mode
+  - AGENTS.md: Updated with lesson #14 about Astro initialization
+Reason: First setup task in Phase 2 - establishes the new Astro project for migration
+Self-Review:
+  - Used non-interactive CLI flags for automated setup (--template minimal --yes --no-git --no-install)
+  - Added integrations with `bunx astro add react tailwind --yes`
+  - Build completes in ~1.4s (vs 4.13s for React/Vite) - significant improvement
+  - TypeScript check passes with 0 errors, 0 warnings
+  - All versions verified: Astro 5.x, React 19, Tailwind 4.x
+  - Base path correctly configured for GitHub Pages deployment
+Unblocked: T2.1.2 (Phase 2.1 setup task, depends on Astro project existing)

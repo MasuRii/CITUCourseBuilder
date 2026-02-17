@@ -14,7 +14,7 @@ This file contains critical operational details that AI agents should know when 
 - **Lint Command**: Configured via eslint.config.js
 - **Project Root**: C:\Repository\CITUCourseBuilder
 - **Current App Location**: course-scheduler-web/ (React 19 + Vite)
-- **Target App Location**: course-scheduler-astro/ (Astro 5.x - to be created)
+- **Target App Location**: course-scheduler-astro/ (Astro 5.x - initialized)
 
 ## Critical Operational Details
 
@@ -140,6 +140,8 @@ These files contain critical parsing and scheduling logic that MUST be preserved
     - MUI components add ~300 KB (replace with Tailwind)
     - Export libraries (html-to-image, jspdf) add ~200 KB (lazy load)
     - Expected bundle reduction after Astro migration: ~30-40%
+
+14. **Astro project initialized**: The `course-scheduler-astro/` directory contains Astro 5.17.x with React 19.x and Tailwind 4.x integrations. Build time is ~1.4s, significantly faster than the React/Vite build (4.13s). TypeScript strict mode is enabled via `extends: "astro/tsconfigs/strict"`. Base path `/CITUCourseBuilder/` configured for GitHub Pages deployment.
 
 ## Protected Files
 

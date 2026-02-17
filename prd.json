@@ -369,9 +369,10 @@
       "sectionId": "2.1",
       "category": "setup",
       "description": "Initialize Astro project in parallel directory",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created Astro 5.17.x project with React 19.x and Tailwind 4.x integrations. Used `bunx create-astro@latest course-scheduler-astro --template minimal --yes --no-git --no-install` then added integrations with `bunx astro add react tailwind --yes`. Configured base path `/CITUCourseBuilder/` and site `https://masurii.github.io` in astro.config.mjs. Added typecheck script to package.json. Build time is ~1.4s (vs 4.13s for React/Vite). TypeScript strict mode enabled via `extends: 'astro/tsconfigs/strict'`. Updated AGENTS.md with initialization learnings.",
       "acceptanceCriteria": [
         "Run: `bun create astro@latest course-scheduler-astro`",
         "Select: React integration, Tailwind integration, TypeScript strict",
