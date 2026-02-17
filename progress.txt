@@ -125,4 +125,22 @@ Self-Review:
   - All acceptance criteria met: alternatives considered, tables with pros/cons, clear rationale, AGENTS.md updated
 Unblocked: T1.2.2, T1.2.3, T1.2.4 (Phase 1.2 discovery tasks, no dependencies)
 
+## 2026-02-18 02:30
+Task: T1.2.2 - Create ADR for UI component strategy
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created Architecture Decision Record for UI component strategy
+  - docs/architecture/decisions/ADR-002-ui-component-strategy.md: Comprehensive ADR with component strategy comparison, decision rationale, MUI-to-Custom mapping
+  - Updated AGENTS.md with ADR-002 reference in References section
+Reason: Second ADR task in Phase 1.2 - documents UI component decisions for migration
+Self-Review:
+  - Documented decision: Custom Tailwind-styled components with Lucide icons
+  - Analyzed 4 alternatives (shadcn/ui, Headless UI, Radix, Custom) with pros/cons tables
+  - Created complete MUI-to-Custom component mapping (Tooltip, IconButton, Menu, MenuItem, Button, Dialog, etc.)
+  - Created MUI-to-Lucide icon mapping (InfoOutlined → Info, WarningAmber → AlertTriangle, etc.)
+  - Documented accessibility implementation patterns for tooltip, menu, and dialog
+  - Estimated ~89 KB bundle savings from MUI removal
+  - All acceptance criteria met: alternatives considered, component mapping table, icon replacement strategy, AGENTS.md updated
+Unblocked: T1.2.3, T1.2.4 (Phase 1.2 discovery tasks, no dependencies)
+
 

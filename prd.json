@@ -308,9 +308,10 @@
       "sectionId": "1.2",
       "category": "discovery",
       "description": "Create ADR for UI component strategy",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created ADR-002-ui-component-strategy.md with comprehensive UI component strategy. Documented decision to build custom Tailwind-styled components with Lucide icons. Analyzed 4 alternatives (shadcn/ui, Headless UI, Radix, Custom) with pros/cons tables. Created complete MUI-to-Custom component mapping table. Created MUI-to-Lucide icon mapping table. Documented accessibility implementation patterns (tooltip, menu, dialog). Estimated ~89 KB bundle savings from MUI removal. Updated AGENTS.md with ADR reference.",
       "acceptanceCriteria": [
         "Document decision: Custom Tailwind components replacing MUI",
         "Consider alternatives: shadcn/ui, Headless UI, Radix",
