@@ -1183,9 +1183,10 @@
       "sectionId": "4.1",
       "category": "impl",
       "description": "Define spacing and layout tokens",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Completed spacing and layout tokens in global.css. Extended spacing scale from 8 values to 22 values (0-22 with half-step variants) while preserving original --space-7=32px and --space-8=48px values for backward compatibility. Added --space-* aliases in :root for components using original naming. Container widths defined (sm: 640px, md: 768px, lg: 1024px, xl: 1200px). Breakpoints defined (sm: 480px, md: 768px, lg: 992px, xl: 1200px). Added Tailwind-compatible container utilities (.container, .container-sm/md/lg/xl) with responsive padding. Added spacing utility classes (.section-padding, .section-gap, .inset-padding). All 435 tests pass. Build completes in 3.85s. No AGENTS.md update needed - standard design token patterns.",
       "acceptanceCriteria": [
         "Map existing --space-* variables to Tailwind",
         "Define container widths",

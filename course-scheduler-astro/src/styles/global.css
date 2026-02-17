@@ -80,17 +80,33 @@
   --tracking-wider: 0.05em;
   --tracking-widest: 0.1em;
 
-  /* Spacing */
+  /* Spacing Scale (matches original --space-* variables)
+     Values follow a 4px base unit system for consistent rhythm.
+     Original app used sparse scale (1-8), preserved here.
+     Extended scale (0.5, 1.5, etc.) for fine-grained control.
+     Note: --spacing-7=32px, --spacing-8=48px match original --space-7/--space-8 */
+  --spacing-0: 0;
+  --spacing-0\.5: 2px;
   --spacing-1: 4px;
+  --spacing-1\.5: 6px;
   --spacing-2: 8px;
+  --spacing-2\.5: 10px;
   --spacing-3: 12px;
+  --spacing-3\.5: 14px;
   --spacing-4: 16px;
   --spacing-5: 20px;
   --spacing-6: 24px;
-  --spacing-7: 32px;
-  --spacing-8: 48px;
-  --spacing-18: 4.5rem;
-  --spacing-22: 5.5rem;
+  --spacing-7: 32px; /* Original value */
+  --spacing-8: 48px; /* Original value */
+  --spacing-9: 36px;
+  --spacing-10: 40px;
+  --spacing-11: 44px;
+  --spacing-12: 48px;
+  --spacing-14: 56px;
+  --spacing-16: 64px;
+  --spacing-18: 72px;
+  --spacing-20: 80px;
+  --spacing-22: 88px;
 
   /* Border Radius */
   --radius-sm: 6px;
@@ -211,15 +227,32 @@
    ============================================ */
 
 :root {
-  /* Spacing */
+  /* Spacing Scale (backward-compatible --space-* aliases)
+     These mirror --spacing-* values from @theme for components using original naming.
+     Note: Original app used sparse scale (1-8), --space-7=32px, --space-8=48px.
+     Extended scale matches Tailwind conventions while preserving original values. */
+  --space-0: 0;
+  --space-0\.5: 2px;
   --space-1: 4px;
+  --space-1\.5: 6px;
   --space-2: 8px;
+  --space-2\.5: 10px;
   --space-3: 12px;
+  --space-3\.5: 14px;
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
-  --space-7: 32px;
-  --space-8: 48px;
+  --space-7: 32px; /* Original value - preserved for backward compatibility */
+  --space-8: 48px; /* Original value - preserved for backward compatibility */
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-11: 44px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-18: 72px;
+  --space-20: 80px;
+  --space-22: 88px;
 
   /* Typography */
   --font-family-base:
@@ -1015,6 +1048,90 @@ h6,
   max-width: var(--container-width);
   margin: 0 auto;
   padding: 0 var(--space-4);
+}
+
+/* ============================================
+   TAILWIND-COMPATIBLE CONTAINER UTILITIES
+   ============================================
+   Responsive containers that adapt to breakpoints.
+   Use .container for full-width container with max-width constraints.
+   ============================================ */
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  max-width: var(--container-xl);
+}
+
+/* Container size variants */
+.container-sm {
+  max-width: var(--container-sm);
+}
+
+.container-md {
+  max-width: var(--container-md);
+}
+
+.container-lg {
+  max-width: var(--container-lg);
+}
+
+.container-xl {
+  max-width: var(--container-xl);
+}
+
+/* Responsive container adjustments */
+@media (min-width: 480px) {
+  .container {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+}
+
+/* ============================================
+   SPACING UTILITY CLASSES
+   ============================================
+   Quick spacing utilities for common patterns.
+   These complement Tailwind's p-*, m-*, gap-* utilities.
+   ============================================ */
+
+/* Section spacing */
+.section-padding {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-8);
+}
+
+.section-padding-lg {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+/* Card/section gap */
+.section-gap {
+  margin-bottom: var(--space-6);
+}
+
+.section-gap-lg {
+  margin-bottom: var(--space-8);
+}
+
+/* Inset padding for cards/sections */
+.inset-padding {
+  padding: var(--space-4);
+}
+
+.inset-padding-lg {
+  padding: var(--space-6);
 }
 
 /* ============================================
