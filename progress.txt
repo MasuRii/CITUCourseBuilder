@@ -665,3 +665,38 @@ Self-Review:
   - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format
   - No AGENTS.md update needed - standard React island pattern with custom time picker
 Unblocked: T3.2.6, T3.2.7, T3.2.8, T3.2.9, T3.2.10 (Phase 3.2 React Components Migration tasks)
+
+## 2026-02-18 02:45
+Task: T3.2.6 - Migrate CourseTable as React island
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created CourseTable.tsx and CourseTableTest.tsx with TypeScript and Tailwind styling
+  - course-scheduler-astro/src/components/CourseTable.tsx: React island component (673 lines)
+  - course-scheduler-astro/src/components/CourseTableTest.tsx: Test wrapper component (178 lines)
+  - course-scheduler-astro/src/pages/index.astro: Added CourseTableTest section with client:load directive
+Reason: Sixth React Components Migration task - migrate course table to TypeScript with custom Tailwind components (replacing MUI Menu, MenuItem, IconButton, Tooltip)
+Self-Review:
+  - Component file uses .tsx extension
+  - All props have TypeScript interface (CourseTableProps) with JSDoc comments (15 props)
+  - No `any` types in component (verified with grep)
+  - Component type-checks with zero errors
+  - Replaced MUI components with custom Tailwind-styled components:
+    - DropdownMenu: Custom dropdown with click-outside and Escape key handling
+    - Tooltip: Custom tooltip with hover/focus support
+    - StatusBadge: Three variants (closed, warning, open) with semantic colors
+  - Features preserved:
+    - Grouping by subject/department/none
+    - Status filter buttons (all/open/closed)
+    - Export menu (copy to clipboard, download as .txt)
+    - Lock/unlock buttons with conflict highlighting
+    - Delete buttons
+    - Row striping and hover effects
+  - Used existing convertToRawData utility for export functionality
+  - Tailwind styled with theme-aware utilities (bg-surface-*, text-content-*, etc.)
+  - No MUI dependencies - all inline SVG icons (Menu, Info, Unlock, Trash, Warning, Close)
+  - Uses client:load directive per ADR-001 (central feature, immediate interactivity)
+  - Build chunk: 18.16 kB (gzip: 4.96 kB)
+  - Build completes in 1.64s (well under 30s target)
+  - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format
+  - No AGENTS.md update needed - standard React island pattern with custom dropdown and table
+Unblocked: T3.2.7, T3.2.8, T3.2.9, T3.2.10 (Phase 3.2 React Components Migration tasks)

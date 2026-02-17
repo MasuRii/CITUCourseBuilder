@@ -893,9 +893,10 @@
       "sectionId": "3.2",
       "category": "impl",
       "description": "Migrate CourseTable as React island",
-      "passes": false,
+      "passes": true,
       "effort": "L",
       "risk": "M",
+      "notes": "Created CourseTable.tsx (673 lines) and CourseTableTest.tsx (178 lines) with TypeScript strict mode compliance. Replaced MUI components (Menu, MenuItem, IconButton, Tooltip) with custom Tailwind-styled components. Custom DropdownMenu component with click-outside and Escape key handling. Custom Tooltip component with hover/focus support. All props have TypeScript interface (CourseTableProps) with JSDoc comments. No 'any' types used. Features: grouping by subject/department/none, status filter buttons (all/open/closed), export menu (copy to clipboard, download as .txt), lock/unlock buttons, delete buttons, conflict highlighting for locked courses. Build chunk: 18.16 kB (gzip: 4.96 kB). Uses client:load directive per ADR-001. All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (61 pass), format.",
       "acceptanceCriteria": [
         "Create src/components/CourseTable.tsx",
         "Convert to TypeScript with explicit prop types",

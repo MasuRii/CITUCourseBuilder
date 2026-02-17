@@ -10,6 +10,7 @@ import TestIsland from '../components/TestIsland';
 import RawDataInput from '../components/RawDataInput';
 import ConfirmDialogTest from '../components/ConfirmDialogTest';
 import TimeFilterTest from '../components/TimeFilterTest';
+import CourseTableTest from '../components/CourseTableTest';
 ---
 
 <BaseLayout title="CIT-U Course Builder - Astro">
@@ -116,6 +117,19 @@ import TimeFilterTest from '../components/TimeFilterTest';
         time range selectors below.
       </p>
       <TimeFilterTest client:visible />
+    </section>
+
+    <!-- CourseTable Test Section -->
+    <section class="p-6 mb-8 rounded-lg bg-surface-secondary border border-default">
+      <h2 class="text-xl font-semibold text-content-primary mb-2">
+        CourseTable Component (client:load)
+      </h2>
+      <p class="text-content-secondary mb-4">
+        This component displays course data with grouping, filtering, export, and locking
+        functionality. Test the grouping dropdown, status filter buttons, lock/unlock buttons, and
+        export menu below.
+      </p>
+      <CourseTableTest client:load />
     </section>
 
     <!-- Hydration Strategy Table -->
