@@ -756,9 +756,10 @@
       "title": "[impl] Extract and Type Scheduling Algorithms",
       "category": "impl",
       "description": "Extract all scheduling algorithms from App.jsx to TypeScript modules with strict typing",
-      "passes": false,
+      "passes": true,
       "effort": "L",
       "risk": "M",
+      "notes": "Created src/algorithms/scheduleGeneration.ts that re-exports all scheduling functions from @/utils/scheduleAlgorithms. ScheduleAlgorithmOptions interface already existed in @/types/index.ts (created in T1.1.6). Re-export pattern provides centralized import path while avoiding code duplication. All 11 algorithms available: checkTimeOverlap, isScheduleConflictFree, getTimeOfDayBucket, scoreScheduleByTimePreference, exceedsMaxUnits, exceedsMaxGap, countCampusDays, generateExhaustiveBestSchedule, getAllSubsets, generateBestPartialSchedule_Heuristic, generateBestPartialSchedule. TypeScript compiles with 0 errors. All 61 tests pass. No 'any' types used.",
       "acceptanceCriteria": [
         "Create src/algorithms/scheduleGeneration.ts",
         "Extract: checkTimeOverlap, isScheduleConflictFree, getTimeOfDayBucket, scoreScheduleByTimePreference, exceedsMaxUnits, exceedsMaxGap, countCampusDays, generateExhaustiveBestSchedule, getAllSubsets, generateBestPartialSchedule_Heuristic, generateBestPartialSchedule",

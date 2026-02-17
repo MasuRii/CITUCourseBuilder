@@ -522,3 +522,23 @@ Self-Review:
   - All verification checks pass: typecheck (0 errors), tests (61 pass), lint, format
   - No additional AGENTS.md update needed - T3.1.5 already documented scheduling algorithms
 Unblocked: T3.1.8 (Phase 3.1 utility migration task - partially complete, needs ScheduleAlgorithmOptions interface)
+
+## 2026-02-19 02:30
+Task: T3.1.8 - [impl] Extract and Type Scheduling Algorithms
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created src/algorithms/scheduleGeneration.ts with re-export pattern
+  - course-scheduler-astro/src/algorithms/scheduleGeneration.ts: Re-exports all 11 scheduling functions from @/utils/scheduleAlgorithms
+  - course-scheduler-astro/src/types/index.ts: ScheduleAlgorithmOptions interface already existed from T1.1.6
+Reason: Complete the algorithms module extraction with centralized import path at src/algorithms/
+Self-Review:
+  - All 11 scheduling functions available at new import path
+  - Re-export pattern avoids code duplication between utils/ and algorithms/ locations
+  - ScheduleAlgorithmOptions interface already defined in types/index.ts (lines 396-407)
+  - TypeScript compiles with 0 errors (astro check && tsc --noEmit)
+  - All 61 tests pass
+  - No 'any' types in codebase (verified with grep)
+  - Lint passes with 0 warnings
+  - Format check passes
+  - Note: T3.1.5 already extracted algorithms to utils/, this task provides alternative import path
+ Unblocked: T3.2.1, T3.2.2, T3.2.3, T3.2.4, T3.2.5, T3.2.6, T3.2.7, T3.2.8, T3.2.9, T3.2.10 (Phase 3.2 React Components Migration tasks)
