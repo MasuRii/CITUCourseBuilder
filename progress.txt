@@ -445,3 +445,20 @@ Self-Review:
   - Added Record<DayCode, string> and Record<DayCode, number> for type-safe mappings
   - All verification checks pass: lint, typecheck, tests (web: 19, astro: 1), format:check
  Unblocked: T3.1.4, T3.1.5, T3.1.6, T3.1.7, T3.1.8 (Phase 3.1 utility migration tasks)
+
+## 2026-02-18 01:00
+Task: T3.1.4 - [impl] Migrate convertToRawData.js to TypeScript
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Converted convertToRawData.js to TypeScript with full type safety
+  - course-scheduler-astro/src/utils/convertToRawData.ts: Converted convertToRawData.js (32 lines) to convertToRawData.ts (57 lines)
+Reason: Fourth core migration task in Phase 3 - preserves critical data export logic while adding type safety
+Self-Review:
+  - Single function with explicit parameter type (readonly Course[]) and return type (string)
+  - No `any` types used (verified with grep)
+  - TypeScript compiles with zero errors (astro check && tsc --noEmit)
+  - Used Course interface from @/types/index
+  - Added comprehensive JSDoc documentation with example usage
+  - Logic preserved exactly - same tab-separated output with 12 fields
+  - All verification checks pass: lint, typecheck, tests (1 pass), format:check
+ Unblocked: T3.1.5, T3.1.6, T3.1.7, T3.1.8 (Phase 3.1 utility migration tasks)

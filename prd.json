@@ -666,9 +666,10 @@
       "title": "[impl] Migrate convertToRawData.js to TypeScript",
       "category": "impl",
       "description": "Convert convertToRawData.js to convertToRawData.ts with full type safety while preserving ALL logic exactly",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "M",
+      "notes": "Converted convertToRawData.js (32 lines) to convertToRawData.ts (57 lines) with full TypeScript strict mode compliance. Single function has explicit parameter type (readonly Course[]) and return type (string). Used Course interface from @/types/index. No 'any' types used. Added comprehensive JSDoc documentation with example. Logic preserved exactly - same tab-separated output format with 12 fields.",
       "acceptanceCriteria": [
         "Copy course-scheduler-web/src/utils/convertToRawData.js to course-scheduler-astro/src/utils/convertToRawData.ts",
         "Add explicit parameter and return types to all functions",
