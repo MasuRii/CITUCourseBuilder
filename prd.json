@@ -1038,9 +1038,10 @@
       "sectionId": "3.3",
       "category": "impl",
       "description": "Verify course management",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created comprehensive course management verification tests (tests/courseManagement.test.ts, 43 tests). Verified all grouping modes (none/subject/offeringDept), status filtering (all/open/closed), section type filtering (AP3/AP4/AP5), course deletion (single/all), and locking functionality. All tests pass. Integration scenarios tested: filter-then-group chains, combined filtering, locked course handling. Edge cases tested: empty lists, single course, missing departments, empty strings. No AGENTS.md update needed - standard test patterns.",
       "acceptanceCriteria": [
         "Test grouping by subject/department/none",
         "Test status filtering (all/open/closed)",
