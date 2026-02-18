@@ -1561,9 +1561,10 @@
       "title": "[setup] Visual Regression Testing",
       "category": "test",
       "description": "Set up visual regression testing to make UI changes measurable and catch unintended visual changes",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "L",
+      "notes": "Created comprehensive visual regression tests (tests/e2e/visual.test.ts) with 12 test cases covering: empty state (light/dark), with courses (light/dark), with schedule (light/dark), confirm dialog, time filter expanded, course table grouped/filtered, and palette variants (comfort/space). Playwright was already installed from T5.1.3. All 12 baseline screenshots captured and committed to tests/e2e/visual.test.ts-snapshots/. Fixed accessibility label in CourseTable.tsx by adding id='grouping-mode-select' to the select element. Updated AGENTS.md with lesson #30 about visual regression testing patterns. All E2E tests pass: 3 smoke + 12 visual = 15 total.",
       "acceptanceCriteria": [
         "Install Playwright for visual comparison",
         "Create baseline screenshots for: header, course table, timetable, filters, dialogs",

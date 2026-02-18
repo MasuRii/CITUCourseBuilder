@@ -225,3 +225,12 @@ The following files are protected by the Ralph write-guardrail plugin and should
     - For Astro projects with a base path, all asset URLs (images, favicons, open graph) in the `<head>` and components MUST include the base path prefix to avoid router errors during development and deployment.
     - Playwright's `webServer` configuration in `playwright.config.ts` handles starting the Astro dev server automatically.
     - Use `exact: true` or specific ARIA roles/labels to avoid ambiguity when multiple elements have similar text (e.g., "M" day toggle vs other text).
+
+30. Visual regression testing with Playwright: Playwright's `toHaveScreenshot()` matcher provides visual regression testing. Key patterns:
+    - Snapshot files are stored in `tests/e2e/*.test.ts-snapshots/` directory with platform-specific names (e.g., `home-empty-light-chromium-win32.png`).
+    - Use `--update-snapshots` flag to create/update baseline screenshots: `bun run test:e2e -- --update-snapshots`.
+    - Run visual tests separately from smoke tests to avoid confusion: `bun run test:e2e tests/e2e/visual.test.ts`.
+    - Snapshot files should be committed to the repository for CI to compare against.
+    - Each snapshot covers a specific component state: empty page, with courses, with schedule, dialogs, filters, theme/palette variants.
+    - Use `type Page` from `@playwright/test` for proper TypeScript typing in helper functions.
+    - Visual tests catch unintended UI changes during refactoring and ensure consistent theming across all 6 theme combinations.

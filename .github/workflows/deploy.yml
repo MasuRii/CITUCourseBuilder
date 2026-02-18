@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -43,6 +46,14 @@ jobs:
 
       - name: Run tests
         run: bun run test
+        working-directory: ./course-scheduler-astro
+
+      - name: Install Playwright Browsers
+        run: bunx playwright install --with-deps chromium
+        working-directory: ./course-scheduler-astro
+
+      - name: Run E2E tests
+        run: bun run test:e2e
         working-directory: ./course-scheduler-astro
 
       - name: Build project

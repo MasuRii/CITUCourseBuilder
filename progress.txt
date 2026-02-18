@@ -1259,19 +1259,40 @@ Self-Review:
   - No issues identified
 Unblocked: T5.1.3, T5.1.4 (Phase 5 testing tasks)
 
-2026-02-18 17:55
-Task: T5.1.3 - Create E2E smoke tests
+ 2026-02-18 17:55
+ Task: T5.1.3 - Create E2E smoke tests
+ Selection: SEQUENTIAL
+   - Next incomplete task in plan order
+ Change: Set up Playwright and implemented E2E smoke tests
+   - course-scheduler-astro/playwright.config.ts: Playwright configuration with Astro integration
+   - course-scheduler-astro/tests/e2e/smoke.test.ts: Comprehensive smoke tests covering user journey, exports, and themes
+   - course-scheduler-astro/src/components/TimeFilter.tsx: Added data-testid to day toggle buttons
+   - course-scheduler-astro/src/components/TimetableView.tsx: Added timetable-card class to course cards
+   - course-scheduler-astro/src/components/Header.astro & BaseLayout.astro: Fixed asset paths for base path support
+   - course-scheduler-astro/vitest.config.ts: Excluded E2E tests from Vitest
+ Reason: Establish end-to-end verification for critical user flows and UI features.
+ Self-Review: All 3 E2E tests pass (load, journey, theme). Used robust selectors (test-id, exact match). Integrated with Astro dev server. Asset paths fixed to avoid router errors.
+ Unblocked: T5.1.4, T5.2.1, T5.2.2, T5.2.3, T5.2.4
+
+## 2026-02-18 18:10
+Task: T5.1.4 - [setup] Visual Regression Testing
 Selection: SEQUENTIAL
   - Next incomplete task in plan order
-Change: Set up Playwright and implemented E2E smoke tests
-  - course-scheduler-astro/playwright.config.ts: Playwright configuration with Astro integration
-  - course-scheduler-astro/tests/e2e/smoke.test.ts: Comprehensive smoke tests covering user journey, exports, and themes
-  - course-scheduler-astro/src/components/TimeFilter.tsx: Added data-testid to day toggle buttons
-  - course-scheduler-astro/src/components/TimetableView.tsx: Added timetable-card class to course cards
-  - course-scheduler-astro/src/components/Header.astro & BaseLayout.astro: Fixed asset paths for base path support
-  - course-scheduler-astro/vitest.config.ts: Excluded E2E tests from Vitest
-Reason: Establish end-to-end verification for critical user flows and UI features.
-Self-Review: All 3 E2E tests pass (load, journey, theme). Used robust selectors (test-id, exact match). Integrated with Astro dev server. Asset paths fixed to avoid router errors.
-Unblocked: T5.1.4, T5.2.1, T5.2.2, T5.2.3, T5.2.4
+Change: Created comprehensive visual regression tests with Playwright
+  - course-scheduler-astro/tests/e2e/visual.test.ts: 12 visual regression tests covering 10+ component states
+  - course-scheduler-astro/tests/e2e/visual.test.ts-snapshots/: 12 baseline screenshots captured
+  - course-scheduler-astro/src/components/CourseTable.tsx: Fixed accessibility label for grouping select
+  - AGENTS.md: Added lesson #30 about visual regression testing patterns
+Reason: Set up visual regression testing to catch unintended UI changes during refactoring
+Self-Review:
+  - Visual regression tests cover: empty state (light/dark), with courses (light/dark), with schedule (light/dark), confirm dialog, time filter expanded, course table grouped/filtered, palette variants (comfort/space)
+  - Fixed CourseTable.tsx to add id="grouping-mode-select" for accessibility label association
+  - Fixed visual.test.ts to use correct button text "Add Time Range" instead of "Add Exclusion Range"
+  - Fixed visual.test.ts to use correct aria-label "Group by:" instead of "Grouping mode"
+  - All 12 visual regression tests pass
+  - All 3 smoke tests pass
+  - All 477 Vitest tests pass (25 pre-existing jsdom failures)
+  - Build completes successfully (5.16s)
+Unblocked: T5.2.1, T5.2.2, T5.2.3, T5.2.4 (Phase 5.2 Accessibility Audit tasks)
 
 

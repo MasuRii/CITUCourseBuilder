@@ -642,10 +642,14 @@ export default function CourseTable({
 
             {/* Grouping Controls */}
             <div className="flex items-center gap-1.5 md:gap-2">
-              <label className="text-xs md:text-sm text-content-secondary font-medium">
+              <label
+                htmlFor="grouping-mode-select"
+                className="text-xs md:text-sm text-content-secondary font-medium"
+              >
                 Group by:
               </label>
               <select
+                id="grouping-mode-select"
                 value={groupingKey}
                 onChange={onGroupingChange}
                 className="px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm bg-surface-secondary border border-border-primary
