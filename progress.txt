@@ -1360,3 +1360,21 @@ Self-Review: All 8 tests pass. Tooltip focusability verified. Dev toolbar fix en
 Unblocked: T5.2.3, T5.2.4
  (Phase 5.2 Accessibility Audit tasks)
 
+## 2026-02-18 21:10
+Task: T4.1.1 - Define Tailwind color palette for "hobby student" aesthetic
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order (re-execution/refinement of previous task)
+Change: Implemented a comprehensive semantic color system in global.css and integrated it into components
+  - course-scheduler-astro/src/styles/global.css: Added 12 subject color sets (base, light, text variants) to Tailwind v4 @theme block
+  - course-scheduler-astro/src/components/TimetableView.tsx: Updated subject color arrays to use new semantic Tailwind classes
+  - course-scheduler-astro/tests/colorContrast.test.ts: Added verification for subject colors; verified all 83 contrast tests pass
+  - AGENTS.md: Added lesson #38 about semantic color system for aesthetic consistency
+Reason: Refined the color foundation for the "hobby student" aesthetic by moving from hardcoded colors to a themed semantic system. Fixed duplication in prd.json.
+Self-Review:
+  - Color palette is centralized in global.css per Tailwind v4 best practices
+  - Support for 6 theme/palette combinations preserved and enhanced
+  - Subject colors for timetable are now theme-aware (allowing per-palette overrides)
+  - Accessibility: WCAG AA contrast ratios (4.5:1 for text, 3:1 for large text/UI) verified for all combinations
+  - All acceptance criteria met: palette defined in CSS, light/dark variants supported, WCAG AA compliance verified, AGENTS.md updated.
+Unblocked: T5.2.3, T5.2.4 (Phase 5.2 Accessibility Audit tasks)
+

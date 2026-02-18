@@ -72,74 +72,75 @@ const DAY_NAMES: readonly string[] = [
 
 /**
  * Color palette for subject color coding (playful, vibrant colors)
+ * Mapped to semantic variables in global.css for theme support
  */
 const SUBJECT_COLORS: readonly string[] = [
-  'bg-violet-500', // Purple
-  'bg-blue-500', // Blue
-  'bg-emerald-500', // Green
-  'bg-amber-500', // Amber
-  'bg-rose-500', // Rose
-  'bg-cyan-500', // Cyan
-  'bg-orange-500', // Orange
-  'bg-pink-500', // Pink
-  'bg-teal-500', // Teal
-  'bg-indigo-500', // Indigo
-  'bg-lime-500', // Lime
-  'bg-sky-500', // Sky
+  'bg-subject-1',
+  'bg-subject-2',
+  'bg-subject-3',
+  'bg-subject-4',
+  'bg-subject-5',
+  'bg-subject-6',
+  'bg-subject-7',
+  'bg-subject-8',
+  'bg-subject-9',
+  'bg-subject-10',
+  'bg-subject-11',
+  'bg-subject-12',
 ] as const;
 
 /**
  * Lighter variants for course card backgrounds
  */
 const SUBJECT_COLORS_LIGHT: readonly string[] = [
-  'bg-violet-100 dark:bg-violet-900/40',
-  'bg-blue-100 dark:bg-blue-900/40',
-  'bg-emerald-100 dark:bg-emerald-900/40',
-  'bg-amber-100 dark:bg-amber-900/40',
-  'bg-rose-100 dark:bg-rose-900/40',
-  'bg-cyan-100 dark:bg-cyan-900/40',
-  'bg-orange-100 dark:bg-orange-900/40',
-  'bg-pink-100 dark:bg-pink-900/40',
-  'bg-teal-100 dark:bg-teal-900/40',
-  'bg-indigo-100 dark:bg-indigo-900/40',
-  'bg-lime-100 dark:bg-lime-900/40',
-  'bg-sky-100 dark:bg-sky-900/40',
+  'bg-subject-1-light dark:bg-subject-1/20',
+  'bg-subject-2-light dark:bg-subject-2/20',
+  'bg-subject-3-light dark:bg-subject-3/20',
+  'bg-subject-4-light dark:bg-subject-4/20',
+  'bg-subject-5-light dark:bg-subject-5/20',
+  'bg-subject-6-light dark:bg-subject-6/20',
+  'bg-subject-7-light dark:bg-subject-7/20',
+  'bg-subject-8-light dark:bg-subject-8/20',
+  'bg-subject-9-light dark:bg-subject-9/20',
+  'bg-subject-10-light dark:bg-subject-10/20',
+  'bg-subject-11-light dark:bg-subject-11/20',
+  'bg-subject-12-light dark:bg-subject-12/20',
 ] as const;
 
 /**
  * Border colors for course cards
  */
 const SUBJECT_BORDER_COLORS: readonly string[] = [
-  'border-violet-400 dark:border-violet-500',
-  'border-blue-400 dark:border-blue-500',
-  'border-emerald-400 dark:border-emerald-500',
-  'border-amber-400 dark:border-amber-500',
-  'border-rose-400 dark:border-rose-500',
-  'border-cyan-400 dark:border-cyan-500',
-  'border-orange-400 dark:border-orange-500',
-  'border-pink-400 dark:border-pink-500',
-  'border-teal-400 dark:border-teal-500',
-  'border-indigo-400 dark:border-indigo-500',
-  'border-lime-400 dark:border-lime-500',
-  'border-sky-400 dark:border-sky-500',
+  'border-subject-1/40 dark:border-subject-1/50',
+  'border-subject-2/40 dark:border-subject-2/50',
+  'border-subject-3/40 dark:border-subject-3/50',
+  'border-subject-4/40 dark:border-subject-4/50',
+  'border-subject-5/40 dark:border-subject-5/50',
+  'border-subject-6/40 dark:border-subject-6/50',
+  'border-subject-7/40 dark:border-subject-7/50',
+  'border-subject-8/40 dark:border-subject-8/50',
+  'border-subject-9/40 dark:border-subject-9/50',
+  'border-subject-10/40 dark:border-subject-10/50',
+  'border-subject-11/40 dark:border-subject-11/50',
+  'border-subject-12/40 dark:border-subject-12/50',
 ] as const;
 
 /**
  * Text colors for subject labels (darker variants for readability)
  */
 const SUBJECT_TEXT_COLORS: readonly string[] = [
-  'text-violet-700 dark:text-violet-200',
-  'text-blue-700 dark:text-blue-200',
-  'text-emerald-700 dark:text-emerald-200',
-  'text-amber-700 dark:text-amber-200',
-  'text-rose-700 dark:text-rose-200',
-  'text-cyan-700 dark:text-cyan-200',
-  'text-orange-700 dark:text-orange-200',
-  'text-pink-700 dark:text-pink-200',
-  'text-teal-700 dark:text-teal-200',
-  'text-indigo-700 dark:text-indigo-200',
-  'text-lime-700 dark:text-lime-200',
-  'text-sky-700 dark:text-sky-200',
+  'text-subject-1-text dark:text-subject-1-light',
+  'text-subject-2-text dark:text-subject-2-light',
+  'text-subject-3-text dark:text-subject-3-light',
+  'text-subject-4-text dark:text-subject-4-light',
+  'text-subject-5-text dark:text-subject-5-light',
+  'text-subject-6-text dark:text-subject-6-light',
+  'text-subject-7-text dark:text-subject-7-light',
+  'text-subject-8-text dark:text-subject-8-light',
+  'text-subject-9-text dark:text-subject-9-light',
+  'text-subject-10-text dark:text-subject-10-light',
+  'text-subject-11-text dark:text-subject-11-light',
+  'text-subject-12-text dark:text-subject-12-light',
 ] as const;
 
 /**

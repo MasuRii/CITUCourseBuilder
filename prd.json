@@ -1794,25 +1794,6 @@
       ]
     },
     {
-      "id": "T6.2.1",
-      "phaseId": "6",
-      "sectionId": "6.2",
-      "category": "impl",
-      "description": "Update CI/CD pipeline",
-      "passes": false,
-      "effort": "S",
-      "risk": "L",
-      "acceptanceCriteria": [
-        "Update GitHub Actions workflow",
-        "Add test step before deployment",
-        "Add build caching",
-        "CI/CD workflow updated",
-        "Tests run before deploy",
-        "Caching implemented",
-        "Update AGENTS.md with learnings"
-      ]
-    },
-    {
       "id": "T6.2.2",
       "phaseId": "6",
       "sectionId": "6.2",

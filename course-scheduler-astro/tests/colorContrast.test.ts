@@ -296,6 +296,16 @@ describe('Color Contrast Verification - WCAG AA Compliance', () => {
           expect(ratio).toBeGreaterThanOrEqual(WCAG_AA_UI_COMPONENTS);
         });
       });
+
+      describe('Subject Colors Contrast (Sample)', () => {
+        test('subject 1 text on subject 1 light background meets WCAG AA (4.5:1)', () => {
+          // Hardcoded values from global.css for validation
+          const subject1Light = '#ede9fe';
+          const subject1Text = '#6d28d9';
+          const ratio = getContrastRatio(hexToRgb(subject1Text), hexToRgb(subject1Light));
+          expect(ratio).toBeGreaterThanOrEqual(WCAG_AA_NORMAL_TEXT);
+        });
+      });
     });
   });
 

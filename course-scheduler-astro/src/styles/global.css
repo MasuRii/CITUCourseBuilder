@@ -220,6 +220,44 @@
   --color-row-locked-text: var(--locked-row-text);
   --color-row-group-header: var(--group-header-bg);
 
+  /* Subject Colors for Timetable (Playful, vibrant palette) */
+  --color-subject-1: var(--subject-1);
+  --color-subject-1-light: var(--subject-1-light);
+  --color-subject-1-text: var(--subject-1-text);
+  --color-subject-2: var(--subject-2);
+  --color-subject-2-light: var(--subject-2-light);
+  --color-subject-2-text: var(--subject-2-text);
+  --color-subject-3: var(--subject-3);
+  --color-subject-3-light: var(--subject-3-light);
+  --color-subject-3-text: var(--subject-3-text);
+  --color-subject-4: var(--subject-4);
+  --color-subject-4-light: var(--subject-4-light);
+  --color-subject-4-text: var(--subject-4-text);
+  --color-subject-5: var(--subject-5);
+  --color-subject-5-light: var(--subject-5-light);
+  --color-subject-5-text: var(--subject-5-text);
+  --color-subject-6: var(--subject-6);
+  --color-subject-6-light: var(--subject-6-light);
+  --color-subject-6-text: var(--subject-6-text);
+  --color-subject-7: var(--subject-7);
+  --color-subject-7-light: var(--subject-7-light);
+  --color-subject-7-text: var(--subject-7-text);
+  --color-subject-8: var(--subject-8);
+  --color-subject-8-light: var(--subject-8-light);
+  --color-subject-8-text: var(--subject-8-text);
+  --color-subject-9: var(--subject-9);
+  --color-subject-9-light: var(--subject-9-light);
+  --color-subject-9-text: var(--subject-9-text);
+  --color-subject-10: var(--subject-10);
+  --color-subject-10-light: var(--subject-10-light);
+  --color-subject-10-text: var(--subject-10-text);
+  --color-subject-11: var(--subject-11);
+  --color-subject-11-light: var(--subject-11-light);
+  --color-subject-11-text: var(--subject-11-text);
+  --color-subject-12: var(--subject-12);
+  --color-subject-12-light: var(--subject-12-light);
+  --color-subject-12-text: var(--subject-12-text);
+
   /* Filter Colors */
   --color-filter-bg: var(--filter-bg);
   --color-filter-border: var(--filter-border);
@@ -399,8 +437,46 @@
   --danger: #ef4444;
   --success: #22c55e;
   --warning: #eab308;
-  --info: #2563eb;
+  --info: #3b82f6;
   --focus-outline-color: var(--link-color);
+
+  /* Subject Colors (Playful defaults) */
+  --subject-1: #8b5cf6; /* Violet 500 */
+  --subject-1-light: #ede9fe; /* Violet 100 */
+  --subject-1-text: #6d28d9; /* Violet 700 */
+  --subject-2: #3b82f6; /* Blue 500 */
+  --subject-2-light: #dbeafe; /* Blue 100 */
+  --subject-2-text: #1d4ed8; /* Blue 700 */
+  --subject-3: #10b981; /* Emerald 500 */
+  --subject-3-light: #d1fae5; /* Emerald 100 */
+  --subject-3-text: #047857; /* Emerald 700 */
+  --subject-4: #f59e0b; /* Amber 500 */
+  --subject-4-light: #fef3c7; /* Amber 100 */
+  --subject-4-text: #b45309; /* Amber 700 */
+  --subject-5: #f43f5e; /* Rose 500 */
+  --subject-5-light: #ffe4e6; /* Rose 100 */
+  --subject-5-text: #be123c; /* Rose 700 */
+  --subject-6: #06b6d4; /* Cyan 500 */
+  --subject-6-light: #cffafe; /* Cyan 100 */
+  --subject-6-text: #0e7490; /* Cyan 700 */
+  --subject-7: #f97316; /* Orange 500 */
+  --subject-7-light: #ffedd5; /* Orange 100 */
+  --subject-7-text: #c2410c; /* Orange 700 */
+  --subject-8: #ec4899; /* Pink 500 */
+  --subject-8-light: #fce7f3; /* Pink 100 */
+  --subject-8-text: #be185d; /* Pink 700 */
+  --subject-9: #14b8a6; /* Teal 500 */
+  --subject-9-light: #ccfbf1; /* Teal 100 */
+  --subject-9-text: #0f766e; /* Teal 700 */
+  --subject-10: #6366f1; /* Indigo 500 */
+  --subject-10-light: #e0e7ff; /* Indigo 100 */
+  --subject-10-text: #4338ca; /* Indigo 700 */
+  --subject-11: #84cc16; /* Lime 500 */
+  --subject-11-light: #ecfccb; /* Lime 100 */
+  --subject-11-text: #4d7c0f; /* Lime 700 */
+  --subject-12: #0ea5e9; /* Sky 500 */
+  --subject-12-light: #e0f2fe; /* Sky 100 */
+  --subject-12-text: #0369a1; /* Sky 700 */
 }
 
 /* ============================================
