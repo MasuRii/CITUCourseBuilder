@@ -10,6 +10,17 @@
 
 import { useState, useCallback, useEffect, useMemo, type ChangeEvent, type ReactNode } from 'react';
 import {
+  Moon,
+  Sun,
+  Palette,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  Trash2,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
+import {
   useCourseState,
   useFilterState,
   useSchedulePreferences,
@@ -1009,55 +1020,23 @@ export default function App({ onToast }: AppProps): ReactNode {
       <ToastContainer toasts={toasts} onDismiss={handleDismissToast} position="top-center" />
 
       {/* Header Controls */}
-      <div className="flex flex-wrap gap-4 items-center justify-between">
+      <div className="flex flex-wrap gap-4 items-center justify-between mobile-header-controls">
         {/* Theme Controls */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <button
             onClick={themeState.toggleTheme}
-            className="px-4 py-2 rounded-lg bg-surface-secondary border border-default
+            className="px-4 py-2.5 rounded-lg bg-surface-secondary border border-default
                      text-content-primary hover:bg-surface-hover transition-colors
-                     flex items-center gap-2"
+                     flex items-center gap-2 min-h-[44px] touch-target"
           >
             {themeState.theme === 'light' ? (
               <>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-                </svg>
+                <Moon className="w-5 h-5" />
                 Dark Mode
               </>
             ) : (
               <>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="4"></circle>
-                  <path d="M12 2v2"></path>
-                  <path d="M12 20v2"></path>
-                  <path d="m4.93 4.93 1.41 1.41"></path>
-                  <path d="m17.66 17.66 1.41 1.41"></path>
-                  <path d="M2 12h2"></path>
-                  <path d="M20 12h2"></path>
-                  <path d="m6.34 17.66-1.41 1.41"></path>
-                  <path d="m19.07 4.93-1.41 1.41"></path>
-                </svg>
+                <Sun className="w-5 h-5" />
                 Light Mode
               </>
             )}
@@ -1065,27 +1044,11 @@ export default function App({ onToast }: AppProps): ReactNode {
 
           <button
             onClick={themeState.cyclePalette}
-            className="px-4 py-2 rounded-lg bg-surface-secondary border border-default
+            className="px-4 py-2.5 rounded-lg bg-surface-secondary border border-default
                      text-content-primary hover:bg-surface-hover transition-colors
-                     flex items-center gap-2"
+                     flex items-center gap-2 min-h-[44px] touch-target"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="13.5" cy="6.5" r="0.5" fill="currentColor"></circle>
-              <circle cx="17.5" cy="10.5" r="0.5" fill="currentColor"></circle>
-              <circle cx="8.5" cy="7.5" r="0.5" fill="currentColor"></circle>
-              <circle cx="6.5" cy="12.5" r="0.5" fill="currentColor"></circle>
-              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"></path>
-            </svg>
+            <Palette className="w-5 h-5" />
             {themeState.currentPalette === 'original'
               ? 'Comfort'
               : themeState.currentPalette === 'comfort'
@@ -1101,7 +1064,8 @@ export default function App({ onToast }: AppProps): ReactNode {
             disabled={courseState.allCourses.length === 0 || scheduleGeneration.isGenerating}
             className="px-5 py-2.5 bg-accent text-white font-semibold rounded-lg
                      shadow-md hover:bg-accent-hover disabled:opacity-50
-                     disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                     disabled:cursor-not-allowed transition-all flex items-center gap-2
+                     min-h-[44px] touch-target"
           >
             {scheduleGeneration.isGenerating ? (
               <>
@@ -1110,20 +1074,7 @@ export default function App({ onToast }: AppProps): ReactNode {
               </>
             ) : (
               <>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                  <path d="m9 12 2 2 4-4"></path>
-                </svg>
+                <CheckCircle className="w-5 h-5" />
                 {scheduleGeneration.generatedSchedules.length > 0
                   ? 'Generate Next'
                   : 'Generate Schedule'}
@@ -1135,51 +1086,29 @@ export default function App({ onToast }: AppProps): ReactNode {
             <>
               <button
                 onClick={handlePrevSchedule}
-                className="px-3 py-2 bg-surface-secondary border border-default rounded-lg
-                         hover:bg-surface-hover transition-colors flex items-center gap-1"
+                className="px-3 py-2.5 bg-surface-secondary border border-default rounded-lg
+                         hover:bg-surface-hover transition-colors flex items-center gap-1
+                         min-h-[44px] touch-target"
                 aria-label="Previous Schedule"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="m15 18-6-6 6-6"></path>
-                </svg>
+                <ChevronLeft className="w-5 h-5" />
                 Prev
               </button>
 
-              <span className="px-4 py-2 bg-accent-light text-accent font-medium rounded-lg">
+              <span className="px-4 py-2.5 bg-accent-light text-accent font-medium rounded-lg min-h-[44px] flex items-center">
                 Schedule {scheduleGeneration.currentScheduleIndex + 1} of{' '}
                 {scheduleGeneration.generatedSchedules.length}
               </span>
 
               <button
                 onClick={handleNextSchedule}
-                className="px-3 py-2 bg-surface-secondary border border-default rounded-lg
-                         hover:bg-surface-hover transition-colors flex items-center gap-1"
+                className="px-3 py-2.5 bg-surface-secondary border border-default rounded-lg
+                         hover:bg-surface-hover transition-colors flex items-center gap-1
+                         min-h-[44px] touch-target"
                 aria-label="Next Schedule"
               >
                 Next
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="m9 18 6-6-6-6"></path>
-                </svg>
+                <ChevronRight className="w-5 h-5" />
               </button>
             </>
           )}
@@ -1187,24 +1116,10 @@ export default function App({ onToast }: AppProps): ReactNode {
           {scheduleGeneration.generatedSchedules.length > 0 && (
             <button
               onClick={handleClearGeneratedSchedules}
-              className="px-3 py-2 bg-danger text-white rounded-lg hover:opacity-90
-                       transition-opacity flex items-center gap-2"
+              className="px-3 py-2.5 bg-danger text-white rounded-lg hover:opacity-90
+                       transition-opacity flex items-center gap-2 min-h-[44px] touch-target"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M3 6h18"></path>
-                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-              </svg>
+              <Trash2 className="w-5 h-5" />
               Reset
             </button>
           )}
@@ -1214,49 +1129,22 @@ export default function App({ onToast }: AppProps): ReactNode {
       {/* Timetable Section */}
       {courseState.lockedCoursesCount > 0 && (
         <div className="bg-surface-secondary rounded-lg border border-default p-4">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
             <h2 className="text-xl font-semibold text-content-primary m-0">Timetable View</h2>
             <button
               onClick={scheduleGeneration.toggleTimetable}
-              className="px-4 py-2 bg-surface-tertiary border border-default rounded-lg
-                       hover:bg-surface-hover transition-colors flex items-center gap-2"
+              className="px-4 py-2.5 bg-surface-tertiary border border-default rounded-lg
+                       hover:bg-surface-hover transition-colors flex items-center gap-2
+                       min-h-[44px] touch-target"
             >
               {scheduleGeneration.showTimetable ? (
                 <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
-                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
-                    <line x1="2" x2="22" y1="2" y2="22"></line>
-                  </svg>
+                  <EyeOff className="w-5 h-5" />
                   Hide Timetable
                 </>
               ) : (
                 <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                  </svg>
+                  <Eye className="w-5 h-5" />
                   Show Timetable
                 </>
               )}
@@ -1312,9 +1200,9 @@ export default function App({ onToast }: AppProps): ReactNode {
                 onChange={(e) =>
                   schedulePreferences.setScheduleSearchMode(e.target.value as ScheduleSearchMode)
                 }
-                className="px-3 py-2 rounded-lg border border-input bg-surface-input
+                className="px-3 py-2.5 rounded-lg border border-input bg-surface-input
                          text-content-input focus:outline-none focus:border-accent
-                         focus:ring-2 focus:ring-accent/30"
+                         focus:ring-2 focus:ring-accent/30 min-h-[44px] touch-target"
               >
                 <option value="partial">Recommended (Flexible, Best Fit)</option>
                 <option value="exhaustive">Full Coverage (All Subjects, Strict)</option>
@@ -1334,9 +1222,9 @@ export default function App({ onToast }: AppProps): ReactNode {
                 onChange={handleMaxUnitsChange}
                 placeholder="e.g., 18"
                 min="0"
-                className="px-3 py-2 rounded-lg border border-input bg-surface-input
+                className="px-3 py-2.5 rounded-lg border border-input bg-surface-input
                          text-content-input focus:outline-none focus:border-accent
-                         focus:ring-2 focus:ring-accent/30"
+                         focus:ring-2 focus:ring-accent/30 min-h-[44px] touch-target"
               />
             </div>
 
@@ -1349,9 +1237,9 @@ export default function App({ onToast }: AppProps): ReactNode {
                 id="maxGapInput"
                 value={filterState.maxClassGapHours}
                 onChange={handleMaxGapChange}
-                className="px-3 py-2 rounded-lg border border-input bg-surface-input
+                className="px-3 py-2.5 rounded-lg border border-input bg-surface-input
                          text-content-input focus:outline-none focus:border-accent
-                         focus:ring-2 focus:ring-accent/30"
+                         focus:ring-2 focus:ring-accent/30 min-h-[44px] touch-target"
               >
                 <option value="">Any</option>
                 {[...Array(11).keys()].map((i) => {
@@ -1435,8 +1323,9 @@ export default function App({ onToast }: AppProps): ReactNode {
                     key={time}
                     type="button"
                     onClick={() => handleAddTimePref(time)}
-                    className="px-3 py-1 text-sm bg-surface-tertiary border border-default
-                             rounded hover:bg-surface-hover transition-colors"
+                    className="px-3 py-2 text-sm bg-surface-tertiary border border-default
+                             rounded hover:bg-surface-hover transition-colors
+                             min-h-[44px] touch-target"
                   >
                     Add {time.charAt(0).toUpperCase() + time.slice(1)}
                   </button>
@@ -1444,8 +1333,9 @@ export default function App({ onToast }: AppProps): ReactNode {
               <button
                 type="button"
                 onClick={handleResetTimePrefs}
-                className="px-3 py-1 text-sm bg-surface-tertiary border border-default
-                         rounded hover:bg-surface-hover transition-colors"
+                className="px-3 py-2 text-sm bg-surface-tertiary border border-default
+                         rounded hover:bg-surface-hover transition-colors
+                         min-h-[44px] touch-target"
               >
                 Reset
               </button>

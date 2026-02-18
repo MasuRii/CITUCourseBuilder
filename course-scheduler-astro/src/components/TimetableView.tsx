@@ -1,6 +1,16 @@
 import { toPng } from 'html-to-image';
 import jsPDF from 'jspdf';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Image,
+  FileText,
+  Calendar,
+  Download,
+  AlertTriangle,
+  Calculator,
+  BookOpen,
+  Archive,
+} from 'lucide-react';
 import { generateIcsContent } from '@/utils/generateIcs';
 import { parseSchedule } from '@/utils/parseSchedule';
 import type { Course, DayCode } from '@/types/index';
@@ -258,14 +268,7 @@ function DropdownMenu({
         role="menuitem"
       >
         <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
+          <Image className="h-4 w-4" />
         </span>
         <div>
           <div className="font-medium">Export as PNG</div>
@@ -281,14 +284,7 @@ function DropdownMenu({
         role="menuitem"
       >
         <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 group-hover:scale-110 transition-transform">
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-            />
-          </svg>
+          <FileText className="h-4 w-4" />
         </span>
         <div>
           <div className="font-medium">Export as PDF</div>
@@ -304,14 +300,7 @@ function DropdownMenu({
         role="menuitem"
       >
         <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
+          <Calendar className="h-4 w-4" />
         </span>
         <div>
           <div className="font-medium">Export as .ics</div>
@@ -445,7 +434,7 @@ export default function TimetableView({
       };
 
       const dataUrl = await toPng(timetableRef.current, options);
-      const img = new Image();
+      const img = document.createElement('img');
       img.src = dataUrl;
 
       await new Promise<void>((resolve) => {
@@ -524,19 +513,7 @@ export default function TimetableView({
       <div className="rounded-2xl bg-surface-secondary p-8 text-center shadow-md border border-border-primary">
         <div className="flex flex-col items-center gap-4">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-light">
-            <svg
-              className="h-8 w-8 text-accent"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
+            <Calendar className="h-8 w-8 text-accent" />
           </div>
           <div>
             <h3 className="text-lg font-semibold text-content-primary font-display">
@@ -658,13 +635,7 @@ export default function TimetableView({
             </div>
             {isConflicting && (
               <div className="flex items-center gap-0.5 mt-0.5">
-                <svg className="h-3 w-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <AlertTriangle className="h-3 w-3 text-red-500" />
                 <span className="text-[0.6rem] text-red-500 font-medium">Conflict</span>
               </div>
             )}
@@ -680,19 +651,7 @@ export default function TimetableView({
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-light">
-            <svg
-              className="h-5 w-5 text-accent"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
+            <Calendar className="h-5 w-5 text-accent" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-content-primary font-display">
@@ -704,7 +663,7 @@ export default function TimetableView({
         <div className="relative">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 min-h-[44px] touch-target ${
               isMenuOpen
                 ? 'bg-accent text-white shadow-md'
                 : 'bg-surface-secondary text-content-primary border border-border-primary hover:border-accent hover:bg-accent-light'
@@ -713,19 +672,9 @@ export default function TimetableView({
             aria-expanded={isMenuOpen}
             aria-haspopup="true"
           >
-            <svg
+            <Download
               className={`h-4 w-4 transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-              />
-            </svg>
+            />
             <span>Export</span>
           </button>
           <DropdownMenu
@@ -816,19 +765,7 @@ export default function TimetableView({
       <div className="mt-4 grid grid-cols-3 gap-3">
         <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 p-4 border border-emerald-200 dark:border-emerald-800">
           <div className="flex items-center gap-2 mb-1">
-            <svg
-              className="h-4 w-4 text-emerald-600 dark:text-emerald-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-              />
-            </svg>
+            <Calculator className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
               Total Units
             </span>
@@ -839,19 +776,7 @@ export default function TimetableView({
         </div>
         <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 border border-blue-200 dark:border-blue-800">
           <div className="flex items-center gap-2 mb-1">
-            <svg
-              className="h-4 w-4 text-blue-600 dark:text-blue-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-              />
-            </svg>
+            <BookOpen className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Subjects</span>
           </div>
           <div className="text-2xl font-bold text-blue-800 dark:text-blue-200 font-display">
@@ -860,19 +785,7 @@ export default function TimetableView({
         </div>
         <div className="rounded-xl bg-gradient-to-br from-violet-50 to-violet-100 dark:from-violet-900/30 dark:to-violet-800/30 p-4 border border-violet-200 dark:border-violet-800">
           <div className="flex items-center gap-2 mb-1">
-            <svg
-              className="h-4 w-4 text-violet-600 dark:text-violet-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-              />
-            </svg>
+            <Archive className="h-4 w-4 text-violet-600 dark:text-violet-400" />
             <span className="text-xs font-medium text-violet-700 dark:text-violet-300">
               Courses
             </span>

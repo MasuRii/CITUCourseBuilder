@@ -12,6 +12,7 @@
 
 import type { ReactNode } from 'react';
 import { useState, useCallback, useMemo, useEffect } from 'react';
+import { Calendar, Clock, Plus, X, Check } from 'lucide-react';
 import type { DayCode, TimeRange } from '@/types/index';
 
 // ============================================================================
@@ -90,128 +91,42 @@ interface TimeOption {
 }
 
 // ============================================================================
-// Icon Components
+// Icon Components (using Lucide)
 // ============================================================================
 
 /**
  * Calendar icon for day exclusion section
  */
 function CalendarIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-      <line x1="16" x2="16" y1="2" y2="6" />
-      <line x1="8" x2="8" y1="2" y2="6" />
-      <line x1="3" x2="21" y1="10" y2="10" />
-    </svg>
-  );
+  return <Calendar className={className} aria-hidden="true" />;
 }
 
 /**
  * Clock icon for time range section
  */
 function ClockIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  );
+  return <Clock className={className} aria-hidden="true" />;
 }
 
 /**
  * Plus icon for add button
  */
 function PlusIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <line x1="12" y1="5" x2="12" y2="19" />
-      <line x1="5" y1="12" x2="19" y2="12" />
-    </svg>
-  );
+  return <Plus className={className} aria-hidden="true" />;
 }
 
 /**
  * X icon for remove button
  */
 function XIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-  );
+  return <X className={className} aria-hidden="true" />;
 }
 
 /**
  * Check icon for active filter indicator
  */
 function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="12"
-      height="12"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  );
+  return <Check className={className} aria-hidden="true" />;
 }
 
 // ============================================================================
@@ -299,11 +214,11 @@ function TimePicker({ value, label, onChange, placeholder, id }: TimePickerProps
         id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="px-3 py-2.5 rounded-lg border border-default bg-surface-primary text-content-primary
+        className="px-3 py-3 rounded-lg border border-default bg-surface-primary text-content-primary
                    focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent
                    cursor-pointer min-w-[140px] appearance-none bg-no-repeat bg-right
                    transition-all duration-200 hover:border-accent hover:bg-surface-hover
-                   text-sm font-medium"
+                   text-sm font-medium min-h-[44px] touch-target"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
           backgroundSize: '1.25rem',
@@ -435,7 +350,7 @@ export default function TimeFilter({
                 aria-label={`${isExcluded ? 'Include' : 'Exclude'} ${day.name}`}
                 className={`
                   relative flex flex-col items-center justify-center p-3 rounded-xl font-medium text-sm
-                  transition-all duration-200 ease-out
+                  transition-all duration-200 ease-out min-h-[52px] touch-target
                   focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-surface-primary
                   ${
                     isExcluded

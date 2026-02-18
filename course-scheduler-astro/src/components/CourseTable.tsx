@@ -10,6 +10,21 @@
  */
 
 import { Fragment, useMemo, useState, useCallback, useRef, useEffect, type ReactNode } from 'react';
+import {
+  Check,
+  X,
+  AlertTriangle,
+  Lock,
+  Unlock,
+  MoreVertical,
+  Info,
+  Trash2,
+  Download,
+  Copy,
+  BookOpen,
+  Clock,
+  MapPin,
+} from 'lucide-react';
 import type {
   Course,
   GroupedCourse,
@@ -64,346 +79,106 @@ interface CourseRowProps {
   conflictingLockedCourseIds: ReadonlySet<string>;
 }
 
+// ============================================================================
+// Icon Components (using Lucide)
+// ============================================================================
+
 /**
  * Checkmark icon for available status
  */
 function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="12"
-      height="12"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  );
+  return <Check className={className ?? 'w-3 h-3'} aria-hidden="true" />;
 }
 
 /**
  * X icon for closed status
  */
 function XIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="12"
-      height="12"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
-  );
+  return <X className={className ?? 'w-3 h-3'} aria-hidden="true" />;
 }
 
 /**
  * Alert triangle icon for warning/full status
  */
 function AlertTriangleIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="12"
-      height="12"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-      <path d="M12 9v4" />
-      <path d="M12 17h.01" />
-    </svg>
-  );
+  return <AlertTriangle className={className ?? 'w-3 h-3'} aria-hidden="true" />;
 }
 
 /**
  * Lock icon for locked courses
  */
 function LockIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-    </svg>
-  );
+  return <Lock className={className ?? 'w-3.5 h-3.5'} aria-hidden="true" />;
 }
 
 /**
  * Unlock icon for unlocked courses
  */
 function UnlockIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-      <path d="M7 11V7a5 5 0 0 1 9.9-1" />
-    </svg>
-  );
+  return <Unlock className={className ?? 'w-3.5 h-3.5'} aria-hidden="true" />;
 }
 
 /**
- * Menu icon SVG component
+ * Menu icon (more vertical) for dropdown menus
  */
 function MenuIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <line x1="4" x2="20" y1="12" y2="12" />
-      <line x1="4" x2="20" y1="6" y2="6" />
-      <line x1="4" x2="20" y1="18" y2="18" />
-    </svg>
-  );
+  return <MoreVertical className={className ?? 'w-5 h-5'} aria-hidden="true" />;
 }
 
 /**
- * Info icon SVG component
+ * Info icon
  */
 function InfoIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4" />
-      <path d="M12 8h.01" />
-    </svg>
-  );
+  return <Info className={className ?? 'w-4.5 h-4.5'} aria-hidden="true" />;
 }
 
 /**
- * Trash icon SVG component
+ * Trash icon for delete actions
  */
 function TrashIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M3 6h18" />
-      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-      <line x1="10" x2="10" y1="11" y2="17" />
-      <line x1="14" x2="14" y1="11" y2="17" />
-    </svg>
-  );
+  return <Trash2 className={className ?? 'w-4 h-4'} aria-hidden="true" />;
 }
 
 /**
- * Warning icon SVG component
+ * Warning icon (same as AlertTriangle)
  */
 function WarningIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-      <path d="M12 9v4" />
-      <path d="M12 17h.01" />
-    </svg>
-  );
+  return <AlertTriangle className={className ?? 'w-4 h-4'} aria-hidden="true" />;
 }
 
 /**
  * Download icon for export
  */
 function DownloadIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="7 10 12 15 17 10" />
-      <line x1="12" x2="12" y1="15" y2="3" />
-    </svg>
-  );
+  return <Download className={className ?? 'w-4 h-4'} aria-hidden="true" />;
 }
 
 /**
  * Copy icon for clipboard
  */
 function CopyIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-    </svg>
-  );
+  return <Copy className={className ?? 'w-4 h-4'} aria-hidden="true" />;
 }
 
 /**
  * Book icon for subject column
  */
 function BookIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-    </svg>
-  );
+  return <BookOpen className={className ?? 'w-3.5 h-3.5'} aria-hidden="true" />;
 }
 
 /**
  * Clock icon for schedule column
  */
 function ClockIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  );
+  return <Clock className={className ?? 'w-3.5 h-3.5'} aria-hidden="true" />;
 }
 
 /**
  * Map pin icon for room column
  */
 function MapPinIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  );
+  return <MapPin className={className ?? 'w-3.5 h-3.5'} aria-hidden="true" />;
 }
 
 /**
@@ -480,11 +255,11 @@ function CourseRow({
             onClick={handleToggleLock}
             disabled={!isLocked && !canLock}
             className={`
-              inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full
+              inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-full
               transition-all duration-200 ease-out transform
               focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
               disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-              active:scale-95
+              active:scale-95 min-h-[44px] touch-target
               ${
                 isLocked
                   ? 'bg-accent text-white shadow-md hover:bg-accent-hover hover:-translate-y-0.5 hover:shadow-lg'
@@ -514,27 +289,15 @@ function CourseRow({
           <button
             type="button"
             onClick={handleDelete}
-            className="p-2 text-content-secondary/60 hover:text-danger-button-bg hover:bg-danger/10
+            className="p-2.5 text-content-secondary/60 hover:text-danger-button-bg hover:bg-danger/10
                        transition-all duration-200 ease-out transform
                        focus:outline-none focus-visible:ring-2 focus-visible:ring-danger-button-bg/50 rounded-lg
-                       opacity-0 group-hover:opacity-100 active:scale-90"
+                       opacity-0 group-hover:opacity-100 active:scale-90 min-w-[44px] min-h-[44px]
+                       flex items-center justify-center touch-target"
             title="Delete Course"
             aria-label="Delete course"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
+            <X className="w-4 h-4" />
           </button>
         </div>
       </td>

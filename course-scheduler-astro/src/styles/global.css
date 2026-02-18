@@ -1883,3 +1883,335 @@ h6,
      document.documentElement.setAttribute('data-palette', palette);
    </script>
    ============================================ */
+
+/* ============================================
+   MOBILE-FIRST RESPONSIVE UTILITIES
+   ============================================
+   Touch-friendly targets and mobile-specific adjustments.
+   WCAG 2.1 requires touch targets of at least 44x44 CSS pixels.
+   ============================================ */
+
+/* Touch target utilities - ensure minimum 44px touch targets */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.touch-target-sm {
+  min-height: 36px;
+  min-width: 36px;
+}
+
+/* Ensure all buttons meet touch target requirements on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase button sizes on touch devices */
+  .btn,
+  button:not(.btn-icon-only) {
+    min-height: 44px;
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+  }
+
+  .btn-sm,
+  button.btn-sm {
+    min-height: 36px;
+  }
+
+  .btn-icon,
+  .btn-icon-only {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .btn-icon.btn-sm,
+  .btn-icon-only.btn-sm {
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  /* Toggle buttons on touch devices */
+  .toggle {
+    min-height: 44px;
+    padding: var(--space-2) var(--space-4);
+  }
+
+  /* Dropdown items on touch devices */
+  .dropdown-item {
+    min-height: 44px;
+    padding: var(--space-3) var(--space-3);
+  }
+}
+
+/* ============================================
+   RESPONSIVE LAYOUT UTILITIES
+   ============================================ */
+
+/* Hide on mobile (below 480px) */
+@media (max-width: 479px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  /* Stack flex items on mobile */
+  .mobile-stack {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Full width on mobile */
+  .mobile-full-width {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Reduce padding on mobile */
+  .mobile-padding-sm {
+    padding: var(--space-2);
+  }
+
+  /* Reduce gaps on mobile */
+  .mobile-gap-sm {
+    gap: var(--space-2);
+  }
+
+  /* Mobile-friendly header controls */
+  .mobile-header-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .mobile-header-controls > * {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Small mobile adjustments (below 360px) */
+@media (max-width: 359px) {
+  .hide-small-mobile {
+    display: none !important;
+  }
+
+  /* Extra small padding for cramped screens */
+  .mobile-padding-xs {
+    padding: var(--space-1);
+  }
+}
+
+/* Tablet adjustments (480px - 768px) */
+@media (min-width: 480px) and (max-width: 767px) {
+  .hide-tablet {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   COLLAPSIBLE SECTION UTILITIES
+   ============================================ */
+
+/* Collapsible section container */
+.collapsible {
+  overflow: hidden;
+  transition: max-height var(--transition-normal) var(--ease-out);
+}
+
+.collapsible.collapsed {
+  max-height: 0;
+}
+
+/* Collapsible trigger button */
+.collapsible-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.collapsible-trigger:hover {
+  background-color: var(--row-hover-bg);
+}
+
+.collapsible-trigger:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* Chevron icon rotation */
+.collapsible-trigger .chevron {
+  transition: transform var(--transition-fast);
+}
+
+.collapsible-trigger[aria-expanded='true'] .chevron {
+  transform: rotate(180deg);
+}
+
+/* Collapsible content */
+.collapsible-content {
+  padding: var(--space-4);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+/* ============================================
+   RESPONSIVE TABLE UTILITIES
+   ============================================ */
+
+/* Horizontal scrolling wrapper for tables */
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  scrollbar-width: thin; /* Thin scrollbar on Firefox */
+}
+
+/* Add scroll indicator shadow on mobile */
+@media (max-width: 767px) {
+  .table-scroll-wrapper {
+    position: relative;
+  }
+
+  .table-scroll-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(to right, transparent, var(--bg-color));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  .table-scroll-wrapper.has-overflow::after {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   RESPONSIVE TIMETABLE UTILITIES
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Smaller timetable cells on mobile */
+  .timetable-cell {
+    min-width: 60px;
+    padding: 2px;
+  }
+
+  /* Hide day names on mobile, show only day codes */
+  .timetable-day-name {
+    display: none;
+  }
+
+  /* Smaller time labels on mobile */
+  .timetable-time-label {
+    font-size: 10px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE COURSE TABLE UTILITIES
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Reduce header padding on mobile */
+  .course-table-header {
+    padding: var(--space-2);
+  }
+
+  /* Stack filter controls on mobile */
+  .course-table-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+
+  /* Full-width buttons on mobile */
+  .course-table-controls .btn,
+  .course-table-controls button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Smaller table cells on mobile */
+  .course-table-cell {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-xs);
+  }
+}
+
+/* ============================================
+   RESPONSIVE FILTER SECTION UTILITIES
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Stack filter sections on mobile */
+  .filter-sections {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  /* Make filter sections collapsible on mobile */
+  .filter-section.collapsed .filter-section-content {
+    display: none;
+  }
+
+  /* Add collapse indicator to filter section headers */
+  .filter-section-header {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .filter-section-header::after {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform var(--transition-fast);
+    margin-left: var(--space-2);
+  }
+
+  .filter-section:not(.collapsed) .filter-section-header::after {
+    transform: rotate(45deg);
+  }
+}
+
+/* ============================================
+   REDUCED MOTION SUPPORT
+   ============================================ */
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce,
+  .animate-bounce-once,
+  .animate-toast-slide-in {
+    animation: none;
+  }
+}
