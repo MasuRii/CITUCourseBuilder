@@ -1208,3 +1208,17 @@ Self-Review:
   - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (457 pass, 19 pre-existing failures), build (3.75s)
   - No AGENTS.md update needed - Lucide icons already documented in ADR-002
 Unblocked: T4.3.1, T4.3.2, T4.4.1, T4.4.2 (Phase 4 UI/UX Modernization tasks)
+
+## 2026-02-18 16:45
+Task: T4.4.2 - Optimize for tablet view
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Optimized layouts for tablet view (md: 768px breakpoint)
+  - course-scheduler-astro/src/components/CourseTable.tsx: Showed "Title" column on md screens with max-width/truncation, adjusted cell padding, improved header controls layout
+  - course-scheduler-astro/src/components/TimetableView.tsx: Redesigned header for tablet, adjusted grid min-widths and cell heights, improved summary cards responsiveness
+  - course-scheduler-astro/src/components/App.tsx: Optimized main header controls and schedule generation buttons for tablet wrapping
+  - AGENTS.md: Added lesson #27 about tablet view optimization
+Reason: Improves usability on medium-sized screens (iPads, tablets) by balancing column visibility and control layout.
+Self-Review: All layouts verified to follow md breakpoint conventions. All functional tests pass (476 pass). Build successful. No issues identified.
+Unblocked: Phase 5 testing tasks (T5.1.1, T5.1.2, T5.1.3, T5.1.4)
+

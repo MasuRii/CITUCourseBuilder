@@ -647,20 +647,22 @@ export default function TimetableView({
 
   return (
     <div className="mt-6 w-full">
-      {/* Header with title and export menu */}
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-light">
-            <Calendar className="h-5 w-5 text-accent" />
+      {/* Header with title and export menu - responsive for tablet */}
+      <div className="mb-3 md:mb-4 flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-4">
+        <div className="flex items-center gap-2 md:gap-3 min-w-0">
+          <div className="flex h-8 w-8 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-lg md:rounded-xl bg-accent-light">
+            <Calendar className="h-4 w-4 md:h-5 md:w-5 text-accent" />
           </div>
-          <div>
-            <h3 className="text-lg font-bold text-content-primary font-display">
+          <div className="min-w-0">
+            <h3 className="text-base md:text-lg font-bold text-content-primary font-display truncate">
               Weekly Timetable
             </h3>
-            <p className="text-xs text-content-secondary">Your locked courses visualized</p>
+            <p className="text-[0.65rem] md:text-xs text-content-secondary hidden sm:block">
+              Your locked courses visualized
+            </p>
           </div>
         </div>
-        <div className="relative">
+        <div className="relative flex justify-end">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 min-h-[44px] touch-target ${
@@ -687,14 +689,14 @@ export default function TimetableView({
         </div>
       </div>
 
-      {/* Timetable grid */}
+      {/* Timetable grid - responsive for tablet */}
       <div
         ref={timetableRef}
         className="overflow-x-auto rounded-2xl border border-border-primary bg-surface-secondary shadow-lg"
       >
         <table
-          className="w-full border-collapse"
-          style={{ tableLayout: 'fixed', minWidth: '800px' }}
+          className="w-full border-collapse min-w-[600px] md:min-w-[700px] lg:min-w-[800px]"
+          style={{ tableLayout: 'fixed' }}
           role="table"
           aria-label="Weekly timetable of locked courses"
         >
@@ -704,23 +706,27 @@ export default function TimetableView({
           <thead>
             <tr role="row">
               <th
-                className="sticky left-0 z-[3] w-[70px] border-b-2 border-r border-border-primary bg-accent-light p-2 text-center"
+                className="sticky left-0 z-[3] w-[55px] md:w-[60px] lg:w-[70px] border-b-2 border-r border-border-primary bg-accent-light p-1.5 md:p-2 text-center"
                 role="columnheader"
                 aria-label="Time"
                 scope="col"
               >
-                <span className="text-xs font-bold text-content-primary">Time</span>
+                <span className="text-[0.6rem] md:text-xs font-bold text-content-primary">
+                  Time
+                </span>
               </th>
               {DAYS.map((day, index) => (
                 <th
                   key={day}
-                  className="sticky top-0 z-[2] min-w-[100px] border-b-2 border-border-primary bg-accent-light p-2 text-center"
+                  className="sticky top-0 z-[2] min-w-[75px] md:min-w-[85px] lg:min-w-[100px] border-b-2 border-border-primary bg-accent-light p-1.5 md:p-2 text-center"
                   role="columnheader"
                   aria-label={DAY_NAMES[index]}
                   scope="col"
                 >
-                  <div className="text-sm font-bold text-content-primary">{day}</div>
-                  <div className="text-[0.65rem] text-content-secondary">{DAY_NAMES[index]}</div>
+                  <div className="text-xs md:text-sm font-bold text-content-primary">{day}</div>
+                  <div className="text-[0.55rem] md:text-[0.65rem] text-content-secondary hidden md:block">
+                    {DAY_NAMES[index]}
+                  </div>
                 </th>
               ))}
             </tr>
@@ -733,19 +739,19 @@ export default function TimetableView({
                 role="row"
               >
                 <td
-                  className="sticky left-0 z-[1] border-r border-border-primary bg-accent-light/50 p-1.5 text-center"
+                  className="sticky left-0 z-[1] border-r border-border-primary bg-accent-light/50 p-1 md:p-1.5 text-center"
                   role="rowheader"
                   aria-label={formatTo12Hour(timeSlot)}
                   scope="row"
                 >
-                  <span className="text-[0.65rem] font-semibold text-content-primary whitespace-nowrap">
+                  <span className="text-[0.55rem] md:text-[0.65rem] font-semibold text-content-primary whitespace-nowrap">
                     {formatTo12Hour(timeSlot)}
                   </span>
                 </td>
                 {DAYS.map((day) => (
                   <td
                     key={`${day}-${timeSlot}`}
-                    className="h-[52px] border-r border-b border-border-primary/50 p-0.5 align-top"
+                    className="h-[42px] md:h-[48px] lg:h-[52px] border-r border-b border-border-primary/50 p-0.5 align-top"
                     role="cell"
                     tabIndex={0}
                     aria-label={`Courses on ${DAY_NAMES[DAYS.indexOf(day)]} at ${formatTo12Hour(timeSlot)}`}
@@ -761,36 +767,38 @@ export default function TimetableView({
         </table>
       </div>
 
-      {/* Summary section with playful design */}
-      <div className="mt-4 grid grid-cols-3 gap-3">
-        <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 p-4 border border-emerald-200 dark:border-emerald-800">
-          <div className="flex items-center gap-2 mb-1">
-            <Calculator className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-            <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+      {/* Summary section with playful design - responsive for tablet */}
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-3">
+        <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 p-3 md:p-4 border border-emerald-200 dark:border-emerald-800 flex sm:flex-col items-center sm:items-start justify-between sm:justify-start gap-2">
+          <div className="flex items-center gap-1.5 md:gap-2 mb-0.5 md:mb-1">
+            <Calculator className="h-3.5 w-3.5 md:h-4 md:w-4 text-emerald-600 dark:text-emerald-400" />
+            <span className="text-[0.65rem] md:text-xs font-medium text-emerald-700 dark:text-emerald-300">
               Total Units
             </span>
           </div>
-          <div className="text-2xl font-bold text-emerald-800 dark:text-emerald-200 font-display">
+          <div className="text-xl md:text-2xl font-bold text-emerald-800 dark:text-emerald-200 font-display">
             {totalUnits}
           </div>
         </div>
-        <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 border border-blue-200 dark:border-blue-800">
-          <div className="flex items-center gap-2 mb-1">
-            <BookOpen className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Subjects</span>
+        <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-3 md:p-4 border border-blue-200 dark:border-blue-800 flex sm:flex-col items-center sm:items-start justify-between sm:justify-start gap-2">
+          <div className="flex items-center gap-1.5 md:gap-2 mb-0.5 md:mb-1">
+            <BookOpen className="h-3.5 w-3.5 md:h-4 md:w-4 text-blue-600 dark:text-blue-400" />
+            <span className="text-[0.65rem] md:text-xs font-medium text-blue-700 dark:text-blue-300">
+              Subjects
+            </span>
           </div>
-          <div className="text-2xl font-bold text-blue-800 dark:text-blue-200 font-display">
+          <div className="text-xl md:text-2xl font-bold text-blue-800 dark:text-blue-200 font-display">
             {uniqueSubjects}
           </div>
         </div>
-        <div className="rounded-xl bg-gradient-to-br from-violet-50 to-violet-100 dark:from-violet-900/30 dark:to-violet-800/30 p-4 border border-violet-200 dark:border-violet-800">
-          <div className="flex items-center gap-2 mb-1">
-            <Archive className="h-4 w-4 text-violet-600 dark:text-violet-400" />
-            <span className="text-xs font-medium text-violet-700 dark:text-violet-300">
+        <div className="rounded-xl bg-gradient-to-br from-violet-50 to-violet-100 dark:from-violet-900/30 dark:to-violet-800/30 p-3 md:p-4 border border-violet-200 dark:border-violet-800 flex sm:flex-col items-center sm:items-start justify-between sm:justify-start gap-2">
+          <div className="flex items-center gap-1.5 md:gap-2 mb-0.5 md:mb-1">
+            <Archive className="h-3.5 w-3.5 md:h-4 md:w-4 text-violet-600 dark:text-violet-400" />
+            <span className="text-[0.65rem] md:text-xs font-medium text-violet-700 dark:text-violet-300">
               Courses
             </span>
           </div>
-          <div className="text-2xl font-bold text-violet-800 dark:text-violet-200 font-display">
+          <div className="text-xl md:text-2xl font-bold text-violet-800 dark:text-violet-200 font-display">
             {lockedCourses.length}
           </div>
         </div>

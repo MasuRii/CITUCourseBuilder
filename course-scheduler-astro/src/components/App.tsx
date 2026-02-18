@@ -16,6 +16,7 @@ import {
   CheckCircle,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Trash2,
   Eye,
   EyeOff,
@@ -205,6 +206,31 @@ export default function App({ onToast }: AppProps): ReactNode {
     variant: 'info',
   });
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+
+  // =========================================================================
+  // Collapsible Sections State
+  // =========================================================================
+
+  /**
+   * Track which sections are collapsed on mobile
+   * Sections start expanded by default
+   */
+  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
+
+  /**
+   * Toggle a section's collapsed state
+   */
+  const toggleSection = useCallback((sectionId: string): void => {
+    setCollapsedSections((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(sectionId)) {
+        newSet.delete(sectionId);
+      } else {
+        newSet.add(sectionId);
+      }
+      return newSet;
+    });
+  }, []);
 
   // =========================================================================
   // Toast System Setup
@@ -1020,7 +1046,7 @@ export default function App({ onToast }: AppProps): ReactNode {
       <ToastContainer toasts={toasts} onDismiss={handleDismissToast} position="top-center" />
 
       {/* Header Controls */}
-      <div className="flex flex-wrap gap-4 items-center justify-between mobile-header-controls">
+      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mobile-header-controls">
         {/* Theme Controls */}
         <div className="flex gap-2 flex-wrap">
           <button
@@ -1032,12 +1058,12 @@ export default function App({ onToast }: AppProps): ReactNode {
             {themeState.theme === 'light' ? (
               <>
                 <Moon className="w-5 h-5" />
-                Dark Mode
+                <span className="hidden sm:inline">Dark Mode</span>
               </>
             ) : (
               <>
                 <Sun className="w-5 h-5" />
-                Light Mode
+                <span className="hidden sm:inline">Light Mode</span>
               </>
             )}
           </button>
@@ -1049,23 +1075,25 @@ export default function App({ onToast }: AppProps): ReactNode {
                      flex items-center gap-2 min-h-[44px] touch-target"
           >
             <Palette className="w-5 h-5" />
-            {themeState.currentPalette === 'original'
-              ? 'Comfort'
-              : themeState.currentPalette === 'comfort'
-                ? 'Space'
-                : 'Original'}
+            <span className="hidden sm:inline">
+              {themeState.currentPalette === 'original'
+                ? 'Comfort'
+                : themeState.currentPalette === 'comfort'
+                  ? 'Space'
+                  : 'Original'}
+            </span>
           </button>
         </div>
 
         {/* Schedule Generation Controls */}
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex flex-wrap gap-2 items-center justify-end w-full md:w-auto">
           <button
             onClick={generateBestSchedule}
             disabled={courseState.allCourses.length === 0 || scheduleGeneration.isGenerating}
             className="px-5 py-2.5 bg-accent text-white font-semibold rounded-lg
                      shadow-md hover:bg-accent-hover disabled:opacity-50
                      disabled:cursor-not-allowed transition-all flex items-center gap-2
-                     min-h-[44px] touch-target"
+                     min-h-[44px] touch-target flex-1 md:flex-none justify-center"
           >
             {scheduleGeneration.isGenerating ? (
               <>
@@ -1083,7 +1111,7 @@ export default function App({ onToast }: AppProps): ReactNode {
           </button>
 
           {scheduleGeneration.generatedSchedules.length > 1 && (
-            <>
+            <div className="flex items-center gap-1 w-full sm:w-auto justify-between sm:justify-end">
               <button
                 onClick={handlePrevSchedule}
                 className="px-3 py-2.5 bg-surface-secondary border border-default rounded-lg
@@ -1095,8 +1123,8 @@ export default function App({ onToast }: AppProps): ReactNode {
                 Prev
               </button>
 
-              <span className="px-4 py-2.5 bg-accent-light text-accent font-medium rounded-lg min-h-[44px] flex items-center">
-                Schedule {scheduleGeneration.currentScheduleIndex + 1} of{' '}
+              <span className="px-4 py-2.5 bg-accent-light text-accent font-medium rounded-lg min-h-[44px] flex items-center text-sm md:text-base whitespace-nowrap">
+                {scheduleGeneration.currentScheduleIndex + 1} /{' '}
                 {scheduleGeneration.generatedSchedules.length}
               </span>
 
@@ -1110,7 +1138,7 @@ export default function App({ onToast }: AppProps): ReactNode {
                 Next
                 <ChevronRight className="w-5 h-5" />
               </button>
-            </>
+            </div>
           )}
 
           {scheduleGeneration.generatedSchedules.length > 0 && (
@@ -1120,7 +1148,7 @@ export default function App({ onToast }: AppProps): ReactNode {
                        transition-opacity flex items-center gap-2 min-h-[44px] touch-target"
             >
               <Trash2 className="w-5 h-5" />
-              Reset
+              <span className="hidden sm:inline">Reset</span>
             </button>
           )}
         </div>
@@ -1180,165 +1208,186 @@ export default function App({ onToast }: AppProps): ReactNode {
 
       {/* User Preferences Section */}
       <div className="bg-surface-secondary rounded-lg border border-default p-4">
-        <h2 className="text-xl font-semibold text-content-primary m-0 mb-4">User Preferences</h2>
+        <button
+          type="button"
+          onClick={() => toggleSection('user-preferences')}
+          className="w-full flex items-center justify-between text-left mb-4 md:cursor-default"
+          aria-expanded={!collapsedSections.has('user-preferences')}
+          aria-controls="user-preferences-content"
+        >
+          <h2 className="text-xl font-semibold text-content-primary m-0">User Preferences</h2>
+          <ChevronDown
+            className={`w-5 h-5 text-content-secondary transition-transform duration-200 md:hidden ${
+              collapsedSections.has('user-preferences') ? '-rotate-90' : ''
+            }`}
+            aria-hidden="true"
+          />
+        </button>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Left Column */}
-          <div className="flex flex-col gap-4">
-            {/* Search Mode */}
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="searchModeSelect"
-                className="text-sm font-medium text-content-primary flex items-center gap-2"
-              >
-                Schedule Search Mode
-                <span className="text-content-secondary text-xs">(i)</span>
-              </label>
-              <select
-                id="searchModeSelect"
-                value={schedulePreferences.scheduleSearchMode}
-                onChange={(e) =>
-                  schedulePreferences.setScheduleSearchMode(e.target.value as ScheduleSearchMode)
-                }
-                className="px-3 py-2.5 rounded-lg border border-input bg-surface-input
+        <div
+          id="user-preferences-content"
+          className={`transition-all duration-200 overflow-hidden ${
+            collapsedSections.has('user-preferences') ? 'max-h-0 md:max-h-none' : 'max-h-[2000px]'
+          }`}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Left Column */}
+            <div className="flex flex-col gap-4">
+              {/* Search Mode */}
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="searchModeSelect"
+                  className="text-sm font-medium text-content-primary flex items-center gap-2"
+                >
+                  Schedule Search Mode
+                  <span className="text-content-secondary text-xs">(i)</span>
+                </label>
+                <select
+                  id="searchModeSelect"
+                  value={schedulePreferences.scheduleSearchMode}
+                  onChange={(e) =>
+                    schedulePreferences.setScheduleSearchMode(e.target.value as ScheduleSearchMode)
+                  }
+                  className="px-3 py-2.5 rounded-lg border border-input bg-surface-input
                          text-content-input focus:outline-none focus:border-accent
                          focus:ring-2 focus:ring-accent/30 min-h-[44px] touch-target"
-              >
-                <option value="partial">Recommended (Flexible, Best Fit)</option>
-                <option value="exhaustive">Full Coverage (All Subjects, Strict)</option>
-                <option value="fast">Quick (Fast, May Miss Best)</option>
-              </select>
-            </div>
+                >
+                  <option value="partial">Recommended (Flexible, Best Fit)</option>
+                  <option value="exhaustive">Full Coverage (All Subjects, Strict)</option>
+                  <option value="fast">Quick (Fast, May Miss Best)</option>
+                </select>
+              </div>
 
-            {/* Max Units */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="maxUnitsInput" className="text-sm font-medium text-content-primary">
-                Maximum Units
-              </label>
-              <input
-                type="number"
-                id="maxUnitsInput"
-                value={filterState.maxUnits}
-                onChange={handleMaxUnitsChange}
-                placeholder="e.g., 18"
-                min="0"
-                className="px-3 py-2.5 rounded-lg border border-input bg-surface-input
+              {/* Max Units */}
+              <div className="flex flex-col gap-2">
+                <label htmlFor="maxUnitsInput" className="text-sm font-medium text-content-primary">
+                  Maximum Units
+                </label>
+                <input
+                  type="number"
+                  id="maxUnitsInput"
+                  value={filterState.maxUnits}
+                  onChange={handleMaxUnitsChange}
+                  placeholder="e.g., 18"
+                  min="0"
+                  className="px-3 py-2.5 rounded-lg border border-input bg-surface-input
                          text-content-input focus:outline-none focus:border-accent
                          focus:ring-2 focus:ring-accent/30 min-h-[44px] touch-target"
-              />
-            </div>
+                />
+              </div>
 
-            {/* Max Gap */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="maxGapInput" className="text-sm font-medium text-content-primary">
-                Maximum Break Between Classes
-              </label>
-              <select
-                id="maxGapInput"
-                value={filterState.maxClassGapHours}
-                onChange={handleMaxGapChange}
-                className="px-3 py-2.5 rounded-lg border border-input bg-surface-input
+              {/* Max Gap */}
+              <div className="flex flex-col gap-2">
+                <label htmlFor="maxGapInput" className="text-sm font-medium text-content-primary">
+                  Maximum Break Between Classes
+                </label>
+                <select
+                  id="maxGapInput"
+                  value={filterState.maxClassGapHours}
+                  onChange={handleMaxGapChange}
+                  className="px-3 py-2.5 rounded-lg border border-input bg-surface-input
                          text-content-input focus:outline-none focus:border-accent
                          focus:ring-2 focus:ring-accent/30 min-h-[44px] touch-target"
-              >
-                <option value="">Any</option>
-                {[...Array(11).keys()].map((i) => {
-                  const hours = Math.floor(i / 2);
-                  const minutes = (i % 2) * 30;
-                  const value = i * 0.5;
-                  const label =
-                    value === 0
-                      ? '0 minutes (back-to-back)'
-                      : `${hours ? hours + ' hour' + (hours > 1 ? 's' : '') : ''}${hours && minutes ? ' ' : ''}${minutes ? minutes + ' minutes' : ''}`.trim();
-                  return (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
-                  );
-                })}
-              </select>
+                >
+                  <option value="">Any</option>
+                  {[...Array(11).keys()].map((i) => {
+                    const hours = Math.floor(i / 2);
+                    const minutes = (i % 2) * 30;
+                    const value = i * 0.5;
+                    const label =
+                      value === 0
+                        ? '0 minutes (back-to-back)'
+                        : `${hours ? hours + ' hour' + (hours > 1 ? 's' : '') : ''}${hours && minutes ? ' ' : ''}${minutes ? minutes + ' minutes' : ''}`.trim();
+                    return (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+
+              {/* Minimize Campus Days */}
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="minimizeDaysOnCampus"
+                  checked={schedulePreferences.minimizeDaysOnCampus}
+                  onChange={(e) => schedulePreferences.setMinimizeDaysOnCampus(e.target.checked)}
+                  className="w-4 h-4 accent-accent"
+                />
+                <label htmlFor="minimizeDaysOnCampus" className="text-sm text-content-primary">
+                  Try to minimize days on campus
+                </label>
+              </div>
             </div>
 
-            {/* Minimize Campus Days */}
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="minimizeDaysOnCampus"
-                checked={schedulePreferences.minimizeDaysOnCampus}
-                onChange={(e) => schedulePreferences.setMinimizeDaysOnCampus(e.target.checked)}
-                className="w-4 h-4 accent-accent"
-              />
-              <label htmlFor="minimizeDaysOnCampus" className="text-sm text-content-primary">
-                Try to minimize days on campus
+            {/* Right Column - Preferred Time Order */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-content-primary">
+                Preferred Time of Day (Order)
               </label>
-            </div>
-          </div>
-
-          {/* Right Column - Preferred Time Order */}
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-content-primary">
-              Preferred Time of Day (Order)
-            </label>
-            <p className="text-xs text-content-secondary">
-              Drag to reorder your preferred times of day.
-            </p>
-            <ul className="flex flex-col gap-1 list-none p-0 m-0">
-              {schedulePreferences.preferredTimeOfDayOrder.length === 0 && (
-                <li className="text-sm text-content-secondary italic">
-                  No preference set (all times treated equally)
-                </li>
-              )}
-              {schedulePreferences.preferredTimeOfDayOrder.map(
-                (time: TimeOfDayBucket, idx: number) => (
-                  <li
-                    key={time}
-                    className="flex items-center justify-between px-3 py-2
-                             bg-surface-tertiary rounded border border-default"
-                  >
-                    <span className="text-sm text-content-primary">
-                      {time === 'morning'
-                        ? 'Morning (before 12 PM)'
-                        : time === 'afternoon'
-                          ? 'Afternoon (12 PM - 5 PM)'
-                          : time === 'evening'
-                            ? 'Evening (after 5 PM)'
-                            : 'Any'}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveTimePref(idx)}
-                      className="text-content-secondary hover:text-danger"
-                    >
-                      ✕
-                    </button>
+              <p className="text-xs text-content-secondary">
+                Drag to reorder your preferred times of day.
+              </p>
+              <ul className="flex flex-col gap-1 list-none p-0 m-0">
+                {schedulePreferences.preferredTimeOfDayOrder.length === 0 && (
+                  <li className="text-sm text-content-secondary italic">
+                    No preference set (all times treated equally)
                   </li>
-                )
-              )}
-            </ul>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {[...DEFAULT_VALUES.PREFERRED_TIMES_ORDER]
-                .filter((t) => !schedulePreferences.preferredTimeOfDayOrder.includes(t))
-                .map((time: TimeOfDayBucket) => (
-                  <button
-                    key={time}
-                    type="button"
-                    onClick={() => handleAddTimePref(time)}
-                    className="px-3 py-2 text-sm bg-surface-tertiary border border-default
+                )}
+                {schedulePreferences.preferredTimeOfDayOrder.map(
+                  (time: TimeOfDayBucket, idx: number) => (
+                    <li
+                      key={time}
+                      className="flex items-center justify-between px-3 py-2
+                             bg-surface-tertiary rounded border border-default"
+                    >
+                      <span className="text-sm text-content-primary">
+                        {time === 'morning'
+                          ? 'Morning (before 12 PM)'
+                          : time === 'afternoon'
+                            ? 'Afternoon (12 PM - 5 PM)'
+                            : time === 'evening'
+                              ? 'Evening (after 5 PM)'
+                              : 'Any'}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTimePref(idx)}
+                        className="text-content-secondary hover:text-danger"
+                      >
+                        ✕
+                      </button>
+                    </li>
+                  )
+                )}
+              </ul>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {[...DEFAULT_VALUES.PREFERRED_TIMES_ORDER]
+                  .filter((t) => !schedulePreferences.preferredTimeOfDayOrder.includes(t))
+                  .map((time: TimeOfDayBucket) => (
+                    <button
+                      key={time}
+                      type="button"
+                      onClick={() => handleAddTimePref(time)}
+                      className="px-3 py-2 text-sm bg-surface-tertiary border border-default
                              rounded hover:bg-surface-hover transition-colors
                              min-h-[44px] touch-target"
-                  >
-                    Add {time.charAt(0).toUpperCase() + time.slice(1)}
-                  </button>
-                ))}
-              <button
-                type="button"
-                onClick={handleResetTimePrefs}
-                className="px-3 py-2 text-sm bg-surface-tertiary border border-default
+                    >
+                      Add {time.charAt(0).toUpperCase() + time.slice(1)}
+                    </button>
+                  ))}
+                <button
+                  type="button"
+                  onClick={handleResetTimePrefs}
+                  className="px-3 py-2 text-sm bg-surface-tertiary border border-default
                          rounded hover:bg-surface-hover transition-colors
-                         min-h-[44px] touch-target"
-              >
-                Reset
-              </button>
+                          min-h-[44px] touch-target"
+                >
+                  Reset
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1346,37 +1395,58 @@ export default function App({ onToast }: AppProps): ReactNode {
 
       {/* Course Filters Section */}
       <div className="bg-surface-secondary rounded-lg border border-default p-4">
-        <h2 className="text-xl font-semibold text-content-primary m-0 mb-4">Course Filters</h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <TimeFilter
-            excludedDays={filterState.excludedDays}
-            excludedTimeRanges={filterState.excludedTimeRanges}
-            onDayChange={handleDayChange}
-            onTimeRangeChange={handleTimeRangeChange}
-            onAddTimeRange={handleAddTimeRange}
-            onRemoveTimeRange={handleRemoveTimeRange}
+        <button
+          type="button"
+          onClick={() => toggleSection('course-filters')}
+          className="w-full flex items-center justify-between text-left mb-4 md:cursor-default"
+          aria-expanded={!collapsedSections.has('course-filters')}
+          aria-controls="course-filters-content"
+        >
+          <h2 className="text-xl font-semibold text-content-primary m-0">Course Filters</h2>
+          <ChevronDown
+            className={`w-5 h-5 text-content-secondary transition-transform duration-200 md:hidden ${
+              collapsedSections.has('course-filters') ? '-rotate-90' : ''
+            }`}
+            aria-hidden="true"
           />
+        </button>
 
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-content-primary">Class Types:</label>
+        <div
+          id="course-filters-content"
+          className={`transition-all duration-200 overflow-hidden ${
+            collapsedSections.has('course-filters') ? 'max-h-0 md:max-h-none' : 'max-h-[2000px]'
+          }`}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <TimeFilter
+              excludedDays={filterState.excludedDays}
+              excludedTimeRanges={filterState.excludedTimeRanges}
+              onDayChange={handleDayChange}
+              onTimeRangeChange={handleTimeRangeChange}
+              onAddTimeRange={handleAddTimeRange}
+              onRemoveTimeRange={handleRemoveTimeRange}
+            />
+
             <div className="flex flex-col gap-2">
-              {SECTION_TYPE_SUFFIXES.map((typeId) => (
-                <label
-                  key={typeId}
-                  className="flex items-center gap-2 text-sm text-content-primary"
-                >
-                  <input
-                    type="checkbox"
-                    checked={courseState.selectedSectionTypes.includes(typeId)}
-                    onChange={(e) => handleSectionTypeChange(typeId, e.target.checked)}
-                    className="w-4 h-4 accent-accent"
-                  />
-                  <span>
-                    {typeId} - {SECTION_TYPE_DESCRIPTIONS[typeId]}
-                  </span>
-                </label>
-              ))}
+              <label className="text-sm font-medium text-content-primary">Class Types:</label>
+              <div className="flex flex-col gap-2">
+                {SECTION_TYPE_SUFFIXES.map((typeId) => (
+                  <label
+                    key={typeId}
+                    className="flex items-center gap-2 text-sm text-content-primary"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={courseState.selectedSectionTypes.includes(typeId)}
+                      onChange={(e) => handleSectionTypeChange(typeId, e.target.checked)}
+                      className="w-4 h-4 accent-accent"
+                    />
+                    <span>
+                      {typeId} - {SECTION_TYPE_DESCRIPTIONS[typeId]}
+                    </span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
         </div>

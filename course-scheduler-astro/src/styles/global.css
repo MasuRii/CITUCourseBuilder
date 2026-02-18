@@ -2192,6 +2192,178 @@ h6,
 }
 
 /* ============================================
+   TABLET BREAKPOINT UTILITIES (768px)
+   ============================================
+   Optimizations for tablets (480px - 992px range).
+   This targets devices like iPads and tablets in portrait/landscape.
+   ============================================ */
+
+/* Tablet-specific adjustments */
+@media (min-width: 768px) and (max-width: 991px) {
+  /* Container adjustments for tablet */
+  .container {
+    max-width: 100%;
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+
+  /* Reduce section padding on tablet */
+  .section {
+    padding: var(--space-5);
+  }
+
+  /* Tablet-friendly grid layouts */
+  .tablet-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  .tablet-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  /* Tablet-optimized summary cards */
+  .tablet-summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+
+  /* Reduce font sizes slightly for tablet */
+  .tablet-text-sm {
+    font-size: var(--text-sm);
+  }
+
+  /* Tablet-optimized header controls */
+  .tablet-header-controls {
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .tablet-header-controls > * {
+    flex-shrink: 0;
+  }
+}
+
+/* ============================================
+   RESPONSIVE TIMETABLE FOR TABLET
+   ============================================ */
+
+@media (min-width: 768px) and (max-width: 991px) {
+  /* Timetable grid adjustments for tablet */
+  .timetable-grid {
+    min-width: auto;
+    width: 100%;
+  }
+
+  /* Smaller time column on tablet */
+  .timetable-time-column {
+    width: 60px;
+    min-width: 60px;
+  }
+
+  /* Smaller day columns on tablet */
+  .timetable-day-column {
+    min-width: 80px;
+  }
+
+  /* Compact timetable cells on tablet */
+  .timetable-cell-compact {
+    padding: 1px;
+    font-size: 10px;
+  }
+
+  /* Smaller course cards in timetable */
+  .timetable-course-card {
+    padding: 2px 4px;
+    font-size: 10px;
+    line-height: 1.2;
+  }
+
+  .timetable-course-card .course-subject {
+    font-size: 10px;
+  }
+
+  .timetable-course-card .course-details {
+    font-size: 9px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE COURSE TABLE FOR TABLET
+   ============================================ */
+
+@media (min-width: 768px) and (max-width: 991px) {
+  /* Compact table header on tablet */
+  .course-table-header th {
+    padding: var(--space-2) var(--space-2);
+    font-size: 11px;
+  }
+
+  /* Compact table cells on tablet */
+  .course-table-cell {
+    padding: var(--space-1) var(--space-2);
+    font-size: 12px;
+  }
+
+  /* Smaller action buttons on tablet */
+  .course-table-action-btn {
+    padding: var(--space-1);
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .course-table-action-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Hide less important columns on tablet */
+  .tablet-hide-column {
+    display: none;
+  }
+
+  /* Compact status badges on tablet */
+  .badge-compact {
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+
+  /* Smaller group header text on tablet */
+  .course-group-header td {
+    padding: var(--space-1) var(--space-2);
+    font-size: 12px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE FILTERS FOR TABLET
+   ============================================ */
+
+@media (min-width: 768px) and (max-width: 991px) {
+  /* Two-column filter layout on tablet */
+  .filter-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  /* Compact time filter cards */
+  .time-filter-card {
+    padding: var(--space-2);
+  }
+
+  /* Smaller day toggle buttons */
+  .day-toggle-compact {
+    min-width: 38px;
+    min-height: 38px;
+    padding: var(--space-1);
+    font-size: 12px;
+  }
+}
+
+/* ============================================
    REDUCED MOTION SUPPORT
    ============================================ */
 /* Disable animations for users who prefer reduced motion */

@@ -215,3 +215,5 @@ The following files are protected by the Ralph write-guardrail plugin and should
 - React Islands Hydration: docs/architecture/REACT_ISLANDS_HYDRATION.md
 - Branch Protection: docs/BRANCH_PROTECTION.md
 - Usage Guide: https://github.com/MasuRii/CITUCourseBuilder/blob/main/UsageGuide.md
+
+27. Tablet view optimization (768px): Optimizing for tablet view (md breakpoint) involves balancing column visibility and control layout. In `CourseTable.tsx`, the "Title" column is shown on `md` screens with a `max-w` and truncation to prevent horizontal overflow while providing more context than the mobile view. Header controls use `flex-col md:flex-row` to stack vertically on mobile but side-by-side on tablet/desktop. Table cells use reduced padding on `md` screens to fit all columns comfortably. Summary cards in `TimetableView.tsx` use `flex sm:flex-col items-center sm:items-start` to maintain a compact layout on mobile while expanding naturally on tablet. Main App controls use `hidden sm:inline` labels to save space on very small screens while providing full labels on tablet and desktop.

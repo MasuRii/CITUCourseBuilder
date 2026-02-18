@@ -222,15 +222,25 @@ function CourseRow({
         group
       `}
     >
-      <td className="px-3 py-2.5 text-sm text-content-primary font-medium">{course.subject}</td>
-      <td className="px-3 py-2.5 text-sm text-content-secondary">{course.subjectTitle}</td>
-      <td className="px-3 py-2.5 text-sm text-content-secondary text-center font-mono">
+      <td className="px-2 py-2 md:px-2 md:py-2 lg:px-3 lg:py-2.5 text-xs md:text-sm text-content-primary font-medium">
+        {course.subject}
+      </td>
+      <td className="px-2 py-2 md:px-2 md:py-2 lg:px-3 lg:py-2.5 text-xs md:text-sm text-content-secondary hidden md:table-cell max-w-[120px] lg:max-w-none truncate lg:whitespace-normal">
+        {course.subjectTitle}
+      </td>
+      <td className="px-2 py-2 md:px-2 md:py-2 lg:px-3 lg:py-2.5 text-xs md:text-sm text-content-secondary text-center font-mono">
         {course.creditedUnits ?? course.units}
       </td>
-      <td className="px-3 py-2.5 text-sm text-content-primary font-medium">{course.section}</td>
-      <td className="px-3 py-2.5 text-sm text-content-primary font-mono">{course.schedule}</td>
-      <td className="px-3 py-2.5 text-sm text-content-secondary">{course.room}</td>
-      <td className="px-3 py-2.5">
+      <td className="px-2 py-2 md:px-2 md:py-2 lg:px-3 lg:py-2.5 text-xs md:text-sm text-content-primary font-medium">
+        {course.section}
+      </td>
+      <td className="px-2 py-2 md:px-2 md:py-2 lg:px-3 lg:py-2.5 text-[0.65rem] md:text-xs lg:text-sm text-content-primary font-mono">
+        {course.schedule}
+      </td>
+      <td className="px-2 py-2 md:px-2 md:py-2 lg:px-3 lg:py-2.5 text-xs md:text-sm text-content-secondary hidden md:table-cell">
+        {course.room}
+      </td>
+      <td className="px-2 py-2 md:px-2 md:py-2 lg:px-3 lg:py-2.5">
         <StatusBadge
           isClosed={course.isClosed}
           availableSlots={course.availableSlots}
@@ -239,8 +249,8 @@ function CourseRow({
           totalSlots={course.totalSlots}
         />
       </td>
-      <td className="px-3 py-2.5">
-        <div className="flex items-center gap-2">
+      <td className="px-2 py-2 md:px-2 md:py-2 lg:px-3 lg:py-2.5">
+        <div className="flex items-center gap-1 md:gap-2">
           {hasConflict && (
             <span
               className="text-warning animate-pulse"
@@ -255,11 +265,11 @@ function CourseRow({
             onClick={handleToggleLock}
             disabled={!isLocked && !canLock}
             className={`
-              inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-full
+              inline-flex items-center gap-1 md:gap-1.5 px-2 py-1.5 md:px-3 md:py-2 text-[0.65rem] md:text-xs font-semibold rounded-full
               transition-all duration-200 ease-out transform
               focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
               disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-              active:scale-95 min-h-[44px] touch-target
+              active:scale-95 min-h-[36px] md:min-h-[44px] touch-target
               ${
                 isLocked
                   ? 'bg-accent text-white shadow-md hover:bg-accent-hover hover:-translate-y-0.5 hover:shadow-lg'
@@ -276,28 +286,28 @@ function CourseRow({
           >
             {isLocked ? (
               <>
-                <LockIcon className="opacity-90" />
-                <span>Locked</span>
+                <LockIcon className="opacity-90 w-3 h-3 md:w-auto md:h-auto" />
+                <span className="hidden sm:inline">Locked</span>
               </>
             ) : (
               <>
-                <UnlockIcon />
-                <span>Lock</span>
+                <UnlockIcon className="w-3 h-3 md:w-auto md:h-auto" />
+                <span className="hidden sm:inline">Lock</span>
               </>
             )}
           </button>
           <button
             type="button"
             onClick={handleDelete}
-            className="p-2.5 text-content-secondary/60 hover:text-danger-button-bg hover:bg-danger/10
+            className="p-2 md:p-2.5 text-content-secondary/60 hover:text-danger-button-bg hover:bg-danger/10
                        transition-all duration-200 ease-out transform
                        focus:outline-none focus-visible:ring-2 focus-visible:ring-danger-button-bg/50 rounded-lg
-                       opacity-0 group-hover:opacity-100 active:scale-90 min-w-[44px] min-h-[44px]
+                       opacity-0 group-hover:opacity-100 active:scale-90 min-w-[36px] min-h-[36px] md:min-w-[44px] md:min-h-[44px]
                        flex items-center justify-center touch-target"
             title="Delete Course"
             aria-label="Delete course"
           >
-            <X className="w-4 h-4" />
+            <X className="w-3.5 h-3.5 md:w-4 md:h-4" />
           </button>
         </div>
       </td>
@@ -620,79 +630,83 @@ export default function CourseTable({
 
   return (
     <div className="bg-surface-primary border border-border-primary rounded-xl shadow-sm overflow-hidden">
-      {/* Header Controls */}
-      <div className="p-4 border-b border-border-primary bg-surface-secondary/30">
-        <div className="flex flex-wrap items-center gap-4">
-          {/* Title */}
-          <h2 className="text-xl font-semibold text-content-primary m-0 font-display flex items-center gap-2">
-            <BookIcon className="text-accent" />
-            Course List
-          </h2>
+      {/* Header Controls - responsive for tablet */}
+      <div className="p-3 md:p-4 border-b border-border-primary bg-surface-secondary/30">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-4">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4">
+            {/* Title */}
+            <h2 className="text-lg md:text-xl font-semibold text-content-primary m-0 font-display flex items-center gap-2">
+              <BookIcon className="text-accent w-4 h-4 md:w-auto md:h-auto" />
+              Course List
+            </h2>
 
-          {/* Grouping Controls */}
-          <div className="flex items-center gap-2">
-            <label className="text-sm text-content-secondary font-medium">Group by:</label>
-            <select
-              value={groupingKey}
-              onChange={onGroupingChange}
-              className="px-3 py-1.5 text-sm bg-surface-secondary border border-border-primary
-                         rounded-lg text-content-primary focus:outline-none focus:ring-2
-                         focus:ring-accent/30 cursor-pointer transition-all duration-150
-                         hover:border-accent/50"
-            >
-              <option value="none">None</option>
-              <option value="subject">Subject</option>
-              <option value="offeringDept">Department</option>
-            </select>
+            {/* Grouping Controls */}
+            <div className="flex items-center gap-1.5 md:gap-2">
+              <label className="text-xs md:text-sm text-content-secondary font-medium">
+                Group by:
+              </label>
+              <select
+                value={groupingKey}
+                onChange={onGroupingChange}
+                className="px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm bg-surface-secondary border border-border-primary
+                           rounded-lg text-content-primary focus:outline-none focus:ring-2
+                           focus:ring-accent/30 cursor-pointer transition-all duration-150
+                           hover:border-accent/50"
+              >
+                <option value="none">None</option>
+                <option value="subject">Subject</option>
+                <option value="offeringDept">Department</option>
+              </select>
+            </div>
+
+            {/* Status Filter */}
+            <div className="flex items-center gap-1.5 md:gap-2">
+              <span className="text-xs md:text-sm text-content-secondary font-medium">Filter:</span>
+              <div className="flex gap-1 md:gap-1.5">
+                {(['all', 'open', 'closed'] as const).map((filter) => (
+                  <button
+                    key={filter}
+                    type="button"
+                    onClick={() => onStatusFilterChange(filter)}
+                    className={`
+                      px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm font-medium rounded-full transition-all duration-200 ease-out
+                      focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
+                      ${
+                        selectedStatusFilter === filter
+                          ? 'bg-accent text-white shadow-md transform scale-[1.02]'
+                          : 'bg-surface-secondary text-content-secondary border border-border-primary hover:border-accent hover:text-content-primary'
+                      }
+                    `}
+                    aria-pressed={selectedStatusFilter === filter}
+                  >
+                    {filter === 'all' ? 'All' : filter === 'open' ? 'Open' : 'Closed'}
+                  </button>
+                ))}
+              </div>
+              <Tooltip text="This filter affects the courses shown below and those available for schedule generation.">
+                <InfoIcon className="text-accent cursor-help w-3.5 h-3.5 md:w-auto md:h-auto" />
+              </Tooltip>
+            </div>
           </div>
 
-          {/* Status Filter */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-content-secondary font-medium">Filter:</span>
-            <div className="flex gap-1.5">
-              {(['all', 'open', 'closed'] as const).map((filter) => (
-                <button
-                  key={filter}
-                  type="button"
-                  onClick={() => onStatusFilterChange(filter)}
-                  className={`
-                    px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 ease-out
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
-                    ${
-                      selectedStatusFilter === filter
-                        ? 'bg-accent text-white shadow-md transform scale-[1.02]'
-                        : 'bg-surface-secondary text-content-secondary border border-border-primary hover:border-accent hover:text-content-primary'
-                    }
-                  `}
-                  aria-pressed={selectedStatusFilter === filter}
-                >
-                  {filter === 'all'
-                    ? 'All Courses'
-                    : filter === 'open'
-                      ? 'Open Only'
-                      : 'Closed Only'}
-                </button>
-              ))}
+          <div className="flex items-center justify-between md:justify-end gap-3 flex-wrap">
+            {/* Stats Display */}
+            {totalUnitsDisplay > 0 && (
+              <div className="text-xs md:text-sm text-content-secondary flex items-center gap-2 md:gap-3 flex-wrap">
+                <span className="inline-flex items-center gap-1 md:gap-1.5 px-1.5 py-0.5 md:px-2 bg-accent/10 text-accent rounded-full text-[0.65rem] md:text-xs font-medium">
+                  {totalUnitsDisplay} units
+                </span>
+                <span className="hidden sm:inline">{uniqueSubjectsDisplay} subjects</span>
+                <span className="hidden md:inline">•</span>
+                <span className="hidden sm:inline">{lockedCoursesCountDisplay} locked</span>
+              </div>
+            )}
+
+            {/* Export Menu */}
+            <div className="ml-auto md:ml-0">
+              <DropdownMenu items={exportMenuItems} triggerLabel="Export menu" />
             </div>
-            <Tooltip text="This filter affects the courses shown below and those available for schedule generation.">
-              <InfoIcon className="text-accent cursor-help" />
-            </Tooltip>
           </div>
-
-          {/* Stats Display */}
-          {totalUnitsDisplay > 0 && (
-            <div className="ml-auto text-sm text-content-secondary flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-accent/10 text-accent rounded-full text-xs font-medium">
-                {totalUnitsDisplay} units
-              </span>
-              <span>{uniqueSubjectsDisplay} subjects</span>
-              <span>•</span>
-              <span>{lockedCoursesCountDisplay} locked</span>
-            </div>
-          )}
-
-          {/* Export Menu */}
-          <DropdownMenu items={exportMenuItems} triggerLabel="Export menu" />
         </div>
 
         {/* Conflict Warning */}
@@ -712,37 +726,37 @@ export default function CourseTable({
         <table className="w-full border-collapse">
           <thead className="bg-surface-tertiary">
             <tr>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
-                <div className="flex items-center gap-1.5">
-                  <BookIcon />
+              <th className="px-2 py-2 md:px-2 md:py-2.5 lg:px-3 lg:py-3 text-left text-[0.6rem] md:text-xs font-semibold text-content-secondary uppercase tracking-wider">
+                <div className="flex items-center gap-1 md:gap-1.5">
+                  <BookIcon className="w-3 h-3 md:w-auto md:h-auto" />
                   Subject
                 </div>
               </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
+              <th className="px-2 py-2 md:px-2 md:py-2.5 lg:px-3 lg:py-3 text-left text-[0.6rem] md:text-xs font-semibold text-content-secondary uppercase tracking-wider hidden md:table-cell">
                 Title
               </th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-content-secondary uppercase tracking-wider">
+              <th className="px-2 py-2 md:px-2 md:py-2.5 lg:px-3 lg:py-3 text-center text-[0.6rem] md:text-xs font-semibold text-content-secondary uppercase tracking-wider">
                 Units
               </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
+              <th className="px-2 py-2 md:px-2 md:py-2.5 lg:px-3 lg:py-3 text-left text-[0.6rem] md:text-xs font-semibold text-content-secondary uppercase tracking-wider">
                 Section
               </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
-                <div className="flex items-center gap-1.5">
-                  <ClockIcon />
+              <th className="px-2 py-2 md:px-2 md:py-2.5 lg:px-3 lg:py-3 text-left text-[0.6rem] md:text-xs font-semibold text-content-secondary uppercase tracking-wider">
+                <div className="flex items-center gap-1 md:gap-1.5">
+                  <ClockIcon className="w-3 h-3 md:w-auto md:h-auto" />
                   Schedule
                 </div>
               </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
-                <div className="flex items-center gap-1.5">
-                  <MapPinIcon />
+              <th className="px-2 py-2 md:px-2 md:py-2.5 lg:px-3 lg:py-3 text-left text-[0.6rem] md:text-xs font-semibold text-content-secondary uppercase tracking-wider hidden md:table-cell">
+                <div className="flex items-center gap-1 md:gap-1.5">
+                  <MapPinIcon className="w-3 h-3 md:w-auto md:h-auto" />
                   Room
                 </div>
               </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
+              <th className="px-2 py-2 md:px-2 md:py-2.5 lg:px-3 lg:py-3 text-left text-[0.6rem] md:text-xs font-semibold text-content-secondary uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-content-secondary uppercase tracking-wider">
+              <th className="px-2 py-2 md:px-2 md:py-2.5 lg:px-3 lg:py-3 text-left text-[0.6rem] md:text-xs font-semibold text-content-secondary uppercase tracking-wider">
                 Actions
               </th>
             </tr>
