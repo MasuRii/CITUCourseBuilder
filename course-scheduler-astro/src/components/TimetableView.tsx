@@ -1,5 +1,3 @@
-import { toPng } from 'html-to-image';
-import jsPDF from 'jspdf';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Image,
@@ -390,6 +388,9 @@ export default function TimetableView({
     }
     onToast?.('Exporting timetable as PNG...', 'info');
 
+    // Lazy load html-to-image only when needed
+    const { toPng } = await import('html-to-image');
+
     const options = {
       cacheBust: true,
       quality: 1,
@@ -422,6 +423,12 @@ export default function TimetableView({
       return;
     }
     onToast?.('Exporting timetable as PDF...', 'info');
+
+    // Lazy load libraries only when needed
+    const [{ toPng }, { default: jsPDF }] = await Promise.all([
+      import('html-to-image'),
+      import('jspdf'),
+    ]);
 
     try {
       const options = {
