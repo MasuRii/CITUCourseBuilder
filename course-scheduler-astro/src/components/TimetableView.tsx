@@ -610,7 +610,7 @@ export default function TimetableView({
       return (
         <Tooltip key={`${course.id}-${course.slotStartTime}-${index}`} course={course}>
           <div
-            className={`h-full overflow-hidden rounded-lg border-2 p-1.5 transition-all duration-200 hover:scale-[1.02] hover:shadow-md ${
+            className={`timetable-card h-full overflow-hidden rounded-lg border-2 p-1.5 transition-all duration-200 hover:scale-[1.02] hover:shadow-md ${
               isConflicting
                 ? 'border-l-4 border-l-[#a5283a] !bg-red-100 dark:!bg-red-900/30 !border-red-300 dark:!border-red-700'
                 : `${bgColor} ${borderColor}`

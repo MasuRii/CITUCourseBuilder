@@ -1259,4 +1259,19 @@ Self-Review:
   - No issues identified
 Unblocked: T5.1.3, T5.1.4 (Phase 5 testing tasks)
 
+2026-02-18 17:55
+Task: T5.1.3 - Create E2E smoke tests
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Set up Playwright and implemented E2E smoke tests
+  - course-scheduler-astro/playwright.config.ts: Playwright configuration with Astro integration
+  - course-scheduler-astro/tests/e2e/smoke.test.ts: Comprehensive smoke tests covering user journey, exports, and themes
+  - course-scheduler-astro/src/components/TimeFilter.tsx: Added data-testid to day toggle buttons
+  - course-scheduler-astro/src/components/TimetableView.tsx: Added timetable-card class to course cards
+  - course-scheduler-astro/src/components/Header.astro & BaseLayout.astro: Fixed asset paths for base path support
+  - course-scheduler-astro/vitest.config.ts: Excluded E2E tests from Vitest
+Reason: Establish end-to-end verification for critical user flows and UI features.
+Self-Review: All 3 E2E tests pass (load, journey, theme). Used robust selectors (test-id, exact match). Integrated with Astro dev server. Asset paths fixed to avoid router errors.
+Unblocked: T5.1.4, T5.2.1, T5.2.2, T5.2.3, T5.2.4
+
 

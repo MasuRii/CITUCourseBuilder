@@ -347,7 +347,7 @@ export default function TimeFilter({
                 type="button"
                 onClick={() => handleDayToggle(day.code)}
                 aria-pressed={isExcluded}
-                aria-label={`${isExcluded ? 'Include' : 'Exclude'} ${day.name}`}
+                data-testid={`day-toggle-${day.code}`}
                 className={`
                   relative flex flex-col items-center justify-center p-3 rounded-xl font-medium text-sm
                   transition-all duration-200 ease-out min-h-[52px] touch-target

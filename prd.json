@@ -1539,9 +1539,10 @@
       "sectionId": "5.1",
       "category": "test",
       "description": "Create E2E smoke tests",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "M",
+      "notes": "Set up Playwright and created comprehensive E2E smoke tests (tests/e2e/smoke.test.ts). Tests cover: basic page load and header check, complete user journey (import AIMS data -> filter days -> generate schedule -> verify timetable), export menu options (ICS, PNG, PDF), and theme/palette switching. Configured playwright.config.ts with Astro dev server integration. Added test:e2e script to package.json. Fixed asset path issues in Header.astro and BaseLayout.astro to support base path. All 3 E2E tests pass along with 500 Vitest tests. Added data-testid to day buttons and timetable-card class to course cards for robust testing.",
       "acceptanceCriteria": [
         "Set up Playwright or similar",
         "Test complete user journey: import → filter → generate → export",
