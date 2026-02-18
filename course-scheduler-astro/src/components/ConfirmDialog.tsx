@@ -9,6 +9,7 @@
  */
 
 import { useEffect, useCallback, type KeyboardEvent } from 'react';
+import { Info, AlertTriangle } from 'lucide-react';
 
 /**
  * Dialog variant type
@@ -63,56 +64,6 @@ const iconConfig: Record<DialogVariant, { type: 'info' | 'warning'; colorClass: 
     colorClass: 'text-danger-button-bg',
   },
 };
-
-/**
- * Info icon SVG component
- */
-function InfoIcon({ className }: { className: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="36"
-      height="36"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4" />
-      <path d="M12 8h.01" />
-    </svg>
-  );
-}
-
-/**
- * Warning icon SVG component (AlertTriangle)
- */
-function WarningIcon({ className }: { className: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="36"
-      height="36"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-      <path d="M12 9v4" />
-      <path d="M12 17h.01" />
-    </svg>
-  );
-}
 
 /**
  * ConfirmDialog component for user confirmation dialogs.
@@ -222,9 +173,9 @@ export default function ConfirmDialog({
         {/* Header */}
         <div id="confirm-dialog-title" className="flex items-center gap-3 p-6 pb-0">
           {iconType === 'info' ? (
-            <InfoIcon className={`${colorClass} flex-shrink-0`} />
+            <Info className={`w-9 h-9 ${colorClass} flex-shrink-0`} aria-hidden="true" />
           ) : (
-            <WarningIcon className={`${colorClass} flex-shrink-0`} />
+            <AlertTriangle className={`w-9 h-9 ${colorClass} flex-shrink-0`} aria-hidden="true" />
           )}
           <span className="text-lg font-semibold">{title}</span>
         </div>

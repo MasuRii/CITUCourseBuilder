@@ -2,20 +2,39 @@
  * RawDataInput Component
  *
  * A React island component for importing course schedule data from WITS or AIMS systems.
- * Provides a toggle between two import modes with contextual placeholders.
+ * Provides a welcoming, playful interface with visual feedback during import.
  *
  * @module components/RawDataInput
  * @see docs/architecture/REACT_ISLANDS_HYDRATION.md - Uses client:load for immediate interactivity
  */
 
 import { useState, useCallback, type ChangeEvent, type MouseEvent } from 'react';
+import {
+  ClipboardList,
+  CheckCircle,
+  TrendingUp,
+  HelpCircle,
+  ChevronDown,
+  XCircle,
+  Loader2,
+  Upload,
+} from 'lucide-react';
 
 /**
  * Import mode for course data
  * - 'WITS': New WITS system - accepts HTML table data or compact schedule text
  * - 'AIMS': Legacy AIMS system - accepts tab-separated schedule data
  */
-type ImportMode = 'WITS' | 'AIMS';
+export type ImportMode = 'WITS' | 'AIMS';
+
+/**
+ * Import status for visual feedback
+ * - 'idle': Ready for input
+ * - 'loading': Import in progress
+ * - 'success': Import completed successfully
+ * - 'error': Import failed
+ */
+export type ImportStatus = 'idle' | 'loading' | 'success' | 'error';
 
 /**
  * Props for the RawDataInput component
@@ -31,35 +50,57 @@ export interface RawDataInputProps {
   /**
    * Callback fired when the import button is clicked
    * @param mode - The selected import mode ('WITS' or 'AIMS')
+   * @returns Promise<boolean> - true if import succeeded, false otherwise
    */
-  onSubmit: (mode: ImportMode) => void;
+  onSubmit: (mode: ImportMode) => Promise<boolean> | boolean;
+  /** Optional className for additional styling */
+  className?: string;
 }
 
 /**
  * Configuration for each import mode
  */
-const modeConfig: Record<ImportMode, { label: string; description: string; placeholder: string }> =
-  {
-    WITS: {
-      label: 'WITS (New)',
-      description: 'Paste HTML table data or compact schedule text from WITS.',
-      placeholder: 'Copy-paste the WITS table here (HTML or compact text format)',
-    },
-    AIMS: {
-      label: 'AIMS (Legacy)',
-      description: 'Paste tab-separated schedule data from AIMS (Legacy).',
-      placeholder: 'Go to AIMS -> Section Offering and copy-paste the table data here',
-    },
-  };
+const modeConfig: Record<
+  ImportMode,
+  { label: string; shortLabel: string; description: string; placeholder: string; steps: string[] }
+> = {
+  WITS: {
+    label: 'WITS (New)',
+    shortLabel: 'WITS',
+    description: 'Paste HTML table data or compact schedule text from the new WITS system.',
+    placeholder:
+      '📋 Paste your WITS data here...\n\nYou can paste HTML tables from the WITS website or compact schedule text.',
+    steps: [
+      'Open WITS and navigate to your schedule',
+      'Select and copy the course table data',
+      'Paste it here and click Import',
+    ],
+  },
+  AIMS: {
+    label: 'AIMS (Legacy)',
+    shortLabel: 'AIMS',
+    description: 'Paste tab-separated schedule data from the legacy AIMS system.',
+    placeholder:
+      '📋 Paste your AIMS data here...\n\nCopy the table data from AIMS Section Offering page.',
+    steps: [
+      'Go to AIMS → Section Offering',
+      'Select and copy the table data',
+      'Paste it here and click Import',
+    ],
+  },
+};
 
 /**
  * RawDataInput component for importing course schedule data.
  *
  * Features:
+ * - Welcoming, playful interface with visual guidance
  * - Toggle between WITS (New) and AIMS (Legacy) import modes
  * - Dynamic placeholder text based on selected mode
- * - Responsive textarea with monospace font for data input
- * - Import button with upload icon
+ * - Expandable instructions for each mode
+ * - Loading animation during import
+ * - Visual success/error feedback
+ * - Keyboard accessible with focus management
  *
  * @example
  * ```tsx
@@ -70,95 +111,230 @@ const modeConfig: Record<ImportMode, { label: string; description: string; place
  * />
  * ```
  */
-export default function RawDataInput({ value, onChange, onSubmit }: RawDataInputProps) {
+export default function RawDataInput({
+  value,
+  onChange,
+  onSubmit,
+  className = '',
+}: RawDataInputProps) {
   const [importMode, setImportMode] = useState<ImportMode>('WITS');
+  const [status, setStatus] = useState<ImportStatus>('idle');
+  const [showHelp, setShowHelp] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const handleImport = useCallback(
-    (_event: MouseEvent<HTMLButtonElement>) => {
-      onSubmit(importMode);
+    async (_event: MouseEvent<HTMLButtonElement>) => {
+      if (status === 'loading' || !value.trim()) return;
+
+      setStatus('loading');
+      setStatusMessage(null);
+
+      try {
+        const result = await onSubmit(importMode);
+        if (result) {
+          setStatus('success');
+          setStatusMessage('Courses imported successfully! 🎉');
+          // Reset to idle after showing success
+          setTimeout(() => {
+            setStatus('idle');
+            setStatusMessage(null);
+          }, 2000);
+        } else {
+          setStatus('error');
+          setStatusMessage('Import failed. Please check your data format.');
+          // Reset to idle after showing error
+          setTimeout(() => {
+            setStatus('idle');
+            setStatusMessage(null);
+          }, 3000);
+        }
+      } catch {
+        setStatus('error');
+        setStatusMessage('An error occurred during import.');
+        setTimeout(() => {
+          setStatus('idle');
+          setStatusMessage(null);
+        }, 3000);
+      }
     },
-    [importMode, onSubmit]
+    [importMode, onSubmit, status, value]
   );
 
   const handleModeChange = useCallback((mode: ImportMode) => {
     return (_event: MouseEvent<HTMLButtonElement>) => {
       setImportMode(mode);
+      setStatus('idle');
+      setStatusMessage(null);
     };
   }, []);
 
   const config = modeConfig[importMode];
+  const isImporting = status === 'loading';
+  const hasContent = value.trim().length > 0;
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Import Mode Toggle */}
-      <div className="flex gap-2 p-1 bg-surface-secondary rounded-lg border border-default w-fit">
-        <button
-          type="button"
-          onClick={handleModeChange('WITS')}
-          className={`px-4 py-1 rounded-md font-medium transition-all duration-150 ${
-            importMode === 'WITS'
-              ? 'bg-accent text-white shadow-md'
-              : 'bg-transparent text-content-secondary hover:bg-surface-hover hover:text-content-primary'
-          }`}
-          aria-pressed={importMode === 'WITS'}
-        >
-          {modeConfig.WITS.label}
-        </button>
-        <button
-          type="button"
-          onClick={handleModeChange('AIMS')}
-          className={`px-4 py-1 rounded-md font-medium transition-all duration-150 ${
-            importMode === 'AIMS'
-              ? 'bg-accent text-white shadow-md'
-              : 'bg-transparent text-content-secondary hover:bg-surface-hover hover:text-content-primary'
-          }`}
-          aria-pressed={importMode === 'AIMS'}
-        >
-          {modeConfig.AIMS.label}
-        </button>
+    <div className={`flex flex-col gap-4 ${className}`}>
+      {/* Header with welcoming message */}
+      <div className="flex flex-col gap-2">
+        <h3 className="text-xl font-semibold text-content-primary m-0 font-display flex items-center gap-2">
+          {/* Clipboard icon */}
+          <ClipboardList className="w-6 h-6 text-accent" aria-hidden="true" />
+          Import Your Schedule
+        </h3>
+        <p className="text-sm text-content-secondary m-0">
+          Paste your course data from WITS or AIMS to get started
+        </p>
       </div>
 
-      {/* Description */}
-      <p className="text-sm text-content-secondary leading-relaxed m-0">{config.description}</p>
+      {/* Import Mode Toggle - visually styled pills */}
+      <div className="flex flex-wrap gap-2">
+        {(Object.keys(modeConfig) as ImportMode[]).map((mode) => {
+          const isActive = importMode === mode;
+          return (
+            <button
+              key={mode}
+              type="button"
+              onClick={handleModeChange(mode)}
+              className={`
+                px-4 py-2 rounded-full font-medium text-sm
+                transition-all duration-200 ease-out
+                border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
+                ${
+                  isActive
+                    ? 'bg-accent text-white border-accent shadow-md transform scale-[1.02]'
+                    : 'bg-surface-secondary text-content-secondary border-default hover:border-accent hover:text-content-primary hover:bg-surface-hover'
+                }
+              `}
+              aria-pressed={isActive}
+              aria-label={`Select ${modeConfig[mode].label} import mode`}
+            >
+              <span className="flex items-center gap-2">
+                {mode === 'WITS' ? (
+                  <CheckCircle className="w-4 h-4" aria-hidden="true" />
+                ) : (
+                  <TrendingUp className="w-4 h-4" aria-hidden="true" />
+                )}
+                {modeConfig[mode].label}
+              </span>
+            </button>
+          );
+        })}
+      </div>
 
-      {/* Textarea */}
-      <textarea
-        value={value}
-        onChange={onChange}
-        placeholder={config.placeholder}
-        className="min-h-[150px] p-4 rounded-lg border border-input bg-surface-input text-content-input
-                   font-mono text-sm resize-y transition-all duration-150
-                   focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/30
-                   placeholder:text-content-secondary/50"
-        rows={6}
-      />
+      {/* Help/Instructions Section - collapsible */}
+      <div className="bg-surface-secondary/50 rounded-lg border border-default overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setShowHelp(!showHelp)}
+          className="w-full px-4 py-3 flex items-center justify-between text-sm font-medium text-content-primary hover:bg-surface-hover transition-colors duration-150"
+          aria-expanded={showHelp}
+          aria-controls="import-instructions"
+        >
+          <span className="flex items-center gap-2">
+            <HelpCircle className="w-4 h-4" aria-hidden="true" />
+            How to import {config.shortLabel} data
+          </span>
+          <ChevronDown
+            className={`w-4 h-4 transition-transform duration-200 ${showHelp ? 'rotate-180' : ''}`}
+            aria-hidden="true"
+          />
+        </button>
+        {showHelp && (
+          <div id="import-instructions" className="px-4 pb-4 pt-0">
+            <ol className="m-0 p-0 list-none space-y-2">
+              {config.steps.map((step, index) => (
+                <li key={index} className="flex items-start gap-3 text-sm text-content-secondary">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-medium">
+                    {index + 1}
+                  </span>
+                  <span className="pt-0.5">{step}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+      </div>
+
+      {/* Textarea with visual styling */}
+      <div className="relative">
+        <textarea
+          value={value}
+          onChange={onChange}
+          placeholder={config.placeholder}
+          className={`
+            w-full min-h-[180px] p-4 rounded-xl border-2 
+            bg-surface-input text-content-primary font-mono text-sm
+            resize-y transition-all duration-200 ease-out
+            placeholder:text-content-secondary/40 placeholder:leading-relaxed
+            focus:outline-none focus:border-accent focus:ring-4 focus:ring-accent/20
+            ${status === 'success' ? 'border-success' : ''}
+            ${status === 'error' ? 'border-danger' : ''}
+            ${status === 'loading' ? 'opacity-70 cursor-wait' : ''}
+          `}
+          rows={7}
+          disabled={isImporting}
+          aria-label={`${config.label} data input`}
+          aria-describedby={statusMessage ? 'status-message' : undefined}
+        />
+
+        {/* Character count indicator */}
+        {hasContent && (
+          <div className="absolute bottom-3 right-3 text-xs text-content-secondary/60 font-mono">
+            {value.length} chars
+          </div>
+        )}
+      </div>
+
+      {/* Status Message */}
+      {statusMessage && (
+        <div
+          id="status-message"
+          role="status"
+          aria-live="polite"
+          className={`
+            flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium
+            animate-slide-up
+            ${status === 'success' ? 'bg-success/10 text-success border border-success/30' : ''}
+            ${status === 'error' ? 'bg-danger/10 text-danger border border-danger/30' : ''}
+          `}
+        >
+          {status === 'success' && <CheckCircle className="w-[18px] h-[18px]" aria-hidden="true" />}
+          {status === 'error' && <XCircle className="w-[18px] h-[18px]" aria-hidden="true" />}
+          {statusMessage}
+        </div>
+      )}
 
       {/* Import Button */}
       <button
         type="button"
         onClick={handleImport}
-        className="self-start px-5 py-3 bg-accent text-white font-semibold rounded-lg
-                   shadow-md hover:bg-accent-hover hover:-translate-y-px
-                   transition-all duration-150 flex items-center gap-2 mt-2"
+        disabled={isImporting || !hasContent}
+        className={`
+          self-start px-6 py-3 rounded-xl font-semibold text-base
+          shadow-lg transition-all duration-200 ease-out
+          flex items-center gap-2
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
+          ${
+            isImporting || !hasContent
+              ? 'bg-surface-secondary text-content-secondary cursor-not-allowed shadow-none'
+              : 'bg-accent text-white hover:bg-accent-hover hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 active:shadow-md'
+          }
+        `}
+        aria-busy={isImporting}
       >
-        {/* Upload Icon (inline SVG) */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-          <polyline points="17 8 12 3 7 8" />
-          <line x1="12" x2="12" y1="3" y2="15" />
-        </svg>
-        Import {config.label} Data
+        {isImporting ? (
+          <>
+            {/* Loading spinner */}
+            <Loader2 className="w-[18px] h-[18px] animate-spin" aria-hidden="true" />
+            Importing...
+          </>
+        ) : (
+          <>
+            {/* Upload icon */}
+            <Upload className="w-[18px] h-[18px]" aria-hidden="true" />
+            Import {config.shortLabel} Data
+          </>
+        )}
       </button>
     </div>
   );
