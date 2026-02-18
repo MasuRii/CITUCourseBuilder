@@ -484,6 +484,7 @@ function Tooltip({ text, children }: { text: string; children: ReactNode }): Rea
       onMouseLeave={() => setIsVisible(false)}
       onFocus={() => setIsVisible(true)}
       onBlur={() => setIsVisible(false)}
+      tabIndex={0}
     >
       {children}
       {isVisible && (
