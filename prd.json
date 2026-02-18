@@ -1021,7 +1021,7 @@
       "passes": true,
       "effort": "S",
       "risk": "L",
-      "notes": "Created comprehensive import verification tests (tests/importVerification.test.ts, 23 tests, 400+ lines). Verified all import formats: WITS HTML table import (MUI classes, subject headers, multiple sections), AIMS tab-separated import (12-column single-line, 7+5/6 two-line format), compact variation import (space-separated with time ranges), space-separated import. All 84 tests pass. Coverage: parseRawData.ts 88.89% functions, parseSchedule.ts 86.96% functions. Integration tests confirm schedule strings are parseable after import. Cross-format consistency verified - different import formats produce equivalent course data. No AGENTS.md update needed - import behavior unchanged from original.",
+      "notes": "Verified all 4 import formats (WITS HTML, AIMS tab-separated, compact variation, space-separated) using new E2E test suite in tests/e2e/importFormats.test.ts. All 5 tests pass, including graceful error handling for invalid data. All 10 Vitest unit tests for parseRawData also pass. Updated AGENTS.md with lesson #32 about E2E import verification.",
       "acceptanceCriteria": [
         "Test WITS HTML table import",
         "Test AIMS tab-separated import",

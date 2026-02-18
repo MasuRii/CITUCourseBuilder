@@ -234,3 +234,9 @@ The following files are protected by the Ralph write-guardrail plugin and should
     - Each snapshot covers a specific component state: empty page, with courses, with schedule, dialogs, filters, theme/palette variants.
     - Use `type Page` from `@playwright/test` for proper TypeScript typing in helper functions.
     - Visual tests catch unintended UI changes during refactoring and ensure consistent theming across all 6 theme combinations.
+
+31. **Smart data import logic**: The `parseRawCourseData` function in `utils/parseRawData.ts` is a "smart" dispatcher that sequentially tries four different parsing methods: HTML variation (WITS), tab-separated (AIMS standard/two-line), space-separated, and compact variation. This ensures maximum compatibility with different ways students copy their data from university portals. When adding new formats, they should be integrated into this dispatcher with appropriate pattern detection to avoid false positives.
+
+32. **E2E Import Verification**: Verifying the smart data import logic in the UI requires switching between WITS and AIMS modes in the `RawDataInput` component. E2E tests in `tests/e2e/importFormats.test.ts` cover all four parsing variations plus error handling. When testing error toasts, use `page.getByRole('alert')` to reliably locate the custom toast notification.
+
+33. **Automated Accessibility Testing**: Using `@axe-core/playwright` allows for automated WCAG 2.1 AA compliance checks in E2E tests. Disabling certain rules like `color-contrast` is sometimes necessary during general audits if they are handled by dedicated tests (like `tests/colorContrast.test.ts`). Ensure components like `alertdialog` and `table` are populated before scanning to catch dynamic accessibility issues.
