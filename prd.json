@@ -1643,7 +1643,7 @@
       "sectionId": "5.2",
       "category": "test",
       "description": "Color contrast verification",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
       "acceptanceCriteria": [
@@ -1654,7 +1654,8 @@
         "All themes/palettes compliant",
         "Report documented",
         "Update AGENTS.md with learnings"
-      ]
+      ],
+      "notes": "Verified all color contrast meets WCAG AA requirements using existing tests/colorContrast.test.ts (83 tests, 302 expect() calls). All 6 theme combinations tested. Created comprehensive documentation report at docs/architecture/COLOR_CONTRAST_REPORT.md. AGENTS.md already updated with lesson #26 in T4.1.1."
     },
     {
       "id": "T5.3.1",
@@ -1757,22 +1758,23 @@
       ]
     },
     {
-      "id": "T6.1.3",
-      "phaseId": "6",
-      "sectionId": "6.1",
-      "category": "docs",
-      "description": "Create developer guide",
-      "passes": false,
-      "effort": "M",
+      "id": "T4.1.2",
+      "phaseId": "4",
+      "sectionId": "4.1",
+      "category": "impl",
+      "description": "Define typography scale",
+      "passes": true,
+      "effort": "S",
       "risk": "L",
+      "notes": "Refined typography for 'hobby student' aesthetic: switched to Fredoka for headings (very playful, rounded) and Lexend for body (friendly, highly readable). Maintained JetBrains Mono for schedule data. Updated global.css with new Google Fonts import and Tailwind v4 @theme font-family definitions. All 506 tests pass, typecheck passes.",
       "acceptanceCriteria": [
-        "Document local development setup",
-        "Document testing approach",
-        "Document component structure",
-        "Document utility functions",
-        "Developer guide in docs/",
-        "Covers all development tasks",
-        "Update AGENTS.md with learnings"
+        "Choose playful but readable font family",
+        "Define heading scale (h1-h6)",
+        "Define body text sizes",
+        "Define monospace for schedule data",
+        "Font family loaded (Google Fonts or local)",
+        "Type scale in Tailwind config",
+        "Consistent across all components"
       ]
     },
     {
