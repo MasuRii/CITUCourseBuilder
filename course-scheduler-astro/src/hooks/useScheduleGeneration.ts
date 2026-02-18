@@ -132,10 +132,15 @@ export function useScheduleGeneration(): UseScheduleGenerationReturn {
       if (existingIdx === -1) {
         // New schedule - add and set index
         setCurrentScheduleIndex(prev.length);
-        return [...prev, scheduleKeys];
+        const next = [...prev, scheduleKeys];
+        // Automatically show timetable when a schedule is generated
+        setShowTimetable(true);
+        return next;
       } else {
         // Existing schedule - just set index
         setCurrentScheduleIndex(existingIdx);
+        // Automatically show timetable even if it already existed
+        setShowTimetable(true);
         return prev;
       }
     });

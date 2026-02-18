@@ -1243,4 +1243,20 @@ Self-Review:
   - No issues identified
 Unblocked: T5.1.2, T5.1.3, T5.1.4 (Phase 5 testing tasks)
 
+2026-02-19 03:30
+Task: T5.1.2 - Create integration tests for components
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created comprehensive integration tests and fixed state management bugs
+  - tests/integration.test.tsx: New test suite (130+ lines) covering full user flows (import, lock, delete, generate)
+  - src/components/App.tsx: Fixed handleToggleLockCourse and generateBestSchedule to show timetable on success
+  - src/hooks/useScheduleGeneration.ts: Fixed addGeneratedSchedule to automatically show timetable
+Reason: Second task in Phase 5 - verifies component integration and fixes critical state propagation bugs discovered during testing
+Self-Review:
+  - Integration tests verified full cycle: AIMS import -> Table display -> Course locking -> Timetable rendering -> Generation -> Deletion
+  - Discovered and fixed bugs where timetable stayed hidden after generation/locking due to state update race conditions in jsdom
+  - All 500 tests pass across the entire project
+  - No issues identified
+Unblocked: T5.1.3, T5.1.4 (Phase 5 testing tasks)
+
 

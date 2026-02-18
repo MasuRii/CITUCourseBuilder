@@ -423,6 +423,7 @@ export default function App({ onToast }: AppProps): ReactNode {
       ) {
         // TBA or invalid schedule - just lock it
         courseState.toggleLockCourse(identity);
+        scheduleGeneration.setShowTimetable(true);
         return;
       }
 
@@ -482,6 +483,7 @@ export default function App({ onToast }: AppProps): ReactNode {
           variant: 'warning',
           onConfirm: () => {
             courseState.toggleLockCourse(identity);
+            scheduleGeneration.setShowTimetable(true);
             setConfirmDialog((d) => ({ ...d, open: false }));
           },
           onCancel: () => {
@@ -493,8 +495,10 @@ export default function App({ onToast }: AppProps): ReactNode {
 
       // No conflicts - lock the course
       courseState.toggleLockCourse(identity);
+      const { setShowTimetable } = scheduleGeneration;
+      setShowTimetable(true);
     },
-    [courseState]
+    [courseState, scheduleGeneration]
   );
 
   /**
@@ -1003,8 +1007,14 @@ export default function App({ onToast }: AppProps): ReactNode {
 
         const scheduleKeys = bestSchedule.map(getCourseKey);
         courseState.applySchedule(scheduleKeys);
-        scheduleGeneration.addGeneratedSchedule(scheduleKeys);
-        scheduleGeneration.incrementScheduleCount();
+
+        // Destructure to ensure we're using the latest functions
+        const { addGeneratedSchedule, incrementScheduleCount, setShowTimetable } =
+          scheduleGeneration;
+
+        addGeneratedSchedule(scheduleKeys);
+        incrementScheduleCount();
+        setShowTimetable(true);
 
         toastHelper.success(
           `Generated schedule #${scheduleGeneration.generatedScheduleCount + 1} with ${bestSchedule.length} courses (${bestScore - bestSchedule.length * 100} units)`

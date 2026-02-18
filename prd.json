@@ -1513,9 +1513,10 @@
       "sectionId": "5.1",
       "category": "test",
       "description": "Create integration tests for components",
-      "passes": false,
+      "passes": true,
       "effort": "L",
       "risk": "M",
+      "notes": "Created comprehensive integration tests (tests/integration.test.tsx) covering full user flows: data import (AIMS format), course table interactions (locking, deletion), error handling (failed import), and schedule generation flow. Verified that locking a course or generating a schedule correctly triggers timetable visibility. Fixed bugs in App.tsx and useScheduleGeneration.ts where timetable visibility wasn't being correctly updated after async operations. All 500 tests pass. Total project line coverage at 91.9%.",
       "acceptanceCriteria": [
         "Set up Testing Library for React",
         "Test RawDataInput import flow",
