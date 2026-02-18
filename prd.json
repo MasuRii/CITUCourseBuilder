@@ -1604,7 +1604,7 @@
       "passes": true,
       "effort": "S",
       "risk": "L",
-      "notes": "Created comprehensive keyboard navigation E2E tests (tests/e2e/keyboardNavigation.test.ts, 8 tests). Verified: all interactive elements focusable (>10 focusable elements), logical focus order (theme → palette → controls), Tab navigation through major sections, Enter/Space activation for buttons, Escape to close dialogs, arrow keys for select elements, no keyboard traps (Tab cycles through elements). Added tabIndex={0} to Tooltip component for keyboard accessibility. All 33 E2E tests pass (5 smoke, 12 visual, 5 accessibility, 5 import formats, 6 keyboard navigation). Note: Task is labeled 'Manual' but was automated via Playwright for repeatability.",
+      "notes": "Automated keyboard navigation tests using Playwright (tests/e2e/keyboardNavigation.test.ts, 8 tests). Verified: focusable elements (>10), logical focus order (Header -> Preferences -> Filters -> Table), dialog interactions (Escape to close, autoFocus, Enter to confirm), arrow keys for select elements, no keyboard traps, Space/Enter activation, and tooltip visibility on focus. Added tabIndex={0} to Tooltip container in CourseTable.tsx. Handled Astro dev toolbar interference by disabling it via CSS in tests.",
       "acceptanceCriteria": [
         "Test Tab navigation through all interactive elements",
         "Test Enter/Space activation",
