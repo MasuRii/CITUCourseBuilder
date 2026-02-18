@@ -1487,9 +1487,10 @@
       "sectionId": "5.1",
       "category": "test",
       "description": "Achieve ≥ 80% coverage for utility functions",
-      "passes": false,
+      "passes": true,
       "effort": "M",
       "risk": "M",
+      "notes": "Achieved high test coverage (≥ 80%) for all utility functions. Created tests/utilityEdgeCases.test.ts (20 tests) to cover edge cases in parseSchedule.ts (ambiguous pairings, invalid times), parseRawData.ts (malformed HTML, tab-separated inconsistencies), and scheduling algorithms (minimizeDaysOnCampus, invalid inputs). Final utility line coverage: parseSchedule.ts 86.62%, parseRawData.ts 96.92%, scheduleAlgorithms.ts 98.85%, generateIcs.ts 97.91%, convertToRawData.ts 100%. All 496 tests pass. Total project line coverage: 91.9%. Fixed RawDataInput.test.tsx environment issue (was using Bun runner instead of Vitest/jsdom).",
       "acceptanceCriteria": [
         "Add tests for parseSchedule edge cases",
         "Add tests for parseRawData variations",
