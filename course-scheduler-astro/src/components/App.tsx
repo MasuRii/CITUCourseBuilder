@@ -1489,7 +1489,7 @@ export default function App({ onToast }: AppProps): ReactNode {
             href="https://github.com/MasuRii/CITUCourseBuilder/blob/main/UsageGuide.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-accent hover:underline"
+            className="text-accent underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             Usage Guide
           </a>{' '}

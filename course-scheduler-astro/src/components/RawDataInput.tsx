@@ -265,7 +265,7 @@ export default function RawDataInput({
             w-full min-h-[180px] p-4 rounded-xl border-2 
             bg-surface-input text-content-primary font-mono text-sm
             resize-y transition-all duration-200 ease-out
-            placeholder:text-content-secondary/40 placeholder:leading-relaxed
+            placeholder:text-content-secondary placeholder:leading-relaxed
             focus:outline-none focus:border-accent focus:ring-4 focus:ring-accent/20
             ${status === 'success' ? 'border-success' : ''}
             ${status === 'error' ? 'border-danger' : ''}
@@ -279,7 +279,7 @@ export default function RawDataInput({
 
         {/* Character count indicator */}
         {hasContent && (
-          <div className="absolute bottom-3 right-3 text-xs text-content-secondary/60 font-mono">
+          <div className="absolute bottom-3 right-3 text-xs text-content-secondary font-mono">
             {value.length} chars
           </div>
         )}

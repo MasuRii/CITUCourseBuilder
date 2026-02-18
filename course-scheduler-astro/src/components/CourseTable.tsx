@@ -727,7 +727,7 @@ export default function CourseTable({
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+        <table className="w-full border-collapse" data-testid="course-list-table">
           <thead className="bg-surface-tertiary">
             <tr>
               <th className="px-2 py-2 md:px-2 md:py-2.5 lg:px-3 lg:py-3 text-left text-[0.6rem] md:text-xs font-semibold text-content-secondary uppercase tracking-wider">
@@ -773,7 +773,7 @@ export default function CourseTable({
                   <div className="flex flex-col items-center gap-2">
                     <BookIcon className="w-8 h-8 opacity-30" />
                     <span className="text-sm">No courses to display.</span>
-                    <span className="text-xs text-content-secondary/60">
+                    <span className="text-xs text-content-secondary">
                       Import your schedule data to get started.
                     </span>
                   </div>
@@ -851,9 +851,9 @@ export default function CourseTable({
             type="button"
             onClick={onDeleteAllCourses}
             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium
-                       bg-danger/10 text-danger border border-danger/20
+                       bg-danger/20 text-red-100 border border-danger/30
                        rounded-lg transition-all duration-200 ease-out
-                       hover:bg-danger/20 hover:-translate-y-0.5 hover:shadow-md
+                       hover:bg-danger/30 hover:-translate-y-0.5 hover:shadow-md
                        focus:outline-none focus-visible:ring-2 focus-visible:ring-danger/50 focus-visible:ring-offset-2
                        active:translate-y-0 active:shadow-sm"
           >
@@ -865,9 +865,7 @@ export default function CourseTable({
         <div className="text-sm text-content-secondary flex items-center gap-1">
           <span className="font-medium">Showing {displayedCount} courses</span>
           {displayedCount !== allCoursesCount && (
-            <span className="text-content-secondary/60">
-              (filtered from {allCoursesCount} total)
-            </span>
+            <span className="text-content-secondary">(filtered from {allCoursesCount} total)</span>
           )}
         </div>
       </div>

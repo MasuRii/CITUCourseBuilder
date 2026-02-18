@@ -624,12 +624,12 @@ export default function TimetableView({
               {course.subject}
             </div>
             <div
-              className={`text-[0.65rem] truncate ${isConflicting ? 'text-red-600 dark:text-red-400' : 'text-content-secondary'}`}
+              className={`text-[0.65rem] truncate ${isConflicting ? 'text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300'}`}
             >
               {course.section}
             </div>
             <div
-              className={`text-[0.6rem] truncate ${isConflicting ? 'text-red-500 dark:text-red-400' : 'text-content-secondary opacity-75'}`}
+              className={`text-[0.6rem] truncate ${isConflicting ? 'text-red-500 dark:text-red-400' : 'text-gray-600 dark:text-gray-400'}`}
             >
               {course.slotRoom}
             </div>
@@ -738,16 +738,14 @@ export default function TimetableView({
                 className={`time-row ${rowIndex % 2 === 0 ? 'bg-surface-secondary' : 'bg-surface-tertiary/30'}`}
                 role="row"
               >
-                <td
+                <th
                   className="sticky left-0 z-[1] border-r border-border-primary bg-accent-light/50 p-1 md:p-1.5 text-center"
-                  role="rowheader"
-                  aria-label={formatTo12Hour(timeSlot)}
                   scope="row"
                 >
                   <span className="text-[0.55rem] md:text-[0.65rem] font-semibold text-content-primary whitespace-nowrap">
                     {formatTo12Hour(timeSlot)}
                   </span>
-                </td>
+                </th>
                 {DAYS.map((day) => (
                   <td
                     key={`${day}-${timeSlot}`}

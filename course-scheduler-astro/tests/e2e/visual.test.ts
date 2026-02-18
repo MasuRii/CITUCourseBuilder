@@ -64,7 +64,7 @@ test.describe('CIT-U Course Builder Visual Regression', () => {
     await importData(page);
     // Click Delete All button to trigger confirm dialog
     await page.getByRole('button', { name: /Delete All Courses/i }).click();
-    await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(page.getByRole('alertdialog')).toBeVisible();
     await expect(page.getByText('Delete All Courses?')).toBeVisible();
     await expect(page).toHaveScreenshot('confirm-dialog-danger.png');
   });

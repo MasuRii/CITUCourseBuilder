@@ -148,11 +148,11 @@ function Toast({ toast, onDismiss }: ToastProps): ReactNode {
   const getTypeStyles = (): string => {
     switch (toast.type) {
       case 'success':
-        return 'bg-success text-white';
+        return 'bg-success text-slate-900';
       case 'error':
         return 'bg-danger text-white';
       case 'warning':
-        return 'bg-warning text-white';
+        return 'bg-warning text-slate-900';
       case 'info':
         return 'bg-info text-white';
       default:
@@ -161,21 +161,20 @@ function Toast({ toast, onDismiss }: ToastProps): ReactNode {
   };
 
   /**
+   * Check if this toast type uses light text (for button styling)
+   */
+  const hasLightText = (): boolean => {
+    return toast.type === 'error' || toast.type === 'info';
+  };
+
+  /**
    * Get progress bar color based on toast type
    */
   const getProgressColor = (): string => {
-    switch (toast.type) {
-      case 'success':
-        return 'bg-white/30';
-      case 'error':
-        return 'bg-white/30';
-      case 'warning':
-        return 'bg-white/30';
-      case 'info':
-        return 'bg-white/30';
-      default:
-        return 'bg-white/30';
+    if (hasLightText()) {
+      return 'bg-white/30';
     }
+    return 'bg-slate-900/30';
   };
 
   return (
@@ -209,8 +208,12 @@ function Toast({ toast, onDismiss }: ToastProps): ReactNode {
       <button
         type="button"
         onClick={handleDismiss}
-        className="flex-shrink-0 p-1 rounded hover:bg-white/20 transition-colors
-                   focus:outline-none focus:ring-2 focus:ring-white/50"
+        className={`flex-shrink-0 p-1 rounded transition-colors
+                    focus:outline-none focus:ring-2 ${
+                      hasLightText()
+                        ? 'hover:bg-white/20 focus:ring-white/50'
+                        : 'hover:bg-slate-900/20 focus:ring-slate-900/50'
+                    }`}
         aria-label="Dismiss notification"
       >
         <X className="w-4 h-4" />

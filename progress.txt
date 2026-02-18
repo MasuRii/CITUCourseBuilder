@@ -1328,4 +1328,26 @@ Self-Review:
   - Accessibility tests (T5.2.1) also prepared and passing, but will be marked in prd.json in next session due to guardrail.
 Unblocked: T5.2.1, T5.2.2, T5.2.3, T5.2.4 (Phase 5.2 Accessibility Audit tasks)
 
+## 2026-02-18 20:30
+Task: T5.2.1 - Run automated accessibility tests
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Completed automated accessibility testing with axe-core
+  - course-scheduler-astro/tests/e2e/accessibility.test.ts: 5 automated accessibility tests (already existed from T3.3.1)
+  - course-scheduler-astro/src/components/ConfirmDialog.tsx: Fixed to use 'alertdialog' role for danger variants
+  - course-scheduler-astro/tests/e2e/visual.test.ts: Updated to use 'alertdialog' role in test
+  - course-scheduler-astro/src/components/App.tsx: Added focus-visible styles to Usage Guide link
+Reason: Verify WCAG 2.1 AA compliance across all pages using automated accessibility testing
+Self-Review:
+  - @axe-core/playwright already installed from T3.3.1
+  - 5 accessibility tests cover: empty state, with imported data, expanded filters, confirm dialog, timetable visible
+  - Zero critical and serious violations across all pages
+  - Fixed ConfirmDialog to use 'alertdialog' role for danger variant (proper ARIA for destructive actions)
+  - Color-contrast rule disabled in axe scans (handled separately by tests/colorContrast.test.ts)
+  - AGENTS.md already updated with lesson #33 in T3.3.1
+  - All 5 accessibility E2E tests pass (15.1s)
+  - All 500 Vitest tests pass
+  - Build completes successfully
+Unblocked: T5.2.2, T5.2.3, T5.2.4 (Phase 5.2 Accessibility Audit tasks)
+
 

@@ -1581,9 +1581,10 @@
       "sectionId": "5.2",
       "category": "test",
       "description": "Run automated accessibility tests",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Created automated accessibility test suite using @axe-core/playwright (tests/e2e/accessibility.test.ts, 5 tests). Tests cover: empty state, with imported data, expanded filters, confirm dialog, and visible timetable. Zero critical and serious violations across all pages. Fixed ConfirmDialog to use 'alertdialog' role for danger variants (proper ARIA for destructive action confirmations). Added focus-visible styles to Usage Guide link. Color-contrast rule disabled in axe scans (tracked separately via tests/colorContrast.test.ts). AGENTS.md already updated with lesson #33 in T3.3.1.",
       "acceptanceCriteria": [
         "Install axe-core or similar",
         "Run accessibility audit on all pages",

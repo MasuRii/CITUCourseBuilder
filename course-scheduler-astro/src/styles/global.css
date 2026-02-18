@@ -180,6 +180,9 @@
   --color-border-focus: var(--focus-outline-color);
 
   /* Interactive Colors */
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
   --color-interactive-primary: var(--accent);
   --color-interactive-primary-hover: var(--accent-hover);
   --color-interactive-primary-light: var(--accent-light);
@@ -337,10 +340,10 @@
   --link-color: #818cf8;
   --section-bg: #1e293b;
   --card-bg: #1e293b;
-  --accent: #6366f1;
+  --accent: #5855ec;
   --accent-hover: #4f46e5;
-  --accent-light: rgba(99, 102, 241, 0.2);
-  --accent-very-light: rgba(99, 102, 241, 0.05);
+  --accent-light: rgba(88, 85, 236, 0.2);
+  --accent-very-light: rgba(88, 85, 236, 0.05);
   --danger: #ef4444;
   --success: #22c55e;
   --warning: #eab308;
@@ -389,8 +392,8 @@
   --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --section-bg: #ffffff;
   --card-bg: #ffffff;
-  --accent: #4f46e5;
-  --accent-hover: #4338ca;
+  --accent: #4338ca;
+  --accent-hover: #3730a3;
   --accent-light: rgba(79, 70, 229, 0.15);
   --accent-very-light: rgba(79, 70, 229, 0.05);
   --danger: #ef4444;
@@ -441,10 +444,10 @@
   --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
   --section-bg: #1e293b;
   --card-bg: #1e293b;
-  --accent: #6366f1;
+  --accent: #5855ec;
   --accent-hover: #4f46e5;
-  --accent-light: rgba(99, 102, 241, 0.2);
-  --accent-very-light: rgba(99, 102, 241, 0.05);
+  --accent-light: rgba(88, 85, 236, 0.2);
+  --accent-very-light: rgba(88, 85, 236, 0.05);
   --danger: #ef4444;
   --success: #22c55e;
   --warning: #eab308;
@@ -597,8 +600,8 @@
   --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   --section-bg: #ffffff;
   --card-bg: #ffffff;
-  --accent: #2a9d8f;
-  --accent-hover: #21867a;
+  --accent: #1a7a6f;
+  --accent-hover: #146359;
   --accent-light: rgba(42, 157, 143, 0.2);
   --accent-very-light: rgba(42, 157, 143, 0.05);
   --danger: #e76f51;

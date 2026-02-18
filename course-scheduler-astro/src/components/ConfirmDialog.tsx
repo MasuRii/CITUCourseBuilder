@@ -164,7 +164,7 @@ export default function ConfirmDialog({
       <div
         className="relative z-[var(--z-modal)] w-full max-w-md bg-surface-secondary text-content-primary
                    rounded-xl shadow-xl min-w-[340px] animate-in fade-in zoom-in-95 duration-150"
-        role="dialog"
+        role={actualVariant === 'danger' ? 'alertdialog' : 'dialog'}
         aria-modal="true"
         aria-labelledby="confirm-dialog-title"
         aria-describedby="confirm-dialog-description"
@@ -192,24 +192,33 @@ export default function ConfirmDialog({
 
         {/* Actions */}
         <div className="flex justify-end gap-2 p-4 pt-0">
+          {/* Cancel button - styled based on variant */}
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-danger-button-bg font-medium rounded-lg
-                       hover:bg-surface-hover transition-colors duration-150
-                       focus:outline-none focus:ring-2 focus:ring-accent/30"
+            className={`px-4 py-2 font-medium rounded-lg
+                       transition-colors duration-150
+                       focus:outline-none focus:ring-2 focus:ring-accent/30 ${
+                         actualVariant === 'danger'
+                           ? 'text-white bg-gray-600 hover:bg-gray-500'
+                           : 'text-content-primary hover:bg-surface-hover'
+                       }`}
           >
             {cancelText}
           </button>
+          {/* Confirm button - styled based on variant */}
           <button
             type="button"
             onClick={onConfirm}
-            className="px-4 py-2 text-content-primary font-medium rounded-lg
-                       hover:bg-surface-hover transition-colors duration-150
-                       focus:outline-none focus:ring-2 focus:ring-accent/30"
+            className={`px-4 py-2 font-medium rounded-lg
+                       transition-colors duration-150 ${
+                         actualVariant === 'danger'
+                           ? 'text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500/50'
+                           : 'text-white bg-accent hover:bg-accent/80 focus:outline-none focus:ring-2 focus:ring-accent/30'
+                       }`}
             autoFocus
           >
-            <span className={colorClass}>{confirmText}</span>
+            {confirmText}
           </button>
         </div>
       </div>

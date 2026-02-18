@@ -367,7 +367,7 @@ export default function TimeFilter({
                   </span>
                 )}
                 <span className="font-bold text-base">{day.code}</span>
-                <span className="text-[10px] mt-0.5 opacity-75">{day.shortName}</span>
+                <span className="text-[11px] mt-0.5 text-content-secondary">{day.shortName}</span>
               </button>
             );
           })}
