@@ -258,3 +258,5 @@ The following files are protected by the Ralph write-guardrail plugin and should
     - Use `aria-hidden="true"` for decorative icons and background elements to avoid confusing announcements and reduce cognitive load.
     - Distinguish between `dialog` and `alertdialog` roles based on the nature of the interaction (standard vs destructive/critical) to provide appropriate semantic context.
     - When testing `client:visible` hydrated components in Playwright, ensure the element is scrolled into view to trigger hydration before performing assertions.
+
+40. **Typography for Hobby Student Aesthetic**: To achieve the "built by a student for a hobby" look, the typography was refined to use `Fredoka` for headings and `Lexend` for body text. `Fredoka` provides a rounded, playful, and approachable feel, while `Lexend` offers excellent readability with a friendly, modern sans-serif character. Both fonts are loaded via Google Fonts and integrated into the Tailwind v4 `@theme` block, ensuring consistent application across all components via `font-display` and `font-sans` classes.

@@ -1165,7 +1165,7 @@
       "passes": true,
       "effort": "S",
       "risk": "L",
-      "notes": "Completed typography scale in global.css (Tailwind v4 CSS-based config). Added Poppins as display font for headings (playful, rounded). Extended type scale with modular ratio 1.25: display (3rem), h1 (2.25rem), h2 (1.875rem), h3 (1.5rem), h4 (1.25rem), h5 (1.125rem), h6 (1rem). Added letter-spacing variables (--tracking-*). Created heading utility classes (.display, .heading-1 through .heading-6) with playful styling (gradient text for h1, underline accent for h2). Added responsive typography breakpoints (768px, 480px) with reduced sizes. Font families: Inter (body), Poppins (headings), JetBrains Mono (schedule data). All fonts loaded via Google Fonts. All 435 tests pass. Build completes in 3.39s.",
+      "notes": "Refined typography for 'hobby student' aesthetic: switched to Fredoka for headings (very playful, rounded) and Lexend for body (friendly, highly readable). Maintained JetBrains Mono for schedule data. Updated global.css with new Google Fonts import and Tailwind v4 @theme font-family definitions. All 506 tests pass, typecheck passes.",
       "acceptanceCriteria": [
         "Choose playful but readable font family",
         "Define heading scale (h1-h6)",
@@ -1755,26 +1755,6 @@
         "Architecture diagram in docs/",
         "All major systems documented",
         "Update AGENTS.md with learnings"
-      ]
-    },
-    {
-      "id": "T4.1.2",
-      "phaseId": "4",
-      "sectionId": "4.1",
-      "category": "impl",
-      "description": "Define typography scale",
-      "passes": true,
-      "effort": "S",
-      "risk": "L",
-      "notes": "Refined typography for 'hobby student' aesthetic: switched to Fredoka for headings (very playful, rounded) and Lexend for body (friendly, highly readable). Maintained JetBrains Mono for schedule data. Updated global.css with new Google Fonts import and Tailwind v4 @theme font-family definitions. All 506 tests pass, typecheck passes.",
-      "acceptanceCriteria": [
-        "Choose playful but readable font family",
-        "Define heading scale (h1-h6)",
-        "Define body text sizes",
-        "Define monospace for schedule data",
-        "Font family loaded (Google Fonts or local)",
-        "Type scale in Tailwind config",
-        "Consistent across all components"
       ]
     },
     {
