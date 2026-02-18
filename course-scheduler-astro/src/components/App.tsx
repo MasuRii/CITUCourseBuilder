@@ -1064,6 +1064,9 @@ export default function App({ onToast }: AppProps): ReactNode {
             className="px-4 py-2.5 rounded-lg bg-surface-secondary border border-default
                      text-content-primary hover:bg-surface-hover transition-colors
                      flex items-center gap-2 min-h-[44px] touch-target"
+            aria-label={
+              themeState.theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'
+            }
           >
             {themeState.theme === 'light' ? (
               <>
@@ -1083,6 +1086,7 @@ export default function App({ onToast }: AppProps): ReactNode {
             className="px-4 py-2.5 rounded-lg bg-surface-secondary border border-default
                      text-content-primary hover:bg-surface-hover transition-colors
                      flex items-center gap-2 min-h-[44px] touch-target"
+            aria-label={`Cycle Palette (current: ${themeState.currentPalette})`}
           >
             <Palette className="w-5 h-5" />
             <span className="hidden sm:inline">
@@ -1166,7 +1170,10 @@ export default function App({ onToast }: AppProps): ReactNode {
 
       {/* Timetable Section */}
       {courseState.lockedCoursesCount > 0 && (
-        <div className="bg-surface-secondary rounded-lg border border-default p-4">
+        <div
+          className="bg-surface-secondary rounded-lg border border-default p-4"
+          data-testid="timetable-section"
+        >
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
             <h2 className="text-xl font-semibold text-content-primary m-0">Timetable View</h2>
             <button

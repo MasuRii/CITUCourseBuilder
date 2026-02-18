@@ -309,6 +309,7 @@ export default function RawDataInput({
         type="button"
         onClick={handleImport}
         disabled={isImporting || !hasContent}
+        data-testid="import-button"
         className={`
           self-start px-6 py-3 rounded-xl font-semibold text-base
           shadow-lg transition-all duration-200 ease-out

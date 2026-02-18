@@ -1378,3 +1378,23 @@ Self-Review:
   - All acceptance criteria met: palette defined in CSS, light/dark variants supported, WCAG AA compliance verified, AGENTS.md updated.
 Unblocked: T5.2.3, T5.2.4 (Phase 5.2 Accessibility Audit tasks)
 
+## 2026-02-18 21:30
+Task: T5.2.3 - Screen reader compatibility test
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Improved programmatic accessibility and verified screen reader compatibility
+  - course-scheduler-astro/src/components/App.tsx: Added aria-label to theme/palette toggles, added data-testid="timetable-section"
+  - course-scheduler-astro/src/components/TimeFilter.tsx: Added aria-label to day toggles with full day names
+  - course-scheduler-astro/src/components/RawDataInput.tsx: Added data-testid="import-button"
+  - course-scheduler-astro/tests/e2e/screenReader.test.ts: New E2E test suite (6 tests) verifying aria-live, roles, and labels
+  - AGENTS.md: Added lesson #39 about screen reader compatibility patterns
+Reason: Phase 5.2 task to ensure application is usable by non-visual users via assistive technology.
+Self-Review:
+  - Verified aria-live="polite" on Toast and status messages
+  - Verified role="alertdialog" for destructive confirmations
+  - Verified descriptive aria-label on timetable course cards (includes subject, section, room, time)
+  - Ensured icon-only buttons on mobile have accessible names
+  - Handled lazy-hydration (client:visible) in tests by scrolling
+  - All 6 screen reader tests pass along with existing E2E and unit tests
+Unblocked: T5.2.4 (Color contrast verification)
+

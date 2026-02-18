@@ -250,3 +250,11 @@ The following files are protected by the Ralph write-guardrail plugin and should
 37. **Astro Dev Toolbar Interference**: The Astro dev toolbar is focusable and can interfere with keyboard navigation tests (e.g., catching focus and causing strict mode violations in Playwright). Use `page.addStyleTag({ content: 'astro-dev-toolbar { display: none !important; }' })` to disable it during E2E tests. Also, ensure buttons are enabled (e.g., by importing data) before testing their reachability via Tab, as disabled elements are not focusable.
 
 38. **Semantic Color System for Aesthetic Consistency**: A comprehensive semantic color system was implemented in `global.css` using Tailwind v4's `@theme` directive. This includes 12 "subject colors" (`subject-1` to `subject-12`) with light and text variants for playful timetable visualization. Moving from hardcoded Tailwind classes to semantic variables allows for theme-specific overrides (e.g., in Space or Comfort palettes) while maintaining accessibility compliance (WCAG AA). All color combinations are verified via `tests/colorContrast.test.ts`.
+
+39. **Screen Reader Compatibility**: Programmatic accessibility for screen readers is verified in `tests/e2e/screenReader.test.ts`. Key patterns include:
+    - Use `role="alert"` and `aria-live="polite"` for dynamic notifications like toasts to ensure immediate announcement.
+    - Provide descriptive `aria-label` for complex visualization cards (e.g., timetable cells) that include all relevant metadata (subject, section, time, room) for non-visual users.
+    - Ensure all interactive elements have accessible names via `aria-label` or visible text, especially when using icon-only buttons on mobile.
+    - Use `aria-hidden="true"` for decorative icons and background elements to avoid confusing announcements and reduce cognitive load.
+    - Distinguish between `dialog` and `alertdialog` roles based on the nature of the interaction (standard vs destructive/critical) to provide appropriate semantic context.
+    - When testing `client:visible` hydrated components in Playwright, ensure the element is scrolled into view to trigger hydration before performing assertions.
