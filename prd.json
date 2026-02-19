@@ -1727,9 +1727,10 @@
       "sectionId": "6.1",
       "category": "docs",
       "description": "Update README.md",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Completely rewrote README.md to reflect the new Astro architecture. Updated: tech stack section (Astro, React, Tailwind CSS, Lucide icons instead of React/Vite/MUI), installation instructions (point to course-scheduler-astro), build commands (Astro CLI), added project structure diagram, development section with available scripts, architecture explanation (React islands with client:load and client:visible), and contribution guidelines with Conventional Commits. Added version 2.0 badge highlighting the migration improvements. All verification checks pass: format, lint, typecheck, tests (506), build (4.97s).",
       "acceptanceCriteria": [
         "Update tech stack section",
         "Update installation instructions",

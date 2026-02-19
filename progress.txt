@@ -1493,3 +1493,24 @@ Self-Review:
   - No AGENTS.md update needed - Lighthouse optimization is standard practice, results speak for themselves
 Unblocked: T6.1.1, T6.1.2, T6.1.4, T6.2.2, T6.2.3, T6.3.1, T6.3.2, T6.3.3 (Phase 6 Documentation & Deployment tasks)
 
+## 2026-02-19 13:03
+Task: T6.1.1 - Update README.md
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Completely rewrote README.md to reflect the new Astro architecture
+  - README.md: Updated to reflect version 2.0 with Astro + React islands architecture
+Reason: First Documentation task in Phase 6 - ensures documentation reflects the migrated architecture
+Self-Review:
+  - Updated tech stack section: Astro 5.x, React 19, Tailwind CSS 4.x, Lucide icons (replaced React/Vite/MUI)
+  - Updated installation instructions: Points to course-scheduler-astro directory
+  - Updated build commands: Astro CLI (dev, build, preview, typecheck, test)
+  - Added project structure diagram showing new directory layout
+  - Added development section with available scripts (root and app-level)
+  - Added architecture explanation: React islands with client:load and client:visible directives
+  - Updated contribution guidelines to mention Conventional Commits and CI checks
+  - Updated version badge from 1.11 to 2.0
+  - Highlighted migration improvements: ~77% smaller bundle, 100 Lighthouse Performance, 97 Accessibility
+  - All verification checks pass: format, lint (0 warnings), typecheck (0 errors), tests (506 pass), build (4.97s)
+  - No AGENTS.md update needed - README is user-facing documentation
+Unblocked: T6.1.2, T6.1.4, T6.2.2, T6.2.3, T6.3.1, T6.3.2, T6.3.3 (Phase 6 Documentation & Deployment tasks)
+
