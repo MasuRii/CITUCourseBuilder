@@ -2,6 +2,9 @@
   "name": "citu-course-builder",
   "private": true,
   "type": "module",
+  "overrides": {
+    "minimatch": "^10.2.1"
+  },
   "scripts": {
     "lint": "eslint --max-warnings 0 .",
     "lint:fix": "eslint --fix --max-warnings 0 .",

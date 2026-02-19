@@ -2,6 +2,9 @@
   "name": "course-scheduler-astro",
   "type": "module",
   "version": "0.0.1",
+  "overrides": {
+    "lodash": "^4.17.23"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
