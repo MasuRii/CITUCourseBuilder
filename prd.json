@@ -1830,6 +1830,7 @@
       "passes": false,
       "effort": "S",
       "risk": "L",
+      "notes": "BLOCKED: Requires git push to remote repository to trigger GitHub Pages deployment. Agent constraint forbids pushing to remote. MANUAL ACTION REQUIRED: Push commits to main branch to trigger automatic deployment via GitHub Actions. The CI/CD workflow is configured and ready - deployment will happen automatically on push. After deployment, verify at https://masurii.github.io/CITUCourseBuilder/",
       "acceptanceCriteria": [
         "Merge to main branch",
         "Verify deployment completes",
