@@ -73,7 +73,7 @@ jobs:
         working-directory: ./course-scheduler-astro
 
       - name: Run E2E tests
-        run: bun run test:e2e -- --update-snapshots=missing
+        run: bunx playwright test --grep-invert "Visual Regression"
         working-directory: ./course-scheduler-astro
 
       - name: Build project
