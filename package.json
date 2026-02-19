@@ -6,6 +6,13 @@
     "minimatch": "^10.2.1"
   },
   "scripts": {
+    "dev": "bun run --cwd course-scheduler-astro dev",
+    "build": "bun run --cwd course-scheduler-astro build",
+    "preview": "bun run --cwd course-scheduler-astro preview",
+    "typecheck": "bun run --cwd course-scheduler-astro typecheck",
+    "test": "bun run --cwd course-scheduler-astro test",
+    "test:watch": "bun run --cwd course-scheduler-astro test:watch",
+    "test:e2e": "bun run --cwd course-scheduler-astro test:e2e",
     "lint": "eslint --max-warnings 0 .",
     "lint:fix": "eslint --fix --max-warnings 0 .",
     "lint-staged": "lint-staged",
