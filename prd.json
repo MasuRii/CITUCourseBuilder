@@ -1825,9 +1825,10 @@
       "sectionId": "6.3",
       "category": "cleanup",
       "description": "Remove old React project",
-      "passes": false,
+      "passes": true,
       "effort": "S",
       "risk": "L",
+      "notes": "Archived course-scheduler-web/ directory by renaming to _archived-course-scheduler-web/. Copied essential assets (screenshots, guide images) to course-scheduler-astro/public/. Updated README.md to remove old project references from project structure. Updated UsageGuide.md to use new image paths. Updated AGENTS.md to remove legacy app location reference and ESLint config note about preserved logic files. Updated eslint.config.js to ignore archived directory. All verification checks pass: typecheck (0 errors), lint (0 warnings), format:check, tests (506 pass), build (5.24s).",
       "acceptanceCriteria": [
         "Archive course-scheduler-web/ directory",
         "Update repository structure",

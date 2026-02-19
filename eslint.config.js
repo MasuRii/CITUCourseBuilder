@@ -5,14 +5,6 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import eslintPluginAstro from 'eslint-plugin-astro';
 import tseslint from 'typescript-eslint';
 
-// Preserved logic files that should not be modified or linted (CRITICAL constraints C1-C4)
-const preservedFiles = [
-  '**/course-scheduler-web/src/utils/parseSchedule.js',
-  '**/course-scheduler-web/src/utils/parseRawData.js',
-  '**/course-scheduler-web/src/utils/generateIcs.js',
-  '**/course-scheduler-web/src/utils/convertToRawData.js',
-];
-
 export default [
   // Global ignores - standalone object with ONLY ignores key
   // These files/directories will be completely ignored by ESLint
@@ -25,8 +17,8 @@ export default [
       '**/coverage/**',
       // IDE/editor files
       '**/.opencode/**',
-      // Preserved logic files (CRITICAL: must not be modified)
-      ...preservedFiles,
+      // Archived legacy project
+      '**/_archived-course-scheduler-web/**',
     ],
   },
 

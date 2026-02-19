@@ -16,7 +16,6 @@ This file contains critical operational details that AI agents should know when 
 - **Format Command**: `bun run format` (Prettier at monorepo root)
 - **Project Root**: C:\Repository\CITUCourseBuilder
 - **Primary App Location**: course-scheduler-astro/ (Astro 5.x + React 19 islands)
-- **Legacy App Location**: course-scheduler-web/ (React 19 + Vite - archived, kept for reference)
 
 ## Critical Operational Details
 
@@ -29,7 +28,6 @@ These files contain critical parsing and scheduling logic that MUST be preserved
 - `course-scheduler-astro/src/utils/generateIcs.ts` - ICS calendar generation (134 lines)
 - `course-scheduler-astro/src/utils/convertToRawData.ts` - Raw data conversion (57 lines)
 - `course-scheduler-astro/src/utils/scheduleAlgorithms.ts` - Scheduling algorithms (640+ lines)
-- Legacy JavaScript versions preserved at `course-scheduler-web/src/utils/` for reference
 
 ### Scheduling Algorithms (13 Functions)
 
@@ -188,7 +186,7 @@ These files contain critical parsing and scheduling logic that MUST be preserved
     - The commit-msg hook allows merge commits, revert commits, and fixup/squash commits without validation
     - Conventional commit types: feat, fix, build, chore, ci, docs, style, refactor, perf, test
 
-21. **ESLint flat config at monorepo root**: ESLint v10.0.0 is configured at the monorepo root with flat config (`eslint.config.js`). The configuration supports JavaScript (.js, .jsx), TypeScript (.ts, .tsx), and Astro (.astro) files. Key packages: `eslint`, `@eslint/js`, `eslint-plugin-astro`, `eslint-plugin-react`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`, `typescript-eslint`, `globals`. Preserved logic files (parseSchedule.js, parseRawData.js, generateIcs.js, convertToRawData.js) are explicitly ignored via the `ignores` property in the config. Nested ESLint configs (like the one that was in `course-scheduler-web/`) should be removed to avoid conflicts - the root config handles all files. Use `bun run lint` to check all files and `bun run lint:fix` to auto-fix issues.
+21. **ESLint flat config at monorepo root**: ESLint v10.0.0 is configured at the monorepo root with flat config (`eslint.config.js`). The configuration supports JavaScript (.js, .jsx), TypeScript (.ts, .tsx), and Astro (.astro) files. Key packages: `eslint`, `@eslint/js`, `eslint-plugin-astro`, `eslint-plugin-react`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`, `typescript-eslint`, `globals`. Use `bun run lint` to check all files and `bun run lint:fix` to auto-fix issues.
 
 22. **Prettier configuration at monorepo root**: Prettier v3.8.1 is configured at the monorepo root with `prettier-plugin-astro` v0.14.1 for Astro file support. Configuration is in `.prettierrc` with formatting rules: semicolons, single quotes, 2-space tabs, trailing commas (ES5), 100-char print width. The `.prettierignore` file excludes build artifacts (`dist/`, `.astro/`), lock files (`package-lock.json`), and generated files (`*.d.ts`, `*.mjs`). Lint-staged runs Prettier after ESLint on pre-commit for `*.{js,jsx,ts,tsx,astro,json,md,css}` files. Use `bun run format` to format all files and `bun run format:check` to verify formatting in CI.
 

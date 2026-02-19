@@ -1570,3 +1570,23 @@ Self-Review:
   - All verification checks pass: lint (0 errors), typecheck (0 errors), tests (506 pass), format
  Unblocked: T6.2.2, T6.2.3, T6.3.1, T6.3.2, T6.3.3 (Phase 6 remaining tasks)
 
+
+## 2026-02-19 13:40
+Task: T6.3.1 - Remove old React project
+Selection: SKIPPED-BLOCKED
+  - Tasks T6.2.2 and T6.2.3 require external deployment actions (git push to remote) which are blocked by agent constraints
+  - Selected next executable task in sequential order
+Change: Archived legacy React project and updated all references
+  - Renamed course-scheduler-web/ to _archived-course-scheduler-web/
+  - Copied assets to course-scheduler-astro/public/ (CIT-U Course Builder_App.png, Guide1.PNG, Guide2.PNG)
+  - Updated README.md to remove old project from project structure diagram
+  - Updated UsageGuide.md image paths to use new Astro public folder
+  - Updated AGENTS.md to remove legacy app location reference and ESLint preserved files note
+  - Updated eslint.config.js to ignore archived directory
+Reason: Deployment tasks (T6.2.2, T6.2.3) require git push to remote which violates agent constraints. Proceeded to next executable cleanup task.
+Self-Review:
+  - All file references updated correctly
+  - Assets copied to proper location for GitHub Pages deployment with base path
+  - ESLint now ignores archived directory
+  - All verification checks pass: typecheck (0 errors), lint (0 warnings), format:check, tests (506 pass), build (5.24s)
+Unblocked: T6.3.2 (Final dependency audit), T6.3.3 (Final test run)

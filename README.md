@@ -19,7 +19,7 @@
 A modern web application that helps students at Cebu Institute of Technology - University (CIT-U) efficiently create optimal, conflict-free class schedules. It simplifies academic planning by providing smart import/export capabilities, intelligent scheduling algorithms, and a responsive visual interface.
 
 <p align="center">
-  <img src="course-scheduler-web/src/assets/CIT-U Course Builder_App.png" alt="CIT-U Course Builder Application Screenshot" width="700">
+  <img src="course-scheduler-astro/public/CIT-U Course Builder_App.png" alt="CIT-U Course Builder Application Screenshot" width="700">
 </p>
 
 ## Table of Contents
@@ -216,7 +216,6 @@ CITUCourseBuilder/
 │   ├── public/                 # Static assets
 │   ├── tests/                  # Test files (unit, integration, E2E)
 │   └── package.json
-├── course-scheduler-web/       # Original React app (archived)
 ├── docs/                       # Architecture documentation
 │   └── architecture/           # ADRs, analysis documents
 ├── .github/workflows/          # GitHub Actions CI/CD

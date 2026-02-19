@@ -47,7 +47,7 @@ The CITU Course Builder is designed to work with both the modern **WITS** platfo
 - Navigate to the section in AIMS that lists available courses.
 - Select and copy the entire tab-separated table data. Ensure you copy all columns (Subject, Section, Schedule, Units, etc.).
 
-![Guide to copying data](course-scheduler-web/src/assets/Guide1.PNG)
+![Guide to copying data](Guide1.PNG)
 
 ## 2. Importing Data into CITU Course Builder
 
@@ -60,7 +60,7 @@ Once you have your course data copied:
 3.  Paste your copied data into the text area.
 4.  Click the **"Import [Mode] Data"** button.
 
-![Guide to pasting data](course-scheduler-web/src/assets/Guide2.PNG)
+![Guide to pasting data](Guide2.PNG)
 
 Your courses will now appear in the "Course List" table. The application uses a robust parser that handles multi-line entries, hybrid schedules, and comma-separated days/times seamlessly.
 
