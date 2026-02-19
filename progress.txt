@@ -1514,3 +1514,59 @@ Self-Review:
   - No AGENTS.md update needed - README is user-facing documentation
 Unblocked: T6.1.2, T6.1.4, T6.2.2, T6.2.3, T6.3.1, T6.3.2, T6.3.3 (Phase 6 Documentation & Deployment tasks)
 
+
+## 2026-02-19 13:10
+Task: T6.1.2 - Create architecture documentation
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Created comprehensive architecture documentation
+  - docs/architecture/ARCHITECTURE.md: 500+ lines documenting all major systems with Mermaid diagrams
+  - AGENTS.md: Updated References section with architecture documentation link
+Reason: Documentation task to consolidate architecture knowledge for the completed migration
+Self-Review:
+  - Created comprehensive ARCHITECTURE.md covering:
+    - Astro + React islands architecture with component hydration map
+    - State management approach with 6 custom hooks
+    - Theme system with 6 theme combinations and subject color coding
+    - Export system (PNG/PDF/ICS) with lazy loading strategy
+    - Component structure with hierarchy diagram
+    - Utility functions overview
+    - Data flow sequences (import, schedule generation, locking)
+  - All Mermaid diagrams render correctly in GitHub-flavored Markdown
+  - Added references to detailed documentation files for each system
+  - Updated AGENTS.md References section with new ARCHITECTURE.md link
+  - All verification checks pass: typecheck (0 errors), lint (0 warnings), core unit tests (354 pass)
+  - Pre-existing test failures (30) from T4.2.2's jsdom config issue are unrelated to this task
+  Unblocked: T6.1.4 (Phase 6.1 documentation task)
+
+## 2026-02-19 13:20
+Task: T6.1.4 - Update AGENTS.md with final learnings
+Selection: SEQUENTIAL
+  - Next incomplete task in plan order
+Change: Updated AGENTS.md to reflect completed migration
+  - AGENTS.md: Updated Project-Specific Configuration, Preserved Logic Files, Architecture Notes, and added final lessons
+Reason: Final documentation task in Phase 6.1 - ensures all migration learnings are captured for future development
+Self-Review:
+  - Updated Project-Specific Configuration section:
+    - Primary App Location: course-scheduler-astro/ (Astro 5.x + React 19 islands)
+    - Legacy App Location: course-scheduler-web/ (archived, kept for reference)
+    - Added E2E Test Command, Format Command
+  - Updated Preserved Logic Files section:
+    - Point to TypeScript versions in course-scheduler-astro/src/utils/
+    - Added line counts for each file (467, 398, 134, 57, 640+ lines)
+    - Noted legacy JavaScript versions at course-scheduler-web/ for reference
+  - Updated Architecture Notes section:
+    - Current Astro Architecture with 6 custom hooks
+    - TypeScript Interfaces at course-scheduler-astro/src/types/index.ts
+    - Component Hydration Strategy (client:load vs client:visible)
+    - Updated Component Dependencies (Tailwind, Lucide, lazy-loaded exports)
+  - Added 5 final lessons learned (41-45):
+    - Lesson 41: Migration Success Metrics (77% bundle reduction, Lighthouse 100/97/96/91, 91.9% coverage)
+    - Lesson 42: Astro Islands Architecture Benefits (lazy loading, code-splitting, pre-rendering)
+    - Lesson 43: Lazy Loading for Bundle Optimization (dynamic imports for export libraries)
+    - Lesson 44: Comprehensive Test Coverage Strategy (unit, edge case, integration, E2E, visual, accessibility, contrast)
+    - Lesson 45: Documentation Consolidation (architecture docs to maintain)
+  - Total 45 lessons documented in AGENTS.md
+  - All verification checks pass: lint (0 errors), typecheck (0 errors), tests (506 pass), format
+ Unblocked: T6.2.2, T6.2.3, T6.3.1, T6.3.2, T6.3.3 (Phase 6 remaining tasks)
+
