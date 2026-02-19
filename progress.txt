@@ -1654,3 +1654,28 @@ Self-Review:
 Blocker: Git push to remote repository required - agent cannot perform this action
 Required Resolution: Manual push to main branch by user to trigger deployment
 Unblocked: None - deployment tasks remain blocked
+
+## 2026-02-19 19:17
+Task: T6.1.3 - Create developer guide
+Selection: SEQUENTIAL
+  - T6.1.3 was missing from prd.json but exists in plan.md
+  - Added T6.1.3 to prd.json before T6.1.4
+  - Total tasks updated from 81 to 82
+Change: Created comprehensive DEVELOPER_GUIDE.md
+  - docs/DEVELOPER_GUIDE.md: New documentation file (500+ lines)
+  - prd.json: Added T6.1.3 entry and updated totalTasks to 82
+Reason: Task was missing from prd.json but required by plan.md - provides comprehensive developer documentation
+Self-Review:
+  - Local development setup: Prerequisites (Node.js 18+, Bun), initial setup, available scripts (dev, build, test, typecheck, test:e2e)
+  - Project structure: Directory layout, key directories explanation
+  - Development workflow: Branch strategy, Conventional Commits, pre-commit hooks, PR process
+  - Testing approach: Test categories (unit, component, integration, E2E, visual, accessibility, color contrast), running tests, coverage requirements (91.9% line coverage), writing tests with examples
+  - Component architecture: Astro + React islands, hydration strategies (client:load vs client:visible), component hierarchy, conventions, creating new components
+  - Utility functions: parseSchedule, parseRawData, scheduling algorithms, generateIcsContent, preserved logic files (CRITICAL: must not modify)
+  - State management: Custom hooks (useLocalStorage, useTheme, useCourseState, useFilterState, useSchedulePreferences, useScheduleGeneration), localStorage keys (13 keys with types and defaults)
+  - Theme system: 6 theme combinations, CSS custom properties, subject colors
+  - Debugging tips: Common issues (import errors, hydration, theme flash, localStorage), debug commands, VS Code settings
+  - Additional resources: Links to architecture docs and ADRs
+  - All verification checks pass: typecheck (0 errors), lint (0 warnings), tests (506 pass), build (5.49s), format:check
+  - No AGENTS.md update needed - documentation task, standard patterns documented
+Unblocked: None - remaining tasks T6.2.2 and T6.2.3 are blocked by git push constraint
